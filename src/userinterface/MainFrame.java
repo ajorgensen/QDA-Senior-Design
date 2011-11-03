@@ -10,14 +10,22 @@
  */
 package userinterface;
 
+import java.awt.Color;
+import javax.swing.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import org.openide.awt.TabbedPaneFactory;
+
 /**
  *
- * @author Brittany Ro
+ * @author Brittany Nkounkou
  */
-public class MainFrame extends javax.swing.JFrame {
+public class MainFrame extends JFrame implements PropertyChangeListener{
 
     /** Creates new form ApplicationStart */
     public MainFrame() {
+        helpViewIndex = -1;
+        searchBoxEmpty = true;
         initComponents();
     }
 
@@ -39,7 +47,8 @@ public class MainFrame extends javax.swing.JFrame {
         allTags = new javax.swing.JTree();
         editMyTags = new javax.swing.JScrollPane();
         myTags = new javax.swing.JTree();
-        views = new javax.swing.JTabbedPane();
+        views = TabbedPaneFactory.createCloseButtonTabbedPane();
+        searchBox = new javax.swing.JTextField();
         applicationMenu = new javax.swing.JMenuBar();
         projectMenu = new javax.swing.JMenu();
         newProject = new javax.swing.JMenuItem();
@@ -64,16 +73,22 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AppName");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMinimumSize(new java.awt.Dimension(500, 300));
         setName(""); // NOI18N
 
         project.setDividerLocation(200);
+        project.setFocusable(false);
 
         projectData.setDividerLocation(100);
         projectData.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        projectData.setFocusable(false);
 
+        repository.setFocusable(false);
         repository.setViewportView(sourceFolder);
 
         projectData.setTopComponent(repository);
+
+        tags.setFocusable(false);
 
         viewAllTags.setViewportView(allTags);
 
@@ -86,9 +101,35 @@ public class MainFrame extends javax.swing.JFrame {
         projectData.setRightComponent(tags);
 
         project.setLeftComponent(projectData);
+
+        views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);
+        views.setFocusable(false);
         project.setRightComponent(views);
 
+        searchBox.setForeground(new java.awt.Color(153, 153, 153));
+        searchBox.setText("Search");
+        searchBox.setMaximumSize(new java.awt.Dimension(250, 27));
+        searchBox.setMinimumSize(new java.awt.Dimension(250, 27));
+        searchBox.setPreferredSize(new java.awt.Dimension(250, 27));
+        searchBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBoxActionPerformed(evt);
+            }
+        });
+        searchBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchBoxFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                searchBoxFocusLost(evt);
+            }
+        });
+
+        applicationMenu.setFocusable(false);
+
         projectMenu.setText("Project");
+        projectMenu.setFocusCycleRoot(true);
+        projectMenu.setFocusPainted(true);
 
         newProject.setText("New");
         projectMenu.add(newProject);
@@ -121,6 +162,8 @@ public class MainFrame extends javax.swing.JFrame {
         applicationMenu.add(projectMenu);
 
         userMenu.setText("User");
+        userMenu.setFocusCycleRoot(true);
+        userMenu.setFocusPainted(true);
 
         editUser.setText("Edit Account");
         userMenu.add(editUser);
@@ -132,14 +175,24 @@ public class MainFrame extends javax.swing.JFrame {
         applicationMenu.add(userMenu);
 
         helpMenu.setText("Help");
+        helpMenu.setFocusCycleRoot(true);
+        helpMenu.setFocusPainted(true);
 
         helpContents.setText("Help Contents");
+        helpContents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpContentsActionPerformed(evt);
+            }
+        });
         helpMenu.add(helpContents);
 
         about.setText("About");
         helpMenu.add(about);
 
         applicationMenu.add(helpMenu);
+
+        applicationMenu.add(Box.createHorizontalGlue());
+        applicationMenu.add(searchBox);
 
         setJMenuBar(applicationMenu);
 
@@ -158,6 +211,56 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void helpContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContentsActionPerformed
+    if (helpViewIndex == -1) {
+        addView(new HelpView());
+        helpViewIndex = views.getSelectedIndex();
+    }
+    else {
+        views.setSelectedIndex(helpViewIndex);
+    }
+}//GEN-LAST:event_helpContentsActionPerformed
+
+private void searchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusGained
+    if (searchBoxEmpty) {
+        searchBox.setText("");
+        searchBox.setForeground(Color.BLACK);
+    }
+}//GEN-LAST:event_searchBoxFocusGained
+
+private void searchBoxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusLost
+    if (searchBox.getText().equals("")) {
+        searchBoxEmpty = true;
+        searchBox.setText("");
+        searchBox.setForeground(new Color(153, 153, 153));
+        searchBox.setText("Search");
+    }
+    else {
+        searchBoxEmpty = false;
+    }
+}//GEN-LAST:event_searchBoxFocusLost
+
+private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
+    String text = searchBox.getText();
+    if (!text.equals("")) {
+        addView(new SearchView("Search \""+text+"\""));
+    }
+}//GEN-LAST:event_searchBoxActionPerformed
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        int indexToDelete = views.indexOfComponent((java.awt.Component)evt.getNewValue());
+        if (helpViewIndex == indexToDelete) {
+            helpViewIndex = -1;
+        }
+        views.removeTabAt(indexToDelete);
+    }
+
+    public void addView(View v) {
+        views.addTab(v.getAbbrv(), null, v, v.getTitle());
+        views.setSelectedIndex(views.indexOfComponent(v));
+    }
 
     /**
      * @param args the command line arguments
@@ -189,11 +292,15 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 new MainFrame().setVisible(true);
             }
         });
     }
+    
+    private int helpViewIndex;
+    private boolean searchBoxEmpty;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about;
     private javax.swing.JTree allTags;
@@ -218,6 +325,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane repository;
     private javax.swing.JMenuItem saveAsProject;
     private javax.swing.JMenuItem saveProject;
+    private javax.swing.JTextField searchBox;
     private javax.swing.JMenuItem signOutUser;
     private javax.swing.JTree sourceFolder;
     private javax.swing.JTabbedPane tags;
