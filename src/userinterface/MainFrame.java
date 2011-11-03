@@ -11,6 +11,8 @@
 package userinterface;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -27,6 +29,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         helpViewIndex = -1;
         searchBoxEmpty = true;
         initComponents();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int w = (int) screenSize.getWidth();
+        int h = (int) screenSize.getHeight();
+        setBounds(w/10, h/10, w*4/5, h*3/4);
+        projectData.requestFocusInWindow();
     }
 
     /** This method is called from within the constructor to
@@ -77,18 +84,13 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         setName(""); // NOI18N
 
         project.setDividerLocation(200);
-        project.setFocusable(false);
 
-        projectData.setDividerLocation(100);
+        projectData.setDividerLocation(250);
         projectData.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        projectData.setFocusable(false);
 
-        repository.setFocusable(false);
         repository.setViewportView(sourceFolder);
 
         projectData.setTopComponent(repository);
-
-        tags.setFocusable(false);
 
         viewAllTags.setViewportView(allTags);
 
@@ -103,7 +105,6 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         project.setLeftComponent(projectData);
 
         views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);
-        views.setFocusable(false);
         project.setRightComponent(views);
 
         searchBox.setForeground(new java.awt.Color(153, 153, 153));
@@ -124,8 +125,6 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
                 searchBoxFocusLost(evt);
             }
         });
-
-        applicationMenu.setFocusable(false);
 
         projectMenu.setText("Project");
         projectMenu.setFocusCycleRoot(true);
@@ -220,6 +219,7 @@ private void helpContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     else {
         views.setSelectedIndex(helpViewIndex);
     }
+    views.getSelectedComponent().requestFocusInWindow();
 }//GEN-LAST:event_helpContentsActionPerformed
 
 private void searchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusGained
@@ -246,6 +246,7 @@ private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     if (!text.equals("")) {
         addView(new SearchView("Search \""+text+"\""));
     }
+    views.getSelectedComponent().requestFocusInWindow();
 }//GEN-LAST:event_searchBoxActionPerformed
 
     @Override

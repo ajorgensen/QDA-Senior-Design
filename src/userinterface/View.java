@@ -21,7 +21,7 @@ public class View extends javax.swing.JScrollPane {
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.setMinimumSize(new Dimension(500, 0));
-        panel.setPreferredSize(new Dimension(1000, 100));
+        panel.setPreferredSize(new Dimension(750, 100));
         GroupLayout jPanel1Layout = new GroupLayout(panel);
         panel.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(

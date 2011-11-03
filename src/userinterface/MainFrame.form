@@ -3,9 +3,6 @@
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="applicationMenu">
-      <Properties>
-        <Property name="focusable" type="boolean" value="false"/>
-      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="applicationMenu.add(Box.createHorizontalGlue());&#xa;applicationMenu.add(searchBox);"/>
       </AuxValues>
@@ -160,16 +157,14 @@
     <Container class="javax.swing.JSplitPane" name="project">
       <Properties>
         <Property name="dividerLocation" type="int" value="200"/>
-        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JSplitPane" name="projectData">
           <Properties>
-            <Property name="dividerLocation" type="int" value="100"/>
+            <Property name="dividerLocation" type="int" value="250"/>
             <Property name="orientation" type="int" value="0"/>
-            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
@@ -180,9 +175,6 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
           <SubComponents>
             <Container class="javax.swing.JScrollPane" name="repository">
-              <Properties>
-                <Property name="focusable" type="boolean" value="false"/>
-              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
                   <JSplitPaneConstraints position="top"/>
@@ -196,9 +188,6 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JTabbedPane" name="tags">
-              <Properties>
-                <Property name="focusable" type="boolean" value="false"/>
-              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
                   <JSplitPaneConstraints position="right"/>
@@ -248,9 +237,6 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JTabbedPane" name="views">
-          <Properties>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="TabbedPaneFactory.createCloseButtonTabbedPane()"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);"/>
