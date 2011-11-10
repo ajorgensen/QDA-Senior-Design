@@ -71,7 +71,8 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         closeProject = new javax.swing.JMenuItem();
         userMenu = new javax.swing.JMenu();
-        editUser = new javax.swing.JMenuItem();
+        accountSettings = new javax.swing.JMenuItem();
+        signInUser = new javax.swing.JMenuItem();
         signOutUser = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         helpContents = new javax.swing.JMenuItem();
@@ -131,6 +132,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         projectMenu.setFocusPainted(true);
 
         newProject.setText("New");
+        newProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newProjectActionPerformed(evt);
+            }
+        });
         projectMenu.add(newProject);
 
         openProject.setText("Open");
@@ -152,6 +158,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         projectMenu.add(jSeparator4);
 
         manageUsers.setText("Manage Users");
+        manageUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageUsersActionPerformed(evt);
+            }
+        });
         projectMenu.add(manageUsers);
         projectMenu.add(jSeparator2);
 
@@ -164,8 +175,21 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         userMenu.setFocusCycleRoot(true);
         userMenu.setFocusPainted(true);
 
-        editUser.setText("Edit Account");
-        userMenu.add(editUser);
+        accountSettings.setText("Account Settings");
+        accountSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accountSettingsActionPerformed(evt);
+            }
+        });
+        userMenu.add(accountSettings);
+
+        signInUser.setText("Sign In");
+        signInUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signInUserActionPerformed(evt);
+            }
+        });
+        userMenu.add(signInUser);
 
         signOutUser.setText("Sign Out");
         userMenu.add(signOutUser);
@@ -249,6 +273,33 @@ private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     views.getSelectedComponent().requestFocusInWindow();
 }//GEN-LAST:event_searchBoxActionPerformed
 
+private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectActionPerformed
+    NewProjectDialog npd = new NewProjectDialog(this);
+    npd.setVisible(true);
+    if (npd.hasResults()) {
+        String name = npd.getProjectName();
+        String path = npd.getProjectPath();
+        String admin = npd.getAdministrator();
+        char[] password = npd.getPassword();
+        //TODO
+    }
+}//GEN-LAST:event_newProjectActionPerformed
+
+private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageUsersActionPerformed
+    ManageUsersDialog mud = new ManageUsersDialog(this);
+    mud.setVisible(true);
+}//GEN-LAST:event_manageUsersActionPerformed
+
+private void accountSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountSettingsActionPerformed
+    AccountSettingsDialog asd = new AccountSettingsDialog(this);
+    asd.setVisible(true);
+}//GEN-LAST:event_accountSettingsActionPerformed
+
+private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInUserActionPerformed
+    SignInDialog sid = new SignInDialog(this);
+    sid.setVisible(true);
+}//GEN-LAST:event_signInUserActionPerformed
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         int indexToDelete = views.indexOfComponent((java.awt.Component)evt.getNewValue());
@@ -267,11 +318,11 @@ private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private boolean searchBoxEmpty;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about;
+    private javax.swing.JMenuItem accountSettings;
     private javax.swing.JTree allTags;
     private javax.swing.JMenuBar applicationMenu;
     private javax.swing.JMenuItem closeProject;
     private javax.swing.JScrollPane editMyTags;
-    private javax.swing.JMenuItem editUser;
     private javax.swing.JMenuItem helpContents;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -290,6 +341,7 @@ private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private javax.swing.JMenuItem saveAsProject;
     private javax.swing.JMenuItem saveProject;
     private javax.swing.JTextField searchBox;
+    private javax.swing.JMenuItem signInUser;
     private javax.swing.JMenuItem signOutUser;
     private javax.swing.JTree sourceFolder;
     private javax.swing.JTabbedPane tags;

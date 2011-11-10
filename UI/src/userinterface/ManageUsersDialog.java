@@ -8,6 +8,11 @@ package userinterface;
  *
  * @author Brittany Nkounkou
  */
-public class NewClass {
+public class ManageUsersDialog extends AppDialog{
     
+    public ManageUsersDialog(MainFrame mf) {
+        super(mf, "Manage Users");
+    }
+    
+    //TODO
 }
