@@ -5,6 +5,12 @@ import java.util.List;
 public class SourceText {
 	private String filePath;
 	private List<User> users;
+	
+	public SourceText(String filepath, List<User> users){
+		this.filePath = filepath;
+		this.users = users;
+	}
+	
 	//TODO: figure out the best way to store the source text (one long string?)
 		
 	/**

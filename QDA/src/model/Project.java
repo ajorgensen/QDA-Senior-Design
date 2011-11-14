@@ -6,9 +6,14 @@ import java.util.LinkedList;
 public class Project implements Nameable {
 	private String localPath;
 	private Folder mainFolder;
-	private List<User> users = new LinkedList<User>();
+	private List<User> users;
 	
-
+	public Project(String localPath, Folder mainFolder, List<User> users){
+		this.localPath = localPath;
+		this.mainFolder = mainFolder;
+		this.users = users;
+	}
+	
 	public void signIn(User user){
 		
 	}

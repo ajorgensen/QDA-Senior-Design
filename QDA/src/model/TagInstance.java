@@ -2,6 +2,10 @@ package model;
 
 public class TagInstance extends MarkUp {
 	private Tag tagType;
+	
+	public TagInstance(Tag tagType){
+		this.tagType = tagType;
+	}
 
 	public Tag getTagType() {
 		return tagType;

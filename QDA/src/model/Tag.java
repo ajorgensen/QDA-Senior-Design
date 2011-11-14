@@ -8,6 +8,13 @@ public class Tag implements Nameable, Ownable, Deletable {
 	private String name;
 	private User owner;
 	
+	public Tag(Tag parent, List<Tag> children, String name, User owner){
+		this.parent = parent;
+		this.children = children;
+		this.name = name;
+		this.owner = owner;
+	}
+	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub

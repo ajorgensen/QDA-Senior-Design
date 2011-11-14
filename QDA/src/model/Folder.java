@@ -4,8 +4,13 @@ import java.util.List;
 
 public class Folder extends Element {
 	
-	private Folder parent = null;
+	private Folder parent;
 	private List<Element> children;
+	
+	public Folder(Folder parent, List<Element> children){
+		this.parent = parent;
+		this.children = children;
+	}
 
 	public void setParent(Folder newParent){
 		parent = newParent;
