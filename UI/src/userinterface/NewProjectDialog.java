@@ -4,13 +4,22 @@
  */
 package userinterface;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+/**
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import org.openide.awt.TabbedPaneFactory;
 /**
  *
  * @author Brittany Nkounkou
@@ -30,6 +39,7 @@ public class NewProjectDialog extends AppDialog{
     private JButton create;
     private JButton cancel;
     private JLabel error;
+    private JLabel spacer;
     
     public NewProjectDialog(MainFrame mf) {
         super(mf, "New Project");
@@ -39,11 +49,43 @@ public class NewProjectDialog extends AppDialog{
     protected void initComponents() {
         super.initComponents();
         
-        pNameLabel = new JLabel("Project Name:");
-        pName = new JTextField();
+        setMinimumSize(new java.awt.Dimension(420, 240));
         
-        locationLabel = new JLabel("Location:");
-        location = new JTextField();
+
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        
+        pNameLabel = new JLabel("Project Name:  ");
+        pNameLabel.setHorizontalAlignment(JLabel.RIGHT);
+        c.weightx = 0.5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        panel.add(pNameLabel, c);
+        
+        pName = new JTextField(20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.0;
+        c.gridwidth = 4;
+        c.gridx = 1;
+        c.gridy = 0;
+        panel.add(pName, c);
+        
+        locationLabel = new JLabel("Location:  ");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        locationLabel.setHorizontalAlignment(JLabel.RIGHT);
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        panel.add(locationLabel, c);
+        
+        location = new JTextField(20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 3;
+        c.gridx = 1;
+        c.gridy = 1;
+        panel.add(location, c);
+        
         browse = new JButton("Browse...");
         browse.addActionListener(new ActionListener() {
             @Override
@@ -51,13 +93,64 @@ public class NewProjectDialog extends AppDialog{
                 browseActionPerformed(evt);
             }
         });
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 4;
+        c.gridy = 1;
+        panel.add(browse, c);
         
-        adminLabel = new JLabel("Administrator:");
-        admin = new JTextField();
-        passwordLabel = new JLabel("Password:");
-        password = new JPasswordField();
-        repeatLabel = new JLabel("Repeat Password:");
-        repeat = new JPasswordField();
+        
+        adminLabel = new JLabel("Administrator:  ");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        adminLabel.setHorizontalAlignment(JLabel.RIGHT);
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 2;
+        panel.add(adminLabel, c);
+        
+        admin = new JTextField(20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 4;
+        c.gridx = 1;
+        c.gridy = 2;
+        panel.add(admin, c);
+        
+        passwordLabel = new JLabel("Password:  ");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        passwordLabel.setHorizontalAlignment(JLabel.RIGHT);
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 3;
+        panel.add(passwordLabel, c);
+        
+        password = new JPasswordField(20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 4;
+        c.gridx = 1;
+        c.gridy = 3;
+        panel.add(password, c);
+        
+        repeatLabel = new JLabel("Repeat Password:  ");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        repeatLabel.setHorizontalAlignment(JLabel.RIGHT);
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 4;
+        panel.add(repeatLabel, c);
+        
+        repeat = new JPasswordField(20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 4;
+        c.gridx = 1;
+        c.gridy = 4;
+        panel.add(repeat, c);
+        
+        spacer = new JLabel("                                                   ");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 2;
+        c.gridy = 5;
+        panel.add(spacer, c);
         
         create = new JButton("Create");
         create.addActionListener(new ActionListener() {
@@ -66,6 +159,11 @@ public class NewProjectDialog extends AppDialog{
                 createActionPerformed(evt);
             }
         });
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 3;
+        c.gridy = 5;
+        panel.add(create, c);
         
         cancel = new JButton("Cancel");
         cancel.addActionListener(new ActionListener() {
@@ -74,7 +172,12 @@ public class NewProjectDialog extends AppDialog{
                 cancelActionPerformed(evt);
             }
         });
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 4;
+        c.gridy = 5;
+        panel.add(cancel, c);
         
+       
         error = new JLabel();
         
         //TODO
@@ -99,26 +202,25 @@ public class NewProjectDialog extends AppDialog{
         // check project name
         String n = pName.getText();
         if (n.equals("")) {
-            error.setText("Please enter a Project Name.");
-            return false;
+            pName.setText("Please enter a Project Name.");
         }
-        //TODO
+        
         
         // check location
         String l = location.getText();
         if (l.equals("")) {
-            error.setText("Please enter a Location.");
-            return false;
+            location.setText("Please enter a Location.");
         }
-        //TODO
+       
         
         // check admin
         String a = admin.getText();
-        if (n.equals("")) {
-            error.setText("Please enter an Administrator.");
+        if (a.equals("")) {
+            admin.setText("Please enter an Administrator.");
+        }
+        if(n.equals("") || l.equals("") || a.equals("")) {
             return false;
         }
-        //TODO
         
         // check passwords
         char[] p = password.getPassword();

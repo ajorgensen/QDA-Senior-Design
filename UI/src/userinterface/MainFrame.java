@@ -24,7 +24,7 @@ import org.openide.awt.TabbedPaneFactory;
  */
 public class MainFrame extends JFrame implements PropertyChangeListener{
 
-    /** Creates new form ApplicationStart */
+    /** Creates new from ApplicationStart */
     public MainFrame() {
         helpViewIndex = -1;
         searchBoxEmpty = true;
@@ -140,6 +140,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         projectMenu.add(newProject);
 
         openProject.setText("Open");
+        openProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openProjectActionPerformed(evt);
+            }
+        });
         projectMenu.add(openProject);
         projectMenu.add(jSeparator1);
 
@@ -167,6 +172,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         projectMenu.add(jSeparator2);
 
         closeProject.setText("Close");
+        closeProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EXIT_ON_CLOSE(evt);
+            }
+        });
         projectMenu.add(closeProject);
 
         applicationMenu.add(projectMenu);
@@ -299,6 +309,21 @@ private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     SignInDialog sid = new SignInDialog(this);
     sid.setVisible(true);
 }//GEN-LAST:event_signInUserActionPerformed
+
+private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXIT_ON_CLOSE
+// TODO add your handling code here:
+    System.exit(0); // Exit the application
+}//GEN-LAST:event_EXIT_ON_CLOSE
+
+private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectActionPerformed
+// TODO add your handling code here:
+    OpenProjectDialog opd = new OpenProjectDialog(this);
+    opd.setVisible(true);
+    if(opd.hasResults()) {
+        String user = opd.getUserName();
+        char[] password = opd.getPassword();
+    }
+}//GEN-LAST:event_openProjectActionPerformed
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
