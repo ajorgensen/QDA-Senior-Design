@@ -8,7 +8,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -40,6 +42,8 @@ public class NewProjectDialog extends AppDialog{
     private JButton cancel;
     private JLabel error;
     private JLabel spacer;
+    private JFileChooser chooser;
+    private String choosertitle;
     
     public NewProjectDialog(MainFrame mf) {
         super(mf, "New Project");
@@ -184,7 +188,27 @@ public class NewProjectDialog extends AppDialog{
     }
     
     private void browseActionPerformed(ActionEvent evt) {
-        //TODO
+                chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle(choosertitle);
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+          System.out.println("getCurrentDirectory(): " 
+             +  chooser.getCurrentDirectory());
+          System.out.println("getSelectedFile() : " 
+             +  chooser.getSelectedFile());
+          }
+            else {
+          System.out.println("No Selection ");
+          }
+
+        File file = chooser.getSelectedFile();
+        if(file == null) {
+            location.setText("No Selection");
+        } else {
+            location.setText(file.toString());
+        }
     }
     
     private void createActionPerformed(ActionEvent evt) {
