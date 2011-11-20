@@ -225,6 +225,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         helpMenu.add(helpContents);
 
         about.setText("About");
+        about.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutActionPerformed(evt);
+            }
+        });
         helpMenu.add(about);
 
         applicationMenu.add(helpMenu);
@@ -338,6 +343,12 @@ private void SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         String location = sap.getSaveLocation();
     }
 }//GEN-LAST:event_SaveAsActionPerformed
+
+private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
+// TODO add your handling code here:
+    AboutProjectDialog apd = new AboutProjectDialog(this);
+    apd.setVisible(true);
+}//GEN-LAST:event_aboutActionPerformed
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
