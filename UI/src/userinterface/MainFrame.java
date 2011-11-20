@@ -152,6 +152,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         projectMenu.add(saveProject);
 
         saveAsProject.setText("Save As");
+        saveAsProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveAsActionPerformed(evt);
+            }
+        });
         projectMenu.add(saveAsProject);
         projectMenu.add(jSeparator3);
 
@@ -324,6 +329,15 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         char[] password = opd.getPassword();
     }
 }//GEN-LAST:event_openProjectActionPerformed
+
+private void SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsActionPerformed
+// TODO add your handling code here:
+    SaveAsProjectDialog sap = new SaveAsProjectDialog(this);
+    sap.setVisible(true);
+    if(sap.hasResults()) {
+        String location = sap.getSaveLocation();
+    }
+}//GEN-LAST:event_SaveAsActionPerformed
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

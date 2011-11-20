@@ -12,30 +12,23 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
 /**
  *
  * @author dumnzzz-sager
  */
-public class OpenProjectDialog extends AppDialog{
+public class SaveAsProjectDialog extends AppDialog {
     private JLabel locationLabel;
     private JTextField location;
     private JButton browse;
-    private JLabel pUserLabel;
-    private JTextField pUser;
-    private JLabel passwordLabel;
-    private JPasswordField password;
-    private JLabel spacer;
-    private JButton SignIn;
-    private JButton Cancel;
+    private JButton save;
+    private JButton cancel;
     private JFileChooser chooser;
     private String choosertitle;
+    private JLabel spacer;
     
-    public OpenProjectDialog(MainFrame mf) {
-        super(mf, "Open Project");
-        
+    public SaveAsProjectDialog(MainFrame mf) {
+        super(mf, "Save As");
     }
     @Override
     protected void initComponents() {
@@ -46,7 +39,7 @@ public class OpenProjectDialog extends AppDialog{
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         
-        locationLabel = new JLabel("Location ");
+        locationLabel = new JLabel("New Save Location ");
         locationLabel.setHorizontalAlignment(JLabel.RIGHT);
         c.weightx = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -74,69 +67,39 @@ public class OpenProjectDialog extends AppDialog{
         c.gridy = 0;
         panel.add(browse, c);
         
-        pUserLabel = new JLabel("User Name ");
-        pUserLabel.setHorizontalAlignment(JLabel.RIGHT);
+        spacer = new JLabel("                               ");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 1;
-        panel.add(pUserLabel, c);
-        
-        pUser = new JTextField();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 3;
         c.gridx = 1;
         c.gridy = 1;
-        panel.add(pUser, c);
-        
-        passwordLabel = new JLabel("Password ");
-        passwordLabel.setHorizontalAlignment(JLabel.RIGHT);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(passwordLabel, c);
-        
-        password = new JPasswordField();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 3;
-        c.gridx = 1;
-        c.gridy = 2;
-        panel.add(password, c);
-        
-        spacer = new JLabel(" ");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
-        c.gridx = 1;
-        c.gridy = 3;
         panel.add(spacer, c);
         
-        SignIn = new JButton("Sign In");
-        SignIn.addActionListener(new ActionListener() {
+        save = new JButton("Save As");
+        save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                SignInActionPerformed(evt);
+                saveAsActionPerformed(evt);
             } 
         });
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
-        c.gridy = 3;
-        panel.add(SignIn, c);
+        c.gridy = 1;
+        panel.add(save, c);
         
-        Cancel = new JButton("Cancel");
-        Cancel.addActionListener(new ActionListener() {
+        cancel = new JButton("Cancel");
+        cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                CancelActionPerformed(evt);
+                cancelActionPerformed(evt);
             }
         });
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
-        c.gridy = 3;
-        panel.add(Cancel, c);
+        c.gridy = 1;
+        panel.add(cancel, c);
     }
     
     private void browseActionPerformed(ActionEvent evt){
-        //Need to make it open folder browser
+        
         chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
         chooser.setDialogTitle(choosertitle);
@@ -160,48 +123,32 @@ public class OpenProjectDialog extends AppDialog{
         }
     }
     
-    private void CancelActionPerformed(ActionEvent evt) {
+    private void cancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
-    private void SignInActionPerformed(ActionEvent evt) {
+    private void saveAsActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
             setVisible(false);
         }
     }
-
+    
     private boolean validateInput() {
-        String n = pUser.getText();
-        if(n.equals("")) {
-            pUser.setText("Please enter a User Name");
-        }
         String l = location.getText();
         if(l.equals("")) {
             location.setText("Please enter a location");
-        }
-        if(n.equals("") || l.equals("")) {
             return false;
         }
         return true;
-    }    
+    }
     
-    public String getUserName() {
+    public String getSaveLocation() {
         if(hasResults) {
-            return pUser.getText();
+            return location.getText();
         }
         else {
             return null;
         }
     }
-
-    public char[] getPassword() {
-        if (hasResults) {
-            return password.getPassword();
-        }
-        else {
-            return null;
-        }
-    }
-    
 }
