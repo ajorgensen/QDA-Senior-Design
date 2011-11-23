@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cgit;
 
 import java.io.*;
@@ -9,10 +5,6 @@ import java.util.*;
 import model.SingleComment;
 import model.cgitDirectory;
 
-/**
- *
- * @author andrewjorgensen
- */
 public class comments {
 
     private String working_dir;

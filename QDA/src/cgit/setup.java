@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cgit;
 
 import java.io.File;
@@ -9,10 +5,6 @@ import java.util.ArrayList;
 import model.FileStructure;
 import model.cgitDirectory;
 
-/**
- *
- * @author andrewjorgensen
- */
 public class setup {
 
     public static boolean setup_qda_directory(String working_dir) {

@@ -1,16 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cgit;
 
 import java.io.*;
 import model.cgitDirectory;
 
-/**
- *
- * @author andrewjorgensen
- */
 public class description {
     
     private String working_dir = "";
