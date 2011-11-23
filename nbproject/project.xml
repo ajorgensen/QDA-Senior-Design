@@ -6,7 +6,6 @@
             <name>QDA - SeniorDesign</name>
             <source-roots>
                 <root id="src.dir"/>
-                <root id="src2.dir"/>
             </source-roots>
             <test-roots/>
         </data>
