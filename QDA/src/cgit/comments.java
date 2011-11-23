@@ -7,7 +7,7 @@ package cgit;
 import java.io.*;
 import java.util.*;
 import model.SingleComment;
-import model.QdaDirectory;
+import model.cgitDirectory;
 
 /**
  *
@@ -57,7 +57,7 @@ public class comments {
     
     private void loadComments()
     {
-        String comment_path = this.working_dir + QdaDirectory.COMMENTS_PATH.getPath();
+        String comment_path = this.working_dir + cgitDirectory.COMMENTS_PATH.getPath();
 
         try {
             BufferedReader in = new BufferedReader(new FileReader(comment_path));
@@ -80,7 +80,7 @@ public class comments {
     }
 
     private void saveComments() {
-        String comment_path = this.working_dir + QdaDirectory.COMMENTS_PATH.getPath();
+        String comment_path = this.working_dir + cgitDirectory.COMMENTS_PATH.getPath();
 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(comment_path, false));

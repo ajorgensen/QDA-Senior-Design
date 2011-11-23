@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author andrewjorgensen
  */
-public class QdaDirectory {
+public class cgitDirectory {
 
     public static final FileStructure QDA_PATH = new FileStructure(true, "/qda");
     public static final FileStructure CONFIG_PATH = new FileStructure(false, QDA_PATH.getPath() + "/config");
@@ -51,7 +51,7 @@ public class QdaDirectory {
             System.out.println("Created new file: " + path);
             success = true;
         } catch (IOException ex) {
-            Logger.getLogger(QdaDirectory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(cgitDirectory.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return success;

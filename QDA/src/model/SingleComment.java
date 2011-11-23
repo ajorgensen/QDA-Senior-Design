@@ -64,19 +64,19 @@ public class SingleComment {
         
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         
-        return  this.user + QdaDirectory.DELIMETER + 
-                new StringBuilder(formatter.format(dateAdded)) + QdaDirectory.DELIMETER + 
-                new StringBuilder(formatter.format(dateModified)) + QdaDirectory.DELIMETER +
-                Integer.toString(this.selectedText.getStartingPosition()) + QdaDirectory.DELIMETER +
-                Integer.toString(this.selectedText.getStartingLineNumber()) + QdaDirectory.DELIMETER +
-                Integer.toString(this.selectedText.getEndingPosition()) + QdaDirectory.DELIMETER +
-                Integer.toString(this.selectedText.getEndingLineNumber()) + QdaDirectory.DELIMETER +
-                this.comment + QdaDirectory.DELIMETER +
+        return  this.user + cgitDirectory.DELIMETER + 
+                new StringBuilder(formatter.format(dateAdded)) + cgitDirectory.DELIMETER + 
+                new StringBuilder(formatter.format(dateModified)) + cgitDirectory.DELIMETER +
+                Integer.toString(this.selectedText.getStartingPosition()) + cgitDirectory.DELIMETER +
+                Integer.toString(this.selectedText.getStartingLineNumber()) + cgitDirectory.DELIMETER +
+                Integer.toString(this.selectedText.getEndingPosition()) + cgitDirectory.DELIMETER +
+                Integer.toString(this.selectedText.getEndingLineNumber()) + cgitDirectory.DELIMETER +
+                this.comment + cgitDirectory.DELIMETER +
                 sourceFileName;
     }
 
     public static final SingleComment process_comment(String comment_string) {
-        String[] comment_params = comment_string.split("\\" + QdaDirectory.DELIMETER);
+        String[] comment_params = comment_string.split("\\" + cgitDirectory.DELIMETER);
 
         //TODO: Error checking on split....did we actually get anything back?
         if (comment_params.length != 9) {

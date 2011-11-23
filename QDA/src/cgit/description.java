@@ -5,7 +5,7 @@
 package cgit;
 
 import java.io.*;
-import model.QdaDirectory;
+import model.cgitDirectory;
 
 /**
  *
@@ -24,7 +24,7 @@ public class description {
     {
         String description = "";
         try {
-            BufferedReader in = new BufferedReader(new FileReader(this.working_dir + QdaDirectory.DESCRIPTION_PATH.getPath()));
+            BufferedReader in = new BufferedReader(new FileReader(this.working_dir + cgitDirectory.DESCRIPTION_PATH.getPath()));
             String str;
             while ((str = in.readLine()) != null)
             {
@@ -34,7 +34,7 @@ public class description {
             in.close();
             
         } catch (IOException e) {
-            MyLogger.LogMessageToConsole(this, "Error reading description file from: " + this.working_dir + QdaDirectory.DESCRIPTION_PATH.getPath(), LogType.ERROR);
+            MyLogger.LogMessageToConsole(this, "Error reading description file from: " + this.working_dir + cgitDirectory.DESCRIPTION_PATH.getPath(), LogType.ERROR);
         }
         
         return description;
@@ -43,7 +43,7 @@ public class description {
     public boolean writeDescription(String new_description, boolean append)
     {
         boolean success = false;
-        String description_path = this.working_dir + QdaDirectory.DESCRIPTION_PATH.getPath();
+        String description_path = this.working_dir + cgitDirectory.DESCRIPTION_PATH.getPath();
         
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(description_path, append));

@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
-import model.QdaDirectory;
+import model.cgitDirectory;
 
 /**
  *
@@ -21,7 +21,7 @@ public class config {
     public config(String working_dir) {
         
         this.working_dir = working_dir;
-        this.readConfig(working_dir + QdaDirectory.CONFIG_PATH.getPath());
+        this.readConfig(working_dir + cgitDirectory.CONFIG_PATH.getPath());
     }
 
     private void readConfig(String config_location) {     
