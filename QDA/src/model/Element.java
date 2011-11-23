@@ -11,5 +11,5 @@ public abstract class Element implements Nameable, Deletable {
 	 * @return
 	 */
 	public abstract List<Tag> searchTags(List<Tag> tags, List<User> users);
-	public abstract List<Comment> searchComments(List<User> users);
+	public abstract List<Comment_old> searchComments(List<User> users);
 }

@@ -39,7 +39,7 @@ public class Folder extends Element {
 	}
 
 	@Override
-	public List<Comment> searchComments(List<User> users) {
+	public List<Comment_old> searchComments(List<User> users) {
 		// TODO Auto-generated method stub
 		return null;
 	}

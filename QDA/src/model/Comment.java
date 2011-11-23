@@ -1,43 +1,61 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import cgit.MyLogger;
+import cgit.LogType;
 
-public class Comment extends MarkUp {
+public class Comment {
 
-    private User author;
-    private String body;
-    private TextSection textSection;
+    private String user;
+    private String comment;
+    private TextSection selectedText;
+    private Date dateAdded;
+    private Date dateModified;
+    private String sourceFileName;
+    
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public Comment(User author, String body, TextSection section, Date date) {
-        this.author = author;
-        this.body = body;
-        this.textSection = section;
-        this.date = date;
+    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment, String sourceFilePath) {
+        this.user = user;
+        this.comment = comment;
+        this.dateAdded = dateAdded;
+        this.dateModified = dateModified;
+        this.selectedText = selection;
+        this.comment = comment;
+        this.sourceFileName = sourceFilePath;
     }
 
-    public TextSection getTextSection() {
-        return textSection;
+    public String getUser() {
+        return this.user;
     }
 
-    public void setTextSection(TextSection section) {
-        this.textSection = section;
+    public String getComment() {
+        return this.comment;
     }
 
-    public void setBody(String text) {
-        this.body = text;
+    public void setComment(String comment) {
+        this.comment = comment;
+        this.dateModified = new Date();
     }
 
-    public String getBody() {
-        return body;
+    public Date getDateAdded() {
+        return this.dateAdded;
     }
 
-    @Override
-    public User getOwner() {
-        return author;
+    public Date getDateModified() {
+        return this.dateModified;
     }
 
-    @Override
-    public void delete() {
-        // TODO Auto-generated method stub
+    public TextSection getTextSection()
+    {
+        return selectedText;
+    }
+    
+    public String getSourcePath()
+    {
+        return this.sourceFileName;
     }
 }

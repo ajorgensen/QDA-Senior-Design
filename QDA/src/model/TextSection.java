@@ -11,7 +11,7 @@ public class TextSection {
     private final int endChar;
     private final int endLine;
     
-    TextSection(int startChar, int startLine, int endChar, int endLine)
+    public TextSection(int startChar, int startLine, int endChar, int endLine)
     {
         this.startChar = startChar;
         this.startLine = startLine;

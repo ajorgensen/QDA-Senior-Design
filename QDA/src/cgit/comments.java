@@ -1,54 +1,51 @@
 package cgit;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import model.SingleComment;
+import model.Comment;
+import model.TextSection;
 import model.cgitDirectory;
 
 public class comments {
 
     private String working_dir;
-    private ArrayList<SingleComment> comments;
+    private ArrayList<Comment> comments;
     private final String delimeter = "|";
 
     public comments(String working_dir) {
         this.working_dir = working_dir;
-        this.comments = new ArrayList<SingleComment>();
+        this.comments = new ArrayList<Comment>();
         this.loadComments();
     }
 
-    public void addComment(SingleComment comment) {
+    public void addComment(Comment comment) {
         this.comments.add(comment);
         this.saveComments();
     }
 
-    public void removeComment(SingleComment comment) {
+    public void removeComment(Comment comment) {
         this.comments.remove(comment);
         this.saveComments();
     }
-    
-    public ArrayList<SingleComment> getCommentsForFile(String filepath)
-    {
-        ArrayList<SingleComment> matchingComments = new ArrayList<SingleComment>();
-        
-        for(SingleComment comment : this.comments)
-        {
-            if(comment.getSourcePath().equals(filepath))
-            {
+
+    public ArrayList<Comment> getCommentsForFile(String filepath) {
+        ArrayList<Comment> matchingComments = new ArrayList<Comment>();
+
+        for (Comment comment : this.comments) {
+            if (comment.getSourcePath().equals(filepath)) {
                 matchingComments.add(comment);
             }
         }
-        
+
         return matchingComments;
     }
-    
-    public ArrayList<SingleComment> getComments()
-    {
+
+    public ArrayList<Comment> getComments() {
         return this.comments;
     }
-    
-    private void loadComments()
-    {
+
+    private void loadComments() {
         String comment_path = this.working_dir + cgitDirectory.COMMENTS_PATH.getPath();
 
         try {
@@ -58,7 +55,7 @@ public class comments {
 
             //read each line of the comment file and add it to the arraylist
             while ((str = in.readLine()) != null) {
-                SingleComment comment = SingleComment.process_comment(str);
+                Comment comment = this.process_comment(str);
                 if (comment != null) {
                     comments.add(comment);
                 } else {
@@ -77,7 +74,7 @@ public class comments {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(comment_path, false));
 
-            for (SingleComment comment : this.comments) {
+            for (Comment comment : this.comments) {
                 this.writeComment(out, comment);
             }
 
@@ -88,7 +85,65 @@ public class comments {
         }
     }
 
-    private void writeComment(BufferedWriter out, SingleComment comment) throws IOException {
-        out.write(comment.toString() + "\n");
+    private void writeComment(BufferedWriter out, Comment comment) throws IOException {
+        out.write(this.commentToString(comment) + "\n");
+    }
+
+    public static final Comment process_comment(String comment_string) {
+        String[] comment_params = comment_string.split("\\" + cgitDirectory.DELIMETER);
+
+        //TODO: Error checking on split....did we actually get anything back?
+        if (comment_params.length != 9) {
+            return null;
+        }
+
+        //Format will be:
+        // username|dateAdded|dateModified|startingPos|startingLine|endingPos|endingLine|comment|filepath
+        try {
+
+            String uname;
+            Date dateAdded;
+            Date dateModified;
+            int startingPos;
+            int startingLine;
+            int endingPos;
+            int endingLine;
+            String comment_text;
+            String sourceFilePath;
+
+            uname = comment_params[0];
+            dateAdded = new SimpleDateFormat(Comment.DATE_FORMAT).parse(comment_params[1]);
+            dateModified = new SimpleDateFormat(Comment.DATE_FORMAT).parse(comment_params[2]);
+            startingPos = Integer.parseInt(comment_params[3]);
+            startingLine = Integer.parseInt(comment_params[4]);
+            endingPos = Integer.parseInt(comment_params[5]);
+            endingLine = Integer.parseInt(comment_params[6]);
+            comment_text = comment_params[7];
+            sourceFilePath = comment_params[8];
+
+            return new Comment(uname, dateAdded, dateModified, new TextSection(startingPos, startingLine, endingPos, endingLine), comment_text, sourceFilePath);
+        } catch (java.text.ParseException e) {
+            MyLogger.LogMessageToConsole(null, "Error parsing date", LogType.ERROR);
+            return null;
+        }
+    }
+
+    public static final Comment new_comment(String uname, TextSection selectedText, String comment_text, String sourceFilePath) {
+        Date now = new Date();
+        return new Comment(uname, now, now, selectedText, comment_text, sourceFilePath);
+    }
+
+    private String commentToString(Comment comment) {
+        SimpleDateFormat formatter = new SimpleDateFormat(comment.DATE_FORMAT);
+
+        return comment.getUser() + cgitDirectory.DELIMETER
+                + new StringBuilder(formatter.format(comment.getDateAdded())) + cgitDirectory.DELIMETER
+                + new StringBuilder(formatter.format(comment.getDateModified())) + cgitDirectory.DELIMETER
+                + Integer.toString(comment.getTextSection().getStartingPosition()) + cgitDirectory.DELIMETER
+                + Integer.toString(comment.getTextSection().getStartingLineNumber()) + cgitDirectory.DELIMETER
+                + Integer.toString(comment.getTextSection().getEndingPosition()) + cgitDirectory.DELIMETER
+                + Integer.toString(comment.getTextSection().getEndingLineNumber()) + cgitDirectory.DELIMETER
+                + comment.getComment() + cgitDirectory.DELIMETER
+                + comment.getSourcePath();
     }
 }

@@ -6,7 +6,13 @@ import model.FileStructure;
 import model.cgitDirectory;
 
 public class setup {
-
+    
+    /**
+     * This function starts at the working directory and creates a new repository at that location
+     * 
+     * @param working_dir
+     * @return boolean indicating whether the directory was created successfully or not.
+     */
     public static boolean setup_qda_directory(String working_dir) {
         boolean success = false;
 
