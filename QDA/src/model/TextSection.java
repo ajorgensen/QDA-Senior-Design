@@ -6,22 +6,22 @@ package model;
  */
 public class TextSection {
     
-    private final int startingPosition;
-    private final int startingLineNumber;
-    private final int endingPosition;
-    private final int endingLineNumber;
+    private final int startChar;
+    private final int startLine;
+    private final int endChar;
+    private final int endLine;
     
-    TextSection(int startingPos, int startingLineNumber, int endingPos, int endingLineNumber)
+    TextSection(int startChar, int startLine, int endChar, int endLine)
     {
-        this.startingPosition = startingPos;
-        this.startingLineNumber = startingLineNumber;
-        this.endingPosition = endingPos;
-        this.endingLineNumber = endingLineNumber;
+        this.startChar = startChar;
+        this.startLine = startLine;
+        this.endChar = endChar;
+        this.endLine = endLine;
     }
     
-    public int getStartingPosition(){ return this.startingPosition;}
-    public int getStartingLineNumber(){ return this.startingLineNumber;}
-    public int getEndingPosition(){ return this.endingPosition;}
-    public int getEndingLineNumber(){ return this.endingLineNumber;}
+    public int getStartingPosition(){ return this.startChar;}
+    public int getStartingLineNumber(){ return this.startLine;}
+    public int getEndingPosition(){ return this.endChar;}
+    public int getEndingLineNumber(){ return this.endLine;}
     
 }
