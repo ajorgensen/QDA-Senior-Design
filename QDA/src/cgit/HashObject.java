@@ -2,6 +2,8 @@ package cgit;
 
 import java.io.*;
 import java.security.MessageDigest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HashObject {
 
@@ -22,23 +24,30 @@ public class HashObject {
         return buf.toString();
     }
 
-    public static String hashString(String toHash) throws Exception {
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
-        byte[] sha1hash = new byte[40];
-        md.update(toHash.getBytes("iso-8859-1"), 0, toHash.length());
-        sha1hash = md.digest();
-        return convertToHex(sha1hash);
+    public static String hashString(String toHash) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] sha1hash = new byte[40];
+            md.update(toHash.getBytes("iso-8859-1"), 0, toHash.length());
+            sha1hash = md.digest();
+            return convertToHex(sha1hash);
+        } catch (Exception ex) {
+            return "";
+        }
     }
 
-    public static String hashObject(String filename) throws Exception {
+    public static String hashObject(String filename) {
+        try {
+            String file_data = FileUtil.readFile(filename);
+            int filesize = (int) FileUtil.getFilesize(filename);
 
-        String file_data = FileUtil.readFile(filename);
-        int filesize = (int) FileUtil.getFilesize(filename);
+            String toEncrypt = "blob " + filesize + "\0" + file_data;
 
-        String toEncrypt = "blob " + filesize + "\0" + file_data;
-
-
-        return hashString(toEncrypt);
+            return hashString(toEncrypt);
+        } catch (Exception ex) {
+            Logger.getLogger(HashObject.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
     }
 
     /* Debugging purposes only */

@@ -5,7 +5,7 @@ public class BlobContainer{
     Blob blob;
     String filename;
     
-    BlobContainer(Blob blob, String filename)
+    public BlobContainer(Blob blob, String filename)
     {
         this.blob = blob;
         this.filename = filename;

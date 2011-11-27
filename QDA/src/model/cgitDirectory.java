@@ -17,10 +17,11 @@ import java.util.logging.Logger;
 public class cgitDirectory {
 
     public static final FileStructure QDA_PATH = new FileStructure(true, "/qda");
-    public static final FileStructure CONFIG_PATH = new FileStructure(false, QDA_PATH.getPath() + "/config");
-    public static final FileStructure DESCRIPTION_PATH = new FileStructure(false, QDA_PATH.getPath() + "/description");
-    public static final FileStructure USERS_PATH = new FileStructure(false, QDA_PATH.getPath() + "/users");
+    public static final FileStructure HEAD_PATH = new FileStructure(false, QDA_PATH.getPath() + "/HEAD");
+    public static final FileStructure ORIG_HEAD_PATH = new FileStructure(false, QDA_PATH.getPath() + "/ORIG_HEAD");
+    public static final FileStructure OBJECTS_PATH = new FileStructure(true, QDA_PATH.getPath() + "/objects");
     public static final FileStructure REFS_PATH = new FileStructure(true, QDA_PATH.getPath() + "/refs");
+    public static final FileStructure HEADS_PATH = new FileStructure(true, REFS_PATH.getPath() + "/heads");
     public static final FileStructure TAGS_PATH = new FileStructure(false, REFS_PATH.getPath() + "/tags");
     public static final FileStructure COMMENTS_PATH = new FileStructure(false, REFS_PATH.getPath() + "/comments");
     public static final String DELIMETER = "|";
@@ -61,10 +62,11 @@ public class cgitDirectory {
         ArrayList<FileStructure> directoryList = new ArrayList<FileStructure>();
 
         directoryList.add(QDA_PATH);
-        directoryList.add(CONFIG_PATH);
-        directoryList.add(DESCRIPTION_PATH);
-        directoryList.add(USERS_PATH);
+        directoryList.add(HEAD_PATH);
+        directoryList.add(ORIG_HEAD_PATH);
+        directoryList.add(OBJECTS_PATH);
         directoryList.add(REFS_PATH);
+        directoryList.add(HEADS_PATH);
         directoryList.add(TAGS_PATH);
         directoryList.add(COMMENTS_PATH);
 
