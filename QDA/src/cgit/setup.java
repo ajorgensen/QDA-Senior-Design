@@ -35,7 +35,7 @@ public class setup {
         }
         
         try {
-            //generate new master branch
+            //generate new master branch.
             Branch.newBranch(working_dir, "master");
         } catch (Exception ex) {
             Logger.getLogger(setup.class.getName()).log(Level.SEVERE, null, ex);
