@@ -54,6 +54,9 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         repositoryTools = new javax.swing.JToolBar();
         importFile = new javax.swing.JButton();
         newFolder = new javax.swing.JButton();
+        cutElement = new javax.swing.JButton();
+        copyElement = new javax.swing.JButton();
+        pasteElement = new javax.swing.JButton();
         renameElement = new javax.swing.JButton();
         deleteElement = new javax.swing.JButton();
         tags = new javax.swing.JTabbedPane();
@@ -65,6 +68,9 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         editMyTagsTools = new javax.swing.JToolBar();
         newTag = new javax.swing.JButton();
         newTagSet = new javax.swing.JButton();
+        cutTag = new javax.swing.JButton();
+        copyTag = new javax.swing.JButton();
+        pasteTag = new javax.swing.JButton();
         renameTag = new javax.swing.JButton();
         deleteTag = new javax.swing.JButton();
         views = TabbedPaneFactory.createCloseButtonTabbedPane();
@@ -130,6 +136,27 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         newFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         repositoryTools.add(newFolder);
 
+        cutElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Cut.png"))); // NOI18N
+        cutElement.setToolTipText("Cut");
+        cutElement.setFocusable(false);
+        cutElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cutElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        repositoryTools.add(cutElement);
+
+        copyElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Copy.png"))); // NOI18N
+        copyElement.setToolTipText("Copy");
+        copyElement.setFocusable(false);
+        copyElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        copyElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        repositoryTools.add(copyElement);
+
+        pasteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Paste.png"))); // NOI18N
+        pasteElement.setToolTipText("Paste");
+        pasteElement.setFocusable(false);
+        pasteElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pasteElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        repositoryTools.add(pasteElement);
+
         renameElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
         renameElement.setToolTipText("Rename");
         renameElement.setFocusable(false);
@@ -184,6 +211,27 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         newTagSet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newTagSet.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         editMyTagsTools.add(newTagSet);
+
+        cutTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Cut.png"))); // NOI18N
+        cutTag.setToolTipText("Cut");
+        cutTag.setFocusable(false);
+        cutTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cutTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        editMyTagsTools.add(cutTag);
+
+        copyTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Copy.png"))); // NOI18N
+        copyTag.setToolTipText("Copy");
+        copyTag.setFocusable(false);
+        copyTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        copyTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        editMyTagsTools.add(copyTag);
+
+        pasteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Paste.png"))); // NOI18N
+        pasteTag.setToolTipText("Paste");
+        pasteTag.setFocusable(false);
+        pasteTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pasteTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        editMyTagsTools.add(pasteTag);
 
         renameTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
         renameTag.setToolTipText("Rename");
@@ -345,11 +393,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(project, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+            .addComponent(project, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(project, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+            .addComponent(project, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
         );
 
         getAccessibleContext().setAccessibleName("");
@@ -474,6 +522,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JTree allTags;
     private javax.swing.JMenuBar applicationMenu;
     private javax.swing.JMenuItem closeProject;
+    private javax.swing.JButton copyElement;
+    private javax.swing.JButton copyTag;
+    private javax.swing.JButton cutElement;
+    private javax.swing.JButton cutTag;
     private javax.swing.JButton deleteElement;
     private javax.swing.JButton deleteTag;
     private javax.swing.JScrollPane editMyTags;
@@ -494,6 +546,8 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JButton newTag;
     private javax.swing.JButton newTagSet;
     private javax.swing.JMenuItem openProject;
+    private javax.swing.JButton pasteElement;
+    private javax.swing.JButton pasteTag;
     private javax.swing.JSplitPane project;
     private javax.swing.JSplitPane projectData;
     private javax.swing.JMenu projectMenu;

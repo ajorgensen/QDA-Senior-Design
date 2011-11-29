@@ -173,12 +173,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="project" alignment="1" pref="410" max="32767" attributes="0"/>
+          <Component id="project" alignment="1" pref="441" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="project" alignment="1" pref="325" max="32767" attributes="0"/>
+          <Component id="project" alignment="1" pref="393" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -258,6 +258,39 @@
                           <Image iconType="3" name="/userinterface/icons/New Folder.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="New Folder"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="cutElement">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Cut.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Cut"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="copyElement">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Copy.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Copy"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="pasteElement">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Paste.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Paste"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -379,6 +412,39 @@
                               <Image iconType="3" name="/userinterface/icons/New Tag Set.png"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="New Tag Set"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="cutTag">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/userinterface/icons/Cut.png"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="Cut"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="copyTag">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/userinterface/icons/Copy.png"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="Copy"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="pasteTag">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/userinterface/icons/Paste.png"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="Paste"/>
                             <Property name="focusable" type="boolean" value="false"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
                             <Property name="verticalTextPosition" type="int" value="3"/>
