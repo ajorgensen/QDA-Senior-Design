@@ -178,14 +178,14 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="project" alignment="1" pref="279" max="32767" attributes="0"/>
+          <Component id="project" alignment="1" pref="325" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JSplitPane" name="project">
       <Properties>
-        <Property name="dividerLocation" type="int" value="200"/>
+        <Property name="dividerLocation" type="int" value="205"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
@@ -203,23 +203,96 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
           <SubComponents>
-            <Container class="javax.swing.JScrollPane" name="repository">
+            <Container class="javax.swing.JPanel" name="repositoryWindow">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
                   <JSplitPaneConstraints position="top"/>
                 </Constraint>
               </Constraints>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTree" name="sourceFolder">
-                </Component>
+                <Container class="javax.swing.JScrollPane" name="repository">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTree" name="sourceFolder">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTreeCellRenderer sfr = new DefaultTreeCellRenderer();&#xa;sfr.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Folder.png&quot;)));&#xa;sfr.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Folder.png&quot;)));&#xa;sfr.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/File.png&quot;)));&#xa;sourceFolder.setCellRenderer(sfr);"/>
+                      </AuxValues>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JToolBar" name="repositoryTools">
+                  <Properties>
+                    <Property name="floatable" type="boolean" value="false"/>
+                    <Property name="rollover" type="boolean" value="true"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="North"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JButton" name="importFile">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Import File.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Import File"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="newFolder">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/New Folder.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="New Folder"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="renameElement">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Rename.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Rename"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="deleteElement">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Delete.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Delete"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JTabbedPane" name="tags">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                  <JSplitPaneConstraints position="right"/>
+                  <JSplitPaneConstraints position="bottom"/>
                 </Constraint>
               </Constraints>
 
@@ -240,13 +313,13 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JTree" name="allTags">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultTreeCellRenderer atr = new DefaultTreeCellRenderer();&#xa;atr.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;atr.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;atr.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));&#xa;allTags.setCellRenderer(atr);"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JScrollPane" name="editMyTags">
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
+                <Container class="javax.swing.JPanel" name="editMyTagsWindow">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="Edit My Tags">
@@ -255,10 +328,86 @@
                     </Constraint>
                   </Constraints>
 
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTree" name="myTags">
-                    </Component>
+                    <Container class="javax.swing.JScrollPane" name="editMyTags">
+                      <AuxValues>
+                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                      </AuxValues>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="Center"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                      <SubComponents>
+                        <Component class="javax.swing.JTree" name="myTags">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultTreeCellRenderer mtr = new DefaultTreeCellRenderer();&#xa;mtr.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;mtr.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;mtr.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));&#xa;myTags.setCellRenderer(mtr);"/>
+                          </AuxValues>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JToolBar" name="editMyTagsTools">
+                      <Properties>
+                        <Property name="floatable" type="boolean" value="false"/>
+                        <Property name="rollover" type="boolean" value="true"/>
+                      </Properties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="North"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+                      <SubComponents>
+                        <Component class="javax.swing.JButton" name="newTag">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/userinterface/icons/New Tag.png"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="New Tag"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="newTagSet">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/userinterface/icons/New Tag Set.png"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="New Tag Set"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="renameTag">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/userinterface/icons/Rename.png"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="Rename"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="deleteTag">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/userinterface/icons/Delete.png"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="Delete"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
+                          </Properties>
+                        </Component>
+                      </SubComponents>
+                    </Container>
                   </SubComponents>
                 </Container>
               </SubComponents>

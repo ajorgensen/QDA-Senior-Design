@@ -16,6 +16,7 @@ import java.awt.Toolkit;
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import org.openide.awt.TabbedPaneFactory;
 
 /**
@@ -47,13 +48,25 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         project = new javax.swing.JSplitPane();
         projectData = new javax.swing.JSplitPane();
+        repositoryWindow = new javax.swing.JPanel();
         repository = new javax.swing.JScrollPane();
         sourceFolder = new javax.swing.JTree();
+        repositoryTools = new javax.swing.JToolBar();
+        importFile = new javax.swing.JButton();
+        newFolder = new javax.swing.JButton();
+        renameElement = new javax.swing.JButton();
+        deleteElement = new javax.swing.JButton();
         tags = new javax.swing.JTabbedPane();
         viewAllTags = new javax.swing.JScrollPane();
         allTags = new javax.swing.JTree();
+        editMyTagsWindow = new javax.swing.JPanel();
         editMyTags = new javax.swing.JScrollPane();
         myTags = new javax.swing.JTree();
+        editMyTagsTools = new javax.swing.JToolBar();
+        newTag = new javax.swing.JButton();
+        newTagSet = new javax.swing.JButton();
+        renameTag = new javax.swing.JButton();
+        deleteTag = new javax.swing.JButton();
         views = TabbedPaneFactory.createCloseButtonTabbedPane();
         searchBox = new javax.swing.JTextField();
         applicationMenu = new javax.swing.JMenuBar();
@@ -84,24 +97,113 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         setMinimumSize(new java.awt.Dimension(500, 300));
         setName(""); // NOI18N
 
-        project.setDividerLocation(200);
+        project.setDividerLocation(205);
 
         projectData.setDividerLocation(250);
         projectData.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
+        repositoryWindow.setLayout(new java.awt.BorderLayout());
+
+        DefaultTreeCellRenderer sfr = new DefaultTreeCellRenderer();
+        sfr.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
+        sfr.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
+        sfr.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
+        sourceFolder.setCellRenderer(sfr);
         repository.setViewportView(sourceFolder);
 
-        projectData.setTopComponent(repository);
+        repositoryWindow.add(repository, java.awt.BorderLayout.CENTER);
 
+        repositoryTools.setFloatable(false);
+        repositoryTools.setRollover(true);
+
+        importFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Import File.png"))); // NOI18N
+        importFile.setToolTipText("Import File");
+        importFile.setFocusable(false);
+        importFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        importFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        repositoryTools.add(importFile);
+
+        newFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Folder.png"))); // NOI18N
+        newFolder.setToolTipText("New Folder");
+        newFolder.setFocusable(false);
+        newFolder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        newFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        repositoryTools.add(newFolder);
+
+        renameElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
+        renameElement.setToolTipText("Rename");
+        renameElement.setFocusable(false);
+        renameElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        renameElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        repositoryTools.add(renameElement);
+
+        deleteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
+        deleteElement.setToolTipText("Delete");
+        deleteElement.setFocusable(false);
+        deleteElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deleteElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        repositoryTools.add(deleteElement);
+
+        repositoryWindow.add(repositoryTools, java.awt.BorderLayout.NORTH);
+
+        projectData.setTopComponent(repositoryWindow);
+
+        DefaultTreeCellRenderer atr = new DefaultTreeCellRenderer();
+        atr.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
+        atr.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        atr.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
+        allTags.setCellRenderer(atr);
         viewAllTags.setViewportView(allTags);
 
         tags.addTab("View All Tags", viewAllTags);
 
+        editMyTagsWindow.setLayout(new java.awt.BorderLayout());
+
+        DefaultTreeCellRenderer mtr = new DefaultTreeCellRenderer();
+        mtr.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
+        mtr.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        mtr.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
+        myTags.setCellRenderer(mtr);
         editMyTags.setViewportView(myTags);
 
-        tags.addTab("Edit My Tags", editMyTags);
+        editMyTagsWindow.add(editMyTags, java.awt.BorderLayout.CENTER);
 
-        projectData.setRightComponent(tags);
+        editMyTagsTools.setFloatable(false);
+        editMyTagsTools.setRollover(true);
+
+        newTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Tag.png"))); // NOI18N
+        newTag.setToolTipText("New Tag");
+        newTag.setFocusable(false);
+        newTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        newTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        editMyTagsTools.add(newTag);
+
+        newTagSet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Tag Set.png"))); // NOI18N
+        newTagSet.setToolTipText("New Tag Set");
+        newTagSet.setFocusable(false);
+        newTagSet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        newTagSet.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        editMyTagsTools.add(newTagSet);
+
+        renameTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
+        renameTag.setToolTipText("Rename");
+        renameTag.setFocusable(false);
+        renameTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        renameTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        editMyTagsTools.add(renameTag);
+
+        deleteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
+        deleteTag.setToolTipText("Delete");
+        deleteTag.setFocusable(false);
+        deleteTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deleteTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        editMyTagsTools.add(deleteTag);
+
+        editMyTagsWindow.add(editMyTagsTools, java.awt.BorderLayout.NORTH);
+
+        tags.addTab("Edit My Tags", editMyTagsWindow);
+
+        projectData.setBottomComponent(tags);
 
         project.setLeftComponent(projectData);
 
@@ -247,7 +349,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(project, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+            .addComponent(project, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
         );
 
         getAccessibleContext().setAccessibleName("");
@@ -372,9 +474,14 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JTree allTags;
     private javax.swing.JMenuBar applicationMenu;
     private javax.swing.JMenuItem closeProject;
+    private javax.swing.JButton deleteElement;
+    private javax.swing.JButton deleteTag;
     private javax.swing.JScrollPane editMyTags;
+    private javax.swing.JToolBar editMyTagsTools;
+    private javax.swing.JPanel editMyTagsWindow;
     private javax.swing.JMenuItem helpContents;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JButton importFile;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -382,12 +489,19 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JMenuItem manageUsers;
     private javax.swing.JMenuItem mergeProject;
     private javax.swing.JTree myTags;
+    private javax.swing.JButton newFolder;
     private javax.swing.JMenuItem newProject;
+    private javax.swing.JButton newTag;
+    private javax.swing.JButton newTagSet;
     private javax.swing.JMenuItem openProject;
     private javax.swing.JSplitPane project;
     private javax.swing.JSplitPane projectData;
     private javax.swing.JMenu projectMenu;
+    private javax.swing.JButton renameElement;
+    private javax.swing.JButton renameTag;
     private javax.swing.JScrollPane repository;
+    private javax.swing.JToolBar repositoryTools;
+    private javax.swing.JPanel repositoryWindow;
     private javax.swing.JMenuItem saveAsProject;
     private javax.swing.JMenuItem saveProject;
     private javax.swing.JTextField searchBox;
