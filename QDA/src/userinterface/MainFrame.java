@@ -20,15 +20,23 @@ import org.openide.awt.TabbedPaneFactory;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.*;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
+import model.*;
 /**
  *
  * @author Brittany Nkounkou
  */
 public class MainFrame extends JFrame implements PropertyChangeListener{
-
+    private User user;
+    private Project currProject;
+    
     /** Creates new from ApplicationStart */
     public MainFrame() {
+        //TODO  Make it so it asks for user/pass and the project to open
+        user = new User("default", "default");
+        currProject = new Project("defaultProject","defaultPath", user);
+        Folder folder1 = currProject.createFolder(currProject.getMainFolder(), "TestFolder1");
+        currProject.importSourceText("./QDA/TestTextFile.txt", folder1);
+        
         helpViewIndex = -1;
         
         checkedElements = new DefaultCheckboxTreeCellRenderer();
@@ -63,7 +71,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         projectData = new javax.swing.JSplitPane();
         repositoryWindow = new javax.swing.JPanel();
         repository = new javax.swing.JScrollPane();
-        sourceFolder = new javax.swing.JTree();
+        sourceFolder = new javax.swing.JTree(currProject.getMainFolder());
         repositoryTools = new javax.swing.JToolBar();
         importFile = new javax.swing.JButton();
         newFolder = new javax.swing.JButton();
@@ -77,7 +85,8 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         allTags = new javax.swing.JTree();
         editMyTagsWindow = new javax.swing.JPanel();
         editMyTags = new javax.swing.JScrollPane();
-        myTags = new javax.swing.JTree();
+        myTags = new javax.swing.JTree(user.getRootTag());
+        user.getRootTag().add(new Tag("child",user));
         editMyTagsTools = new javax.swing.JToolBar();
         newTag = new javax.swing.JButton();
         newTagSet = new javax.swing.JButton();

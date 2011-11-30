@@ -5,26 +5,63 @@ import java.util.LinkedList;
 
 public class Project implements Nameable {
 	private String localPath;
+        private String name;
 	private Folder mainFolder;
 	private List<User> users;
 	
-	public Project(String localPath, Folder mainFolder, List<User> users){
+        
+        /**
+         * Creates a new project
+         * 
+         * @param localPath - taken from file selection dialog
+         * @param currentUser - the user creating the file
+         */
+	public Project(String name, String localPath, User currentUser){
 		this.localPath = localPath;
-		this.mainFolder = mainFolder;
-		this.users = users;
+                this.name = name;
+                this.mainFolder = new Folder(localPath);
+		this.users = new LinkedList<User>();
+                this.addUser(currentUser);
+                
 	}
 	
-	public void signIn(User user){
-		
+        /**
+         * Use for logging in.
+         * @param userName
+         * @param pass
+         * @return 
+         */
+	public boolean verifyUser(String userName, String pass){
+		for(User u: users){
+                    if((u.getName()).equals(name)){
+                        return u.comparePassword(pass);
+                    }
+                }
+                return false;
+                
 	}
 	
 	public void refreshRepository(){
 		
 	}
 	
-	public List<MarkUp> search(List<Folder> folders, 
-			List<Tag> tags, 
-			List<User> comments){
+        /**
+         * Return all taginstances in folders that match any tag in tags
+         * @param folders
+         * @param tags
+         * @return 
+         */
+	public List<TagInstance> search(List<Folder> folders, List<Tag> tags) {
+            return null;
+        }
+        
+        /**
+         * Return all comments by User
+         * @param folders
+         * @param comments
+         * @return 
+         */
+        public List<Comment> search(List<Folder> folders, User user){
 		return null;
 	}
 	
@@ -40,14 +77,32 @@ public class Project implements Nameable {
 		users.remove(user);
 	}
 	
-	public void importSourceText(String filePath, Folder importLocation){
-		
+        /**
+         * Create a new folder for sourcetexts
+         * @param filepath - taken from gui selection
+         * @param importLocation - taken from gui selection
+         */
+	public MarkedUpText importSourceText(String filePath, Folder importLocation){
+            SourceText text = new SourceText(filePath);
+            MarkedUpText newMarkedText = new MarkedUpText(text);
+            importLocation.add(newMarkedText);
+            return newMarkedText;
 	}
+        
+        /**
+         * Create a new folder for sourcetexts
+         * @param parent - taken from gui selection
+         * @param name  - taken from gui
+         */
+        public Folder createFolder(Folder parent, String name){
+            Folder createdFolder = new Folder(name);
+            parent.add(createdFolder);
+            return createdFolder;
+        }
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
@@ -55,5 +110,9 @@ public class Project implements Nameable {
 		// TODO Auto-generated method stub
 		
 	}
+        
+        public Folder getMainFolder(){
+            return mainFolder;
+        }
 }
 

@@ -8,13 +8,13 @@ import java.util.List;
 
 public class SourceText {
 	private String filePath;
-	private List<User> users;
+	//private List<User> users;
 	private List<String> lines;
 	private String text;
 	
-	public SourceText(String filepath, List<User> users){
+	public SourceText(String filepath){
 		this.filePath = filepath;
-		this.users = users;
+		//this.users = users;
 		
 		lines = new ArrayList<String>();
 		
@@ -94,4 +94,7 @@ public class SourceText {
 	}
 	*/
 	
+        public String getPath(){
+            return filePath;
+        }
 }

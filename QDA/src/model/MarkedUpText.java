@@ -2,14 +2,25 @@ package model;
 
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.tree.*;
 
-public class MarkedUpText extends Element{
-	private List<MarkUp> markUps;
+public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nameable, Deletable {
+	private List<Comment> comments;
+        private List<TagInstance> tags;
 	private SourceText sourceText;
+        private String name;
 	
-	public MarkedUpText(List<MarkUp> markUps, SourceText sourceText){
-		this.markUps = markUps;
-		this.sourceText = sourceText;
+        /**
+         * 
+         * @param sourceText
+         * @param folder 
+         */
+	public MarkedUpText(SourceText sourceText){
+            super(null,false);
+            this.tags = new LinkedList<TagInstance>();
+            this.comments = new LinkedList<Comment>();
+            this.sourceText = sourceText;
+            this.name = sourceText.getPath();
 	}
  
 	@Override
@@ -26,14 +37,13 @@ public class MarkedUpText extends Element{
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void rename(String name) {
-		// TODO Auto-generated method stub
-		
+		this.name = name;
+                // TODO: Do stuff with files
 	}
 
 	@Override
@@ -41,4 +51,9 @@ public class MarkedUpText extends Element{
 		// TODO Auto-generated method stub
 		
 	}
+        
+        @Override
+        public String toString(){
+            return this.getName();
+        }
 }
