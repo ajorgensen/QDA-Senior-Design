@@ -8,6 +8,7 @@ public class Project implements Nameable {
         private String name;
 	private Folder mainFolder;
 	private List<User> users;
+        private User currUser;
 	
         
         /**
@@ -22,6 +23,7 @@ public class Project implements Nameable {
                 this.mainFolder = new Folder(localPath);
 		this.users = new LinkedList<User>();
                 this.addUser(currentUser);
+                this.currUser = currentUser;
                 
 	}
 	
@@ -68,6 +70,10 @@ public class Project implements Nameable {
 	public List<User> getUsers(){
 		return users;
 	}
+        
+        public User getCurrentUser(){
+            return currUser;
+        }
 	
 	public void addUser(User user){
 		users.add(user);
@@ -84,7 +90,7 @@ public class Project implements Nameable {
          */
 	public MarkedUpText importSourceText(String filePath, Folder importLocation){
             SourceText text = new SourceText(filePath);
-            MarkedUpText newMarkedText = new MarkedUpText(text);
+            MarkedUpText newMarkedText = new MarkedUpText(text, this);
             importLocation.add(newMarkedText);
             return newMarkedText;
 	}

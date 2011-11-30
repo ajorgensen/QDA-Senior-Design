@@ -11,6 +11,6 @@ public interface Element{
 	 * @param users
 	 * @return
 	 */
-	public List<Tag> searchTags(List<Tag> tags, List<User> users);
+	public List<TagInstance> searchTags(List<Tag> tags, List<User> users);
 	public  List<Comment> searchComments(List<User> users);
 }
