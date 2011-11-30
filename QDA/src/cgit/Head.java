@@ -24,6 +24,20 @@ public class Head {
         FileUtil.writeFile(false, headPath, newHead);
     }
     
+    public static String readRefHead(String working_dir, String branch_name)
+    {
+        String path = working_dir + cgitDirectory.HEADS_PATH.getPath() + "/" + branch_name;
+        
+        return FileUtil.readFile(path);
+    }
+    
+    public static void writeRefHead(String working_dir, String branch_name, String hash)
+    {
+        String path = working_dir + cgitDirectory.HEADS_PATH.getPath() + "/" + branch_name;
+        
+        FileUtil.writeFile(false, path, hash);
+    }
+    
     /* Debug only */
     public static void main(String [] args)
     {

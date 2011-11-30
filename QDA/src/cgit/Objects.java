@@ -6,6 +6,7 @@ package cgit;
 
 import model.Blob;
 import model.BlobTree;
+import model.Commit;
 import model.cgitDirectory;
 
 public class Objects {
@@ -33,6 +34,13 @@ public class Objects {
         }
         
         FileUtil.writeFile(false, blobtree, blobTreeData);
+    }
+    
+    public static void writeCommit(String working_dir, Commit commit)
+    {
+        String path = working_dir + cgitDirectory.OBJECTS_PATH.getPath() + "/" + commit.generateHash();
+        
+        FileUtil.writeFile(false, path, commit.generateRawContent());
     }
     
     public static String readHash(String hash, String working_dir)

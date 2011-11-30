@@ -12,13 +12,13 @@ public class Commit implements GitObject {
     ArrayList<Commit> parents = new ArrayList<Commit>();
     String commit_message = "";
 
-    Commit(BlobTree tree, String commiter, String commit_message) {
+    public Commit(BlobTree tree, String commiter, String commit_message) {
         this.blobTree = tree;
         this.commiter = commiter;
         this.commit_message = commit_message;
     }
 
-    Commit(ArrayList<Commit> parents, BlobTree tree, String commiter, String commit_message) {
+    public Commit(ArrayList<Commit> parents, BlobTree tree, String commiter, String commit_message) {
         this.parents = parents;
         this.blobTree = tree;
         this.commiter = commiter;
@@ -108,6 +108,7 @@ public class Commit implements GitObject {
 
         return content;
     }
+   
 
     public static void main(String[] args) {
         Commit.parseHash("434589f206ebbe5150d927bb91ec333c5857936e", "/Volumes/DATA/Users/andrewjorgensen/temp/qda_project");
