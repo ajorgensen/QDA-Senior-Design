@@ -5,7 +5,6 @@
 package cgit;
 
 import model.Blob;
-import model.BlobContainer;
 import model.BlobTree;
 import model.cgitDirectory;
 
@@ -24,22 +23,28 @@ public class Objects {
         String blobtree = working_dir + cgitDirectory.OBJECTS_PATH.getPath() + "/" + tree.generateHash();
         String blobTreeData = "";
         
-        for(BlobContainer container : tree.getBlobs())
+        for(Blob blob : tree.getBlobs())
         {
-            String object_path = working_dir + cgitDirectory.OBJECTS_PATH.getPath() + "/" + container.getBlob().generateHash();
+            String object_path = working_dir + cgitDirectory.OBJECTS_PATH.getPath() + "/" + blob.generateHash();
             
-            blobTreeData += container.getBlob().generateHash() + " " + container.getFilename() + "\n";
+            blobTreeData += blob.generateHash() + " " + blob.getFilename() + "\n";
             
-            FileUtil.writeFile(false, object_path, container.getBlob().getContent());
+            FileUtil.writeFile(false, object_path, blob.getContent());
         }
         
         FileUtil.writeFile(false, blobtree, blobTreeData);
     }
     
+    public static String readHash(String hash, String working_dir)
+    {
+        String path = working_dir + cgitDirectory.OBJECTS_PATH.getPath() + "/" + hash;
+        
+        return FileUtil.readFile(path);
+    }
+    
     /* For Debuging Purposed */
     public static void main(String [] args)
     {
-        Blob blob = new Blob("hello world!");
-        Objects.writeBlob("/Volumes/DATA/Users/andrewjorgensen/temp/qda_project", blob);
+        System.out.println(Objects.readHash("434589f206ebbe5150d927bb91ec333c5857936e", "/Volumes/DATA/Users/andrewjorgensen/temp/qda_project")); 
     }
 }
