@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="applicationMenu">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="applicationMenu.add(Box.createHorizontalGlue());&#xa;applicationMenu.add(searchBox);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="applicationMenu.add(Box.createHorizontalGlue());&#xd;&#xa;applicationMenu.add(newSearch);"/>
       </AuxValues>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="projectMenu">
@@ -222,8 +222,11 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JTree" name="sourceFolder">
+                      <Properties>
+                        <Property name="editable" type="boolean" value="true"/>
+                      </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTreeCellRenderer sfr = new DefaultTreeCellRenderer();&#xa;sfr.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Folder.png&quot;)));&#xa;sfr.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Folder.png&quot;)));&#xa;sfr.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/File.png&quot;)));&#xa;sourceFolder.setCellRenderer(sfr);"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTreeCellRenderer uncheckedElements = new DefaultTreeCellRenderer();&#xa;uncheckedElements.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Folder.png&quot;)));&#xa;uncheckedElements.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Folder.png&quot;)));&#xa;uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/File.png&quot;)));&#xa;sourceFolder.setCellRenderer(uncheckedElements);"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -347,7 +350,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JTree" name="allTags">
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultTreeCellRenderer atr = new DefaultTreeCellRenderer();&#xa;atr.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;atr.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;atr.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));&#xa;allTags.setCellRenderer(atr);"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultTreeCellRenderer uncheckedTags = new DefaultTreeCellRenderer();&#xa;uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));&#xa;allTags.setCellRenderer(uncheckedTags);"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -376,8 +379,11 @@
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
                         <Component class="javax.swing.JTree" name="myTags">
+                          <Properties>
+                            <Property name="editable" type="boolean" value="true"/>
+                          </Properties>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultTreeCellRenderer mtr = new DefaultTreeCellRenderer();&#xa;mtr.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;mtr.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;mtr.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));&#xa;myTags.setCellRenderer(mtr);"/>
+                            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="myTags.setCellRenderer(uncheckedTags);"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -481,6 +487,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JTabbedPane" name="views">
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="viewsStateChanged"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="TabbedPaneFactory.createCloseButtonTabbedPane()"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);"/>
@@ -495,26 +504,12 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="searchBox">
+    <Component class="javax.swing.JButton" name="newSearch">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="99" red="99" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Search"/>
-        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[250, 27]"/>
-        </Property>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[250, 27]"/>
-        </Property>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[250, 27]"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="New Search"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchBoxActionPerformed"/>
-        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="searchBoxFocusGained"/>
-        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="searchBoxFocusLost"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newSearchActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

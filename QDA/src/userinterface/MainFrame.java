@@ -10,7 +10,6 @@
  */
 package userinterface;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
@@ -18,6 +17,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import org.openide.awt.TabbedPaneFactory;
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.*;
 
 /**
  *
@@ -28,8 +28,19 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
     /** Creates new from ApplicationStart */
     public MainFrame() {
         helpViewIndex = -1;
-        searchBoxEmpty = true;
+        
+        checkedElements = new DefaultCheckboxTreeCellRenderer();
+        checkedElements.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
+        checkedElements.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
+        checkedElements.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
+        
+        checkedTags = new DefaultCheckboxTreeCellRenderer();
+        checkedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
+        checkedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        checkedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
+        
         initComponents();
+        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int w = (int) screenSize.getWidth();
         int h = (int) screenSize.getHeight();
@@ -74,7 +85,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         renameTag = new javax.swing.JButton();
         deleteTag = new javax.swing.JButton();
         views = TabbedPaneFactory.createCloseButtonTabbedPane();
-        searchBox = new javax.swing.JTextField();
+        newSearch = new javax.swing.JButton();
         applicationMenu = new javax.swing.JMenuBar();
         projectMenu = new javax.swing.JMenu();
         newProject = new javax.swing.JMenuItem();
@@ -110,11 +121,12 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         repositoryWindow.setLayout(new java.awt.BorderLayout());
 
-        DefaultTreeCellRenderer sfr = new DefaultTreeCellRenderer();
-        sfr.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
-        sfr.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
-        sfr.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
-        sourceFolder.setCellRenderer(sfr);
+        DefaultTreeCellRenderer uncheckedElements = new DefaultTreeCellRenderer();
+        uncheckedElements.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
+        uncheckedElements.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
+        uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
+        sourceFolder.setCellRenderer(uncheckedElements);
+        sourceFolder.setEditable(true);
         repository.setViewportView(sourceFolder);
 
         repositoryWindow.add(repository, java.awt.BorderLayout.CENTER);
@@ -175,22 +187,19 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         projectData.setTopComponent(repositoryWindow);
 
-        DefaultTreeCellRenderer atr = new DefaultTreeCellRenderer();
-        atr.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
-        atr.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
-        atr.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
-        allTags.setCellRenderer(atr);
+        DefaultTreeCellRenderer uncheckedTags = new DefaultTreeCellRenderer();
+        uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
+        uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
+        allTags.setCellRenderer(uncheckedTags);
         viewAllTags.setViewportView(allTags);
 
         tags.addTab("View All Tags", viewAllTags);
 
         editMyTagsWindow.setLayout(new java.awt.BorderLayout());
 
-        DefaultTreeCellRenderer mtr = new DefaultTreeCellRenderer();
-        mtr.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
-        mtr.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
-        mtr.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
-        myTags.setCellRenderer(mtr);
+        myTags.setCellRenderer(uncheckedTags);
+        myTags.setEditable(true);
         editMyTags.setViewportView(myTags);
 
         editMyTagsWindow.add(editMyTags, java.awt.BorderLayout.CENTER);
@@ -256,24 +265,17 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         project.setLeftComponent(projectData);
 
         views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);
-        project.setRightComponent(views);
-
-        searchBox.setForeground(new java.awt.Color(153, 153, 153));
-        searchBox.setText("Search");
-        searchBox.setMaximumSize(new java.awt.Dimension(250, 27));
-        searchBox.setMinimumSize(new java.awt.Dimension(250, 27));
-        searchBox.setPreferredSize(new java.awt.Dimension(250, 27));
-        searchBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchBoxActionPerformed(evt);
+        views.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                viewsStateChanged(evt);
             }
         });
-        searchBox.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                searchBoxFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                searchBoxFocusLost(evt);
+        project.setRightComponent(views);
+
+        newSearch.setText("New Search");
+        newSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newSearchActionPerformed(evt);
             }
         });
 
@@ -385,7 +387,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         applicationMenu.add(helpMenu);
 
         applicationMenu.add(Box.createHorizontalGlue());
-        applicationMenu.add(searchBox);
+        applicationMenu.add(newSearch);
 
         setJMenuBar(applicationMenu);
 
@@ -415,33 +417,6 @@ private void helpContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     }
     views.getSelectedComponent().requestFocusInWindow();
 }//GEN-LAST:event_helpContentsActionPerformed
-
-private void searchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusGained
-    if (searchBoxEmpty) {
-        searchBox.setText("");
-        searchBox.setForeground(Color.BLACK);
-    }
-}//GEN-LAST:event_searchBoxFocusGained
-
-private void searchBoxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusLost
-    if (searchBox.getText().equals("")) {
-        searchBoxEmpty = true;
-        searchBox.setText("");
-        searchBox.setForeground(new Color(153, 153, 153));
-        searchBox.setText("Search");
-    }
-    else {
-        searchBoxEmpty = false;
-    }
-}//GEN-LAST:event_searchBoxFocusLost
-
-private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
-    String text = searchBox.getText();
-    if (!text.equals("")) {
-        addView(new SearchView("Search \""+text+"\""));
-    }
-    views.getSelectedComponent().requestFocusInWindow();
-}//GEN-LAST:event_searchBoxActionPerformed
 
 private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectActionPerformed
     NewProjectDialog npd = new NewProjectDialog(this);
@@ -500,6 +475,26 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     apd.setVisible(true);
 }//GEN-LAST:event_aboutActionPerformed
 
+    private void viewsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_viewsStateChanged
+        View view = (View) views.getSelectedComponent();
+        if (view instanceof SearchView) {
+            repository.setViewportView(((SearchView) view).getFilesTree());
+            viewAllTags.setViewportView(((SearchView) view).getTagsTree());
+        }
+        else {
+            repository.setViewportView(sourceFolder);
+            viewAllTags.setViewportView(allTags);
+        }
+    }//GEN-LAST:event_viewsStateChanged
+
+    private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
+        CheckboxTree rep = new CheckboxTree();
+        rep.setCellRenderer(checkedElements);
+        CheckboxTree tag = new CheckboxTree();
+        tag.setCellRenderer(checkedTags);
+        addView(new SearchView("New Search", rep, tag));
+    }//GEN-LAST:event_newSearchActionPerformed
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         int indexToDelete = views.indexOfComponent((java.awt.Component)evt.getNewValue());
@@ -515,7 +510,8 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     }
     
     private int helpViewIndex;
-    private boolean searchBoxEmpty;
+    private DefaultCheckboxTreeCellRenderer checkedElements = new DefaultCheckboxTreeCellRenderer();
+    private DefaultCheckboxTreeCellRenderer checkedTags = new DefaultCheckboxTreeCellRenderer();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about;
     private javax.swing.JMenuItem accountSettings;
@@ -543,6 +539,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JTree myTags;
     private javax.swing.JButton newFolder;
     private javax.swing.JMenuItem newProject;
+    private javax.swing.JButton newSearch;
     private javax.swing.JButton newTag;
     private javax.swing.JButton newTagSet;
     private javax.swing.JMenuItem openProject;
@@ -558,7 +555,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JPanel repositoryWindow;
     private javax.swing.JMenuItem saveAsProject;
     private javax.swing.JMenuItem saveProject;
-    private javax.swing.JTextField searchBox;
     private javax.swing.JMenuItem signInUser;
     private javax.swing.JMenuItem signOutUser;
     private javax.swing.JTree sourceFolder;
