@@ -37,6 +37,7 @@ public class cgitTests {
         Branch.newBranch(working_dir, "new_branch");
         
         comment = comments.new_comment("hemal", new TextSection(0,0,10,10), "hello world", "SourceText1.txt");
+        comments.addComment(comment);
         
         Branch.commit(working_dir, "hemal", "new commit");
     }  
