@@ -225,7 +225,11 @@
                       <Properties>
                         <Property name="editable" type="boolean" value="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sourceFolderMousePressed"/>
+                      </Events>
                       <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="sourceFolder.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;sourceFolder.setSelectionInterval(0, 0);"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTreeCellRenderer uncheckedElements = new DefaultTreeCellRenderer();&#xa;uncheckedElements.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Folder.png&quot;)));&#xa;uncheckedElements.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Folder.png&quot;)));&#xa;uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/File.png&quot;)));&#xa;sourceFolder.setCellRenderer(uncheckedElements);"/>
                       </AuxValues>
                     </Component>
@@ -309,6 +313,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="renameElementActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="deleteElement">
                       <Properties>
@@ -349,6 +356,11 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JTree" name="allTags">
+                      <Properties>
+                        <Property name="selectionModel" type="javax.swing.tree.TreeSelectionModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                          <ComponentRef name="null"/>
+                        </Property>
+                      </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultTreeCellRenderer uncheckedTags = new DefaultTreeCellRenderer();&#xa;uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));&#xa;allTags.setCellRenderer(uncheckedTags);"/>
                       </AuxValues>
@@ -383,6 +395,7 @@
                             <Property name="editable" type="boolean" value="true"/>
                           </Properties>
                           <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="myTags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;myTags.setSelectionInterval(0, 0);"/>
                             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="myTags.setCellRenderer(uncheckedTags);"/>
                           </AuxValues>
                         </Component>
@@ -466,6 +479,9 @@
                             <Property name="horizontalTextPosition" type="int" value="0"/>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="renameTagActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="deleteTag">
                           <Properties>

@@ -18,6 +18,8 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import org.openide.awt.TabbedPaneFactory;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.*;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 /**
  *
@@ -127,6 +129,13 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
         sourceFolder.setCellRenderer(uncheckedElements);
         sourceFolder.setEditable(true);
+        sourceFolder.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        sourceFolder.setSelectionInterval(0, 0);
+        sourceFolder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                sourceFolderMousePressed(evt);
+            }
+        });
         repository.setViewportView(sourceFolder);
 
         repositoryWindow.add(repository, java.awt.BorderLayout.CENTER);
@@ -174,6 +183,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         renameElement.setFocusable(false);
         renameElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         renameElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        renameElement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                renameElementActionPerformed(evt);
+            }
+        });
         repositoryTools.add(renameElement);
 
         deleteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
@@ -187,6 +201,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         projectData.setTopComponent(repositoryWindow);
 
+        allTags.setSelectionModel(null);
         DefaultTreeCellRenderer uncheckedTags = new DefaultTreeCellRenderer();
         uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
         uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
@@ -200,6 +215,8 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         myTags.setCellRenderer(uncheckedTags);
         myTags.setEditable(true);
+        myTags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        myTags.setSelectionInterval(0, 0);
         editMyTags.setViewportView(myTags);
 
         editMyTagsWindow.add(editMyTags, java.awt.BorderLayout.CENTER);
@@ -247,6 +264,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         renameTag.setFocusable(false);
         renameTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         renameTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        renameTag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                renameTagActionPerformed(evt);
+            }
+        });
         editMyTagsTools.add(renameTag);
 
         deleteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
@@ -451,7 +473,6 @@ private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EX
 }//GEN-LAST:event_EXIT_ON_CLOSE
 
 private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectActionPerformed
-// TODO add your handling code here:
     OpenProjectDialog opd = new OpenProjectDialog(this);
     opd.setVisible(true);
     if(opd.hasResults()) {
@@ -461,7 +482,6 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 }//GEN-LAST:event_openProjectActionPerformed
 
 private void SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsActionPerformed
-// TODO add your handling code here:
     SaveAsProjectDialog sap = new SaveAsProjectDialog(this);
     sap.setVisible(true);
     if(sap.hasResults()) {
@@ -470,7 +490,6 @@ private void SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 }//GEN-LAST:event_SaveAsActionPerformed
 
 private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
-// TODO add your handling code here:
     AboutProjectDialog apd = new AboutProjectDialog(this);
     apd.setVisible(true);
 }//GEN-LAST:event_aboutActionPerformed
@@ -483,17 +502,62 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
         else {
             repository.setViewportView(sourceFolder);
-            viewAllTags.setViewportView(allTags);
+            if (view instanceof SourceTextView) {
+                viewAllTags.setViewportView(((SourceTextView) view).getTagsTree());
+            }
+            else {
+                viewAllTags.setViewportView(allTags);
+            }
         }
     }//GEN-LAST:event_viewsStateChanged
 
     private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
         CheckboxTree rep = new CheckboxTree();
+        rep.setEditable(true);
         rep.setCellRenderer(checkedElements);
+        rep.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        rep.setSelectionInterval(0, 0);
         CheckboxTree tag = new CheckboxTree();
         tag.setCellRenderer(checkedTags);
+        tag.setSelectionModel(null);
         addView(new SearchView("New Search", rep, tag));
     }//GEN-LAST:event_newSearchActionPerformed
+
+    private void sourceFolderMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sourceFolderMousePressed
+        JTree rep = (JTree) repository.getViewport().getView();
+        int selRow = rep.getRowForLocation(evt.getX(), evt.getY());
+        if(selRow != -1) {
+            if(evt.getClickCount() == 2 /*&& CHECK IF NODE*/) {
+                CheckboxTree tag = new CheckboxTree();
+                tag.setCellRenderer(checkedTags);
+                tag.setSelectionModel(null);
+                addView(new SourceTextView("TODO: GET FILE NAME.", tag));
+            }
+        }
+    }//GEN-LAST:event_sourceFolderMousePressed
+
+    private void renameElementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameElementActionPerformed
+        JTree rep = (JTree) repository.getViewport().getView();
+        TreePath path = rep.getSelectionPath();
+        if (path == null) {
+            ErrorDialog ed = new ErrorDialog(this, "Please select a File or Folder to rename.");
+            ed.setVisible(true);
+        }
+        else {
+            rep.startEditingAtPath(rep.getSelectionPath());
+        }
+    }//GEN-LAST:event_renameElementActionPerformed
+
+    private void renameTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameTagActionPerformed
+        TreePath path = myTags.getSelectionPath();
+        if (path == null) {
+            ErrorDialog ed = new ErrorDialog(this, "Please select a Tag or Tag Set to rename.");
+            ed.setVisible(true);
+        }
+        else {
+            myTags.startEditingAtPath(myTags.getSelectionPath());
+        }
+    }//GEN-LAST:event_renameTagActionPerformed
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
