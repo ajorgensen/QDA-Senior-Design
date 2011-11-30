@@ -13,7 +13,7 @@ public class Head {
             return FileUtil.readFile(headPath);
         } catch (Exception ex) {
             Logger.getLogger(Head.class.getName()).log(Level.SEVERE, null, ex);
-            return "";
+            return "master";
         }
     }
     

@@ -6,21 +6,23 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import cgit.MyLogger;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 
 public class FileUtil {
 
     public static String readFile(String filepath) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(filepath));
-
-            String newLine = System.getProperty("line.separator");
-
-            StringBuilder sb = new StringBuilder();
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                sb.append(line).append(newLine);
-            }
-            return sb.toString();
-        } catch (Exception e) {
+            FileInputStream stream = new FileInputStream(new File(filepath));
+            FileChannel fc = stream.getChannel();
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+            /* Instead of using default, pass in a decoder. */
+            stream.close();
+            return Charset.defaultCharset().decode(bb).toString();
+        } catch (Exception e ){
             return "";
         }
     }
@@ -29,12 +31,12 @@ public class FileUtil {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filepath, append));
 
-            out.append(data);
+            out.write(data);
             out.close();
 
-            MyLogger.LogMessageToConsole(null, "Wrote to: " + filepath, LogType.DEBUG);
+            MyLogger.LogMessageToConsole(FileUtil.class, "Wrote to: " + filepath, LogType.DEBUG);
         } catch (Exception e) {
-            MyLogger.LogMessageToConsole(null, "Error writing description file to: " + filepath, LogType.ERROR);
+            MyLogger.LogMessageToConsole(FileUtil.class, "Error writing description file to: " + filepath, LogType.ERROR);
         }
     }
 

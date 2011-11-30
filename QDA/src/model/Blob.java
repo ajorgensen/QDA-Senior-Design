@@ -15,6 +15,7 @@ public class Blob implements GitObject{
     public Blob(String content, String filename)
     {
         this.content = content;
+        this.filename = filename;
     }
     
     public String getContent()

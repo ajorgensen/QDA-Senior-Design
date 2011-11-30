@@ -21,23 +21,26 @@ public class Branch {
 
     public static void commit(String working_dir, String commiter, String message) {
         BlobTree tree = Branch.generateBlobTree(working_dir);
-        
+
         //The parent of this commit will be the commit before it
         ArrayList<Commit> parents = new ArrayList<Commit>();
         String parent_hash = Branch.getCurrentBranchHash(working_dir);
-        Commit parent_commit = Commit.parseHash(parent_hash, working_dir);
-        parents.add(parent_commit);
         
+        if (!parent_hash.isEmpty()) {
+            Commit parent_commit = Commit.parseHash(parent_hash, working_dir);
+            parents.add(parent_commit);
+        }
+
         Commit new_commit = new Commit(parents, tree, commiter, message);
-        
+
         //Write the blob tree
         Objects.writeBlobTree(working_dir, tree);
-        
+
         //write the commit object
         Objects.writeCommit(working_dir, new_commit);
-        
+
         //Update the branch head
-        Head.writeRefHead(working_dir, Branch.getCurrentBranchHash(working_dir), new_commit.generateHash());
+        Head.writeRefHead(working_dir, Branch.getCurrentBranchName(working_dir), new_commit.generateHash());
     }
 
     public static String getCurrentBranchName(String working_dir) {
@@ -45,14 +48,16 @@ public class Branch {
     }
 
     public static String getCurrentBranchHash(String working_dir) {
-        return Head.readRefHead(working_dir, Branch.getCurrentBranchName(working_dir));
+        String hash = Head.readRefHead(working_dir, Branch.getCurrentBranchName(working_dir));
+
+        return hash;
     }
 
     private static BlobTree generateBlobTree(String working_dir) {
         String comments_path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
         String tags_path = working_dir + cgitDirectory.TAGS_PATH.getPath();
 
-        Blob comments = new Blob(FileUtil.readFile(comments_path), "comments");;
+        Blob comments = new Blob(FileUtil.readFile(comments_path), "comments");
         Blob tags = new Blob(FileUtil.readFile(tags_path), "tags");
 
         ArrayList<Blob> blobs = new ArrayList<Blob>();
