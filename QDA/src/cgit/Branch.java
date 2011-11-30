@@ -2,26 +2,25 @@ package cgit;
 
 import java.util.ArrayList;
 import model.Blob;
-import model.BlobContainer;
 import model.BlobTree;
 import model.cgitDirectory;
 import model.Commit;
 
 public class Branch {
 
+    //REMEMBER a banch is just a named commit
     public static void newBranch(String working_dir, String branchName) throws Exception {
-        //generate blobtree for comments and tags
-        BlobTree tree = Branch.generateBlobTree(working_dir);
-
-        //get hash for blobtree
-        String hash = tree.generateHash();
-
-        //write the hash to the current head
-        Head.writeHead(working_dir, hash);
-
-        //write the objects
-        Objects.writeBlobTree(working_dir, tree);
-
+        /*
+         * psuedo:
+         * 
+         * update HEAD
+         * 
+         */
+        
+        Head.writeHead(working_dir, branchName);
+        
+        String hash = Branch.getCurrentBranchHash();
+        
         //write the head to the heads folder
         String heads_path = working_dir + cgitDirectory.HEADS_PATH.getPath() + "/" + branchName;
         FileUtil.writeFile(false, heads_path, hash);
@@ -31,28 +30,27 @@ public class Branch {
         
         
     }
+    
+    public static String getCurrentBranchName(){
+        return "";
+    }
+    
+    public static String getCurrentBranchHash(){
+        return "";
+    }
 
     private static BlobTree generateBlobTree(String working_dir) {
         String comments_path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
         String tags_path = working_dir + cgitDirectory.TAGS_PATH.getPath();
         
-        Blob comments;
-        Blob tags;
-        try {
-            comments = new Blob(FileUtil.readFile(comments_path));
-            tags = new Blob(FileUtil.readFile(tags_path));
-        } catch (Exception e) {
-            return null;
-        }
+        Blob comments = new Blob(FileUtil.readFile(comments_path), "comments");;
+        Blob tags = new Blob(FileUtil.readFile(tags_path), "tags");
+        
+        ArrayList<Blob> blobs = new ArrayList<Blob>();
+        blobs.add(comments);
+        blobs.add(tags);
 
-        BlobContainer comment_container = new BlobContainer(comments, "comments");
-        BlobContainer tag_container = new BlobContainer(tags, "tags");
-
-        ArrayList<BlobContainer> containers = new ArrayList<BlobContainer>();
-        containers.add(comment_container);
-        containers.add(tag_container);
-
-        return new BlobTree(containers);
+        return new BlobTree(blobs);
     }
 
     /* debug purposed only */
