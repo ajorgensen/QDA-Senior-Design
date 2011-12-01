@@ -22,7 +22,7 @@ public class FileUtil {
             /* Instead of using default, pass in a decoder. */
             stream.close();
             return Charset.defaultCharset().decode(bb).toString();
-        } catch (Exception e ){
+        } catch (Exception e) {
             return "";
         }
     }
@@ -38,6 +38,31 @@ public class FileUtil {
         } catch (Exception e) {
             MyLogger.LogMessageToConsole(FileUtil.class, "Error writing description file to: " + filepath, LogType.ERROR);
         }
+    }
+
+    public static String [] listFilesInDirectory(String directory_path) {
+
+        String files;
+        File folder = new File(directory_path);
+        File[] listOfFiles = folder.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+
+            if (listOfFiles[i].isFile()) {
+                files = listOfFiles[i].getName();
+            }
+        }
+        
+        
+        int num_files = listOfFiles.length;
+        String [] fileNames = new String[num_files];
+        
+        for(int i=0; i< listOfFiles.length; i++)
+        {
+            fileNames[i] = listOfFiles[i].getName();
+        }
+        
+        return fileNames;
     }
 
     public static long getFilesize(String filepath) throws Exception {
