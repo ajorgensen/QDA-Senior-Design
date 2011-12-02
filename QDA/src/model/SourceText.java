@@ -63,8 +63,11 @@ public class SourceText {
 		StringBuilder selection = new StringBuilder();
 		try{
 		String firstLine = lines.get(startLine);
+                if(startLine==endLine) {
+                    return firstLine.substring(startChar, endChar);
+                }
 		selection.append(firstLine.substring(startChar));
-		
+                
 		for(int i = startLine; i < endLine; i++){
 			selection.append(lines.get(i));
 			selection.append(System.getProperty("line.separator"));
@@ -80,6 +83,11 @@ public class SourceText {
 		}
 		return retVal;
 	}
+        
+        public String getSelection(TextSection s) {
+            return getSelection(s.getStartingLineNumber(), s.getEndingLineNumber(),
+                    s.getStartingPosition(), s.getEndingPosition());
+        }
 	
 	public String getText(){
 		System.out.println("# lines =  " + lines.size());

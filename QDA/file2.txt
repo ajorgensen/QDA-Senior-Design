@@ -1,0 +1,14 @@
+Collection Operations
+
+The operations inherited from Collection all do about what you'd expect them to do, assuming you're already familiar with them. If you're not familiar with them from Collection, now would be a good time to read The Collection Interface section. The remove operation always removes the first occurrence of the specified element from the list. The add and addAll operations always append the new element(s) to the end of the list. Thus, the following idiom concatenates one list to another.
+
+list1.addAll(list2);
+
+Here's a nondestructive form of this idiom, which produces a third List consisting of the second list appended to the first.
+
+List<Type> list3 = new ArrayList<Type>(list1);
+list3.addAll(list2);
+
+Note that the idiom, in its nondestructive form, takes advantage of ArrayList's standard conversion constructor.
+
+Like the Set interface, List strengthens the requirements on the equals and hashCode methods so that two List objects can be compared for logical equality without regard to their implementation classes. Two List objects are equal if they contain the same elements in the same order.

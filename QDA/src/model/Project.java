@@ -1,16 +1,34 @@
 package model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
+import model.RootTag;
 
+/**
+ * Project 
+ * The project class should be an adapter for most of the functions used by the 
+ * GUI.
+ * This includes: importing source texts, adding tags to texts, adding
+ * comments to texts, modifying the tag hierarchy, adding users, etc. 
+ * 
+ * The text currently being viewed by the GUI should be kept track of using the 
+ * Project class, using get/setCurrentText() methods. This text is a 
+ * MarkedUpText.
+ * 
+ * 
+ * 
+ * @author Alan, David
+ */
 public class Project implements Nameable {
 	private String localPath;
         private String name;
 	private Folder mainFolder;
 	private List<User> users;
         private User currUser;
-	
-        
+	private RootTag rootTag;
+        private List<TagType> tags;
+        private MarkedUpText curText;
         /**
          * Creates a new project
          * 
@@ -24,9 +42,33 @@ public class Project implements Nameable {
 		this.users = new LinkedList<User>();
                 this.addUser(currentUser);
                 this.currUser = currentUser;
-                
+                this.rootTag = new RootTag();
+                this.tags=new LinkedList<TagType>();
+                tags.add(this.rootTag);
+                this.curText = null;
 	}
-	
+	  
+        public RootTag getRootTag() {
+            return rootTag;
+        }
+        
+        /**
+         * Adds tag with newName to tag hierarchy with parent as its parent.
+         * Does not add the tag if one already exists with the same name.
+         * Returns true if successful, false if not.
+         * @param parent
+         * @param newName
+         * @return 
+         */
+        public boolean addTagType(TagType parent, String newName) {
+            for(TagType t: tags) {
+                if(t.getName().equals(newName)) return false;
+            }
+            TagType newTag = new TagType(newName);
+            parent.add(newTag);
+            tags.add(newTag);
+            return true;
+        }
         /**
          * Use for logging in.
          * @param userName
@@ -40,7 +82,6 @@ public class Project implements Nameable {
                     }
                 }
                 return false;
-                
 	}
 	
 	public void refreshRepository(){
@@ -53,8 +94,12 @@ public class Project implements Nameable {
          * @param tags
          * @return 
          */
-	public List<TagInstance> search(List<Folder> folders, List<Tag> tags) {
-            return null;
+	public List<TagInstance> search(List<Folder> folders, List<TagType> tags) {
+            HashSet<TagInstance> s = new HashSet<TagInstance>();
+            for(Folder f: folders) {
+                s.addAll(f.searchTags(tags));
+            }
+            return new LinkedList<TagInstance>(s);
         }
         
         /**
@@ -64,7 +109,13 @@ public class Project implements Nameable {
          * @return 
          */
         public List<Comment> search(List<Folder> folders, User user){
-		return null;
+            HashSet<Comment> s = new HashSet<Comment>();
+            for(Folder f: folders) {
+                LinkedList<User> l = new LinkedList<User>();
+                l.add(user);
+                s.addAll(f.searchComments(l));
+            }
+            return new LinkedList<Comment>(s);
 	}
 	
 	public List<User> getUsers(){
@@ -92,6 +143,10 @@ public class Project implements Nameable {
             SourceText text = new SourceText(filePath);
             MarkedUpText newMarkedText = new MarkedUpText(text, this);
             importLocation.add(newMarkedText);
+            
+            if(curText == null){
+                this.curText = newMarkedText;
+            }
             return newMarkedText;
 	}
         
@@ -119,6 +174,40 @@ public class Project implements Nameable {
         
         public Folder getMainFolder(){
             return mainFolder;
+        }
+        
+        private MarkedUpText getCurrentText(){
+            return curText;
+        }
+        
+        public void setCurrentText(MarkedUpText newCurr){
+            curText = newCurr;
+        }
+        
+        public boolean addTagInstance(String tagName, TextSection selection){
+            TagType tag = this.getTagType(tagName);
+            if(tag != null){
+                return curText.addTag(tag, selection);
+            }else{
+                return false;
+            }
+        }
+        
+        public TagType getTagType(String tagName){
+            for(TagType t: tags) {
+               if(t.getName().equals(tagName)){
+                    return t;
+               } 
+            }
+            return null;
+        }
+        
+        /**
+         * Returns a string representation of the current source text.
+         * @return 
+         */
+        public String getCurrSourceText(){
+            return curText.getSourceText().getText();
         }
 }
 

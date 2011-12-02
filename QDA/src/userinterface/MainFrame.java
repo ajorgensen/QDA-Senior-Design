@@ -85,8 +85,8 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         allTags = new javax.swing.JTree();
         editMyTagsWindow = new javax.swing.JPanel();
         editMyTags = new javax.swing.JScrollPane();
-        myTags = new javax.swing.JTree(user.getRootTag());
-        user.getRootTag().add(new Tag("child",user));
+        myTags = new javax.swing.JTree(currProject.getRootTag());
+        currProject.addTagType(currProject.getRootTag(),"child");
         editMyTagsTools = new javax.swing.JToolBar();
         newTag = new javax.swing.JButton();
         newTagSet = new javax.swing.JButton();
