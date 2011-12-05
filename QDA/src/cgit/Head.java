@@ -13,7 +13,7 @@ public class Head {
             return FileUtil.readFile(headPath);
         } catch (Exception ex) {
             Logger.getLogger(Head.class.getName()).log(Level.SEVERE, null, ex);
-            return "";
+            return "master";
         }
     }
     
@@ -22,6 +22,20 @@ public class Head {
         String headPath = working_dir + cgitDirectory.HEAD_PATH.getPath();
         
         FileUtil.writeFile(false, headPath, newHead);
+    }
+    
+    public static String readRefHead(String working_dir, String branch_name)
+    {
+        String path = working_dir + cgitDirectory.HEADS_PATH.getPath() + "/" + branch_name;
+        
+        return FileUtil.readFile(path);
+    }
+    
+    public static void writeRefHead(String working_dir, String branch_name, String hash)
+    {
+        String path = working_dir + cgitDirectory.HEADS_PATH.getPath() + "/" + branch_name;
+        
+        FileUtil.writeFile(false, path, hash);
     }
     
     /* Debug only */

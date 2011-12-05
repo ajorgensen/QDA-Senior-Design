@@ -2,26 +2,57 @@ package model;
 
 import java.util.ArrayList;
 import cgit.HashObject;
+import cgit.Objects;
 
-public class BlobTree {
+public class BlobTree implements GitObject{
 
-    ArrayList<BlobContainer> blobs;
+    ArrayList<Blob> blobs;
 
-    public BlobTree(ArrayList<BlobContainer> blobs) {
+    public BlobTree(ArrayList<Blob> blobs) {
         this.blobs = blobs;
     }
 
-    public ArrayList<BlobContainer> getBlobs() {
+    public ArrayList<Blob> getBlobs() {
         return this.blobs;
     }
+    
+    public static BlobTree parseHash(String hash, String working_dir)
+    {
+        String data = Objects.readHash(hash, working_dir);
+        
+        String [] data_lines = data.split("\n");
+        
+        
+        ArrayList<Blob> blobs = new ArrayList<Blob>();
+        for(String lines : data_lines)
+        {
+            String [] params = lines.split(" ");
+            blobs.add(Blob.parseHash(params[0], working_dir, params[1]));
+        }
+        
+        return new BlobTree(blobs);
+    }
 
+    @Override
     public String generateHash() {
         String toHash = "";
 
-        for (BlobContainer bc : blobs) {
-            toHash += "blob " + Integer.toString(bc.getBlob().contentSize()) + "\0" + bc.getBlob().getContent() + "\n";
+        for (Blob bc : blobs) {
+            toHash += "blob " + Integer.toString(bc.contentSize()) + "\0" + bc.getContent() + "\n";
         }
 
         return HashObject.hashString(toHash);
+    }
+
+    @Override
+    public String generateRawContent() {
+        String content = "";
+        
+        for(Blob blob : blobs)
+        {
+            content += blob.generateHash() + " " + blob.getFilename() + "\n";
+        }
+        
+        return content;
     }
 }

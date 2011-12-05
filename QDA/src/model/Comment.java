@@ -58,4 +58,10 @@ public class Comment {
     {
         return this.sourceFileName;
     }
+    
+    public static Comment generateNewComment(String user, TextSection selected, String comment, String sourceFilePath)
+    {
+        Date now = new Date();
+        return new Comment(user, now, now, selected, comment, sourceFilePath);
+    }
 }
