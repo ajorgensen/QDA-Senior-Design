@@ -535,14 +535,26 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private void sourceFolderMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sourceFolderMousePressed
         JTree rep = (JTree) repository.getViewport().getView();
         int selRow = rep.getRowForLocation(evt.getX(), evt.getY());
-        if(selRow != -1) {
-            if(evt.getClickCount() == 2 /*&& CHECK IF NODE*/) {
+        TreePath alpha = rep.getSelectionPath();
+        String beta = alpha.getLastPathComponent().toString();
+        //check if node
+        if(beta.contains("/")) { //it is a node
+            int start = beta.lastIndexOf("/") + 1;
+            int end = beta.lastIndexOf(".");
+            String filename = beta.substring(start, end);
+            if(selRow != -1) {
+            if(evt.getClickCount() == 2 ) {
                 CheckboxTree tag = new CheckboxTree();
                 tag.setCellRenderer(checkedTags);
                 tag.setSelectionModel(null);
-                addView(new SourceTextView("TODO: GET FILE NAME.", tag));
+                addView(new SourceTextView(filename, tag));
             }
         }
+            
+        } else {
+            // Do nothing since a node wasn't selected
+        }
+
     }//GEN-LAST:event_sourceFolderMousePressed
 
     private void renameElementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameElementActionPerformed
