@@ -31,8 +31,8 @@ public class SaveAsProjectDialog extends AppDialog {
         super(mf, "Save As");
     }
     @Override
-    protected void initComponents() {
-        super.initComponents();
+    protected void initComponents(Object[] args) {
+        super.initComponents(args);
         
         setMinimumSize(new java.awt.Dimension(400, 150));
         

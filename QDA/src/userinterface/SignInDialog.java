@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import model.Project;
 /**
  *
  * @author Brittany Nkounkou
@@ -28,13 +29,13 @@ public class SignInDialog extends AppDialog{
     private JButton SignIn;
     private JButton Cancel;
     
-    public SignInDialog(MainFrame mf) {
-        super(mf, "Sign In");
+    public SignInDialog(MainFrame mf, Project p) {
+        super(mf, "Sign In", new Object[]{p});
     }
     
     @Override
-    protected void initComponents() {
-        super.initComponents();
+    protected void initComponents(Object[] args) {
+        super.initComponents(args);
         
         setMinimumSize(new java.awt.Dimension(300, 150));
         

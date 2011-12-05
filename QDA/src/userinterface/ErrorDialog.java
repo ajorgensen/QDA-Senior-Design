@@ -4,17 +4,21 @@
  */
 package userinterface;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Brittany Nkounkou
  */
 public class ErrorDialog extends AppDialog{
-    private String message;
     
     public ErrorDialog(MainFrame mf, String errorMessage) {
-        super(mf, "Error");
-        message = errorMessage;
+        super(mf, "Error", new Object[]{errorMessage});
     }
     
-    //TODO
+    @Override
+    protected void initComponents(Object[] args) {
+        super.initComponents(args);
+        panel.add(new JLabel((String) args[0]));
+    }
 }

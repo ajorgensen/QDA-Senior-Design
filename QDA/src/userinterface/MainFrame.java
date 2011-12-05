@@ -574,7 +574,7 @@ private void accountSettingsActionPerformed(java.awt.event.ActionEvent evt) {//G
 }//GEN-LAST:event_accountSettingsActionPerformed
 
 private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInUserActionPerformed
-    SignInDialog sid = new SignInDialog(this);
+    SignInDialog sid = new SignInDialog(this, project);
     sid.setVisible(true);
 }//GEN-LAST:event_signInUserActionPerformed
 
@@ -693,7 +693,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     }//GEN-LAST:event_renameTagActionPerformed
 
     private void importFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFileActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_importFileActionPerformed
 
     @Override
