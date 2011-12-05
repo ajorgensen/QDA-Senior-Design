@@ -148,6 +148,11 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         importFile.setFocusable(false);
         importFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         importFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        importFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importFileActionPerformed(evt);
+            }
+        });
         repositoryTools.add(importFile);
 
         newFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Folder.png"))); // NOI18N
@@ -558,6 +563,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             myTags.startEditingAtPath(myTags.getSelectionPath());
         }
     }//GEN-LAST:event_renameTagActionPerformed
+
+    private void importFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_importFileActionPerformed
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
