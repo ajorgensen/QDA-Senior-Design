@@ -5,6 +5,7 @@
 package userinterface;
 
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
+import model.SourceText;
 
 /**
  *
@@ -12,11 +13,17 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
  */
 public class SourceTextView extends View {
     
+    private SourceText sourceText;
     private CheckboxTree tagsTree;
     
-    public SourceTextView(String t, CheckboxTree tags) {
-        super(t);
+    public SourceTextView(SourceText st, CheckboxTree tags) {
+        super(st.getText());
+        sourceText = st;
         tagsTree = tags;
+    }
+    
+    public SourceText getSourceText() {
+        return sourceText;
     }
     
     public CheckboxTree getTagsTree() {
