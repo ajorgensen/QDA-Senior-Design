@@ -1,8 +1,9 @@
 package model;
 
 import java.util.List;
+import javax.swing.tree.*;
 
-public abstract class Element implements Nameable, Deletable {
+public interface Element{
 	/**
 	 * Should return all selections tagged with a tag in tags or
 	 * tagged or commented by a user in users.
@@ -10,6 +11,6 @@ public abstract class Element implements Nameable, Deletable {
 	 * @param users
 	 * @return
 	 */
-	public abstract List<Tag> searchTags(List<Tag> tags, List<User> users);
-	public abstract List<Comment> searchComments(List<User> users);
+	public List<TagInstance> searchTags(List<TagType> tags);
+	public  List<Comment> searchComments(List<User> users);
 }

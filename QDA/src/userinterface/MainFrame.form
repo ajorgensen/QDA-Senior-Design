@@ -229,6 +229,7 @@
                         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sourceFolderMousePressed"/>
                       </Events>
                       <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree(currProject.getMainFolder());"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="sourceFolder.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;sourceFolder.setSelectionInterval(0, 0);"/>
                         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTreeCellRenderer uncheckedElements = new DefaultTreeCellRenderer();&#xa;uncheckedElements.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Folder.png&quot;)));&#xa;uncheckedElements.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Folder.png&quot;)));&#xa;uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/File.png&quot;)));&#xa;sourceFolder.setCellRenderer(uncheckedElements);"/>
                       </AuxValues>
@@ -398,6 +399,8 @@
                             <Property name="editable" type="boolean" value="true"/>
                           </Properties>
                           <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree(currProject.getRootTag());"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="currProject.addTagType(currProject.getRootTag(),&quot;child&quot;);"/>
                             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="myTags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;myTags.setSelectionInterval(0, 0);"/>
                             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="myTags.setCellRenderer(uncheckedTags);"/>
                           </AuxValues>
