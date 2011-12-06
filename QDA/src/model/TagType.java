@@ -30,6 +30,18 @@ public class TagType extends DefaultMutableTreeNode implements Nameable, Deletab
         public String toString() {
             return name;
         }
+        
+        public String getPathString() {
+            StringBuilder path = new StringBuilder(name);
+            TagType curr = (TagType)getParent();
+            
+            while (curr != null) {
+                path.insert(0, curr.getName());
+                curr = (TagType)curr.getParent();
+            }
+            
+            return path.toString();
+        }
        
         //public void add(Tag newChild){
         //    

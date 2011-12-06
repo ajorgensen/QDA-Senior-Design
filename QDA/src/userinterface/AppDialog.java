@@ -6,6 +6,7 @@ package userinterface;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /**
@@ -40,6 +41,7 @@ public class AppDialog extends javax.swing.JDialog{
     
     protected void initComponents(Object[] args) {
         panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         this.add(panel);
         this.setResizable(false);
     }

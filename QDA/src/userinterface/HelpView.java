@@ -4,6 +4,9 @@
  */
 package userinterface;
 
+import java.awt.Color;
+import javax.swing.JLabel;
+
 /**
  *
  * @author Brittany Nkounkou
@@ -11,5 +14,8 @@ package userinterface;
 public class HelpView extends View {
     public HelpView() {
         super("Help");
+        
+        center.setLayout(new javax.swing.BoxLayout(center, javax.swing.BoxLayout.Y_AXIS));
+        center.add(new JLabel("Help is on the way..."));
     }
 }

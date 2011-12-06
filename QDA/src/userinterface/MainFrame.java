@@ -22,6 +22,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import checkboxtree.*;
+import java.awt.Component;
 import model.*;
 /**
  *
@@ -29,13 +30,11 @@ import model.*;
  */
 public class MainFrame extends JFrame {
     private Project project;
-    private User user;
     
     
     /** Creates new from ApplicationStart */
     public MainFrame() {
         project = null;
-        user = null;
         
         helpViewIndex = -1;
         
@@ -56,11 +55,14 @@ public class MainFrame extends JFrame {
     private void defaultSetUp() {
         MessageDialog md = new MessageDialog(this, "Opening default project.");
         md.setVisible(true);
-        openProject(new Project("defaultProject","defaultPath", user));
-        signInUser(new User("default", "default"));
+        User u = new User ("default", "default");
+        openProject(new Project("defaultProject","defaultPath", u));
+        signInUser(u);
         Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
-        project.importSourceText("./QDA/TestTextFile.txt", folder1);
-        project.addTagType(project.getRootTag(),"child");  
+        MarkedUpText mut = project.importSourceText("./QDA/TestTextFile.txt", folder1);
+        TagType tt = project.addTagType(project.getRootTag(),"child");
+        mut.addTag(tt, new TextSection(100,10));
+        mut.addComment("hey hey hey this is my comment.", new TextSection(200,25));
     }
     
     private void initializeRepository() {
@@ -450,6 +452,11 @@ public class MainFrame extends JFrame {
 
             signOutUser.setText("Sign Out");
             signOutUser.setEnabled(false);
+            signOutUser.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    signOutUserActionPerformed(evt);
+                }
+            });
             userMenu.add(signOutUser);
             signOutUser.getAccessibleContext().setAccessibleName("");
 
@@ -539,8 +546,9 @@ private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 /*
  * User u should already have submitted their passwrd and been verified as a valid user
  */
-private void signInUser(User u) {
-    user = u;
+private void signInUser(User user) {
+    if (!project.setCurrentUser(user))
+        return;
     
     saveProject.setEnabled(true);
     saveAsProject.setEnabled(true);
@@ -562,31 +570,6 @@ private void signInUser(User u) {
     tags.setModel(new DefaultTreeModel(project.getRootTag()));
     tags.setVisible(true);
     setTagsToolsEnabled(true);
-    
-    this.repaint();
-}
-
-private void signOutUser() {
-    user = null;
-    
-    //TODO: close views
-    
-    saveProject.setEnabled(false);
-    saveAsProject.setEnabled(false);
-    mergeProject.setEnabled(false);
-    viewVersionHistory.setEnabled(false);
-    manageUsers.setEnabled(false);
-    
-    signInUser.setEnabled(true);
-    signOutUser.setEnabled(false);
-    
-    newSearch.setEnabled(false);
-    
-    repository.setVisible(false);
-    setRepositoryToolsEnabled(false);
-    
-    tags.setVisible(false);
-    setTagsToolsEnabled(false);
     
     this.repaint();
 }
@@ -621,7 +604,7 @@ private void openProject(Project p) {
 }
 
 private void closeProject(Project p) {
-    if (user != null) {
+    if (project.getCurrentUser() != null) {
         signOutUser();
     }
     else {
@@ -715,7 +698,17 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
                 if (gamma.contains("/")) { //it is a node
                     if (selRow != -1) {
                         if (evt.getClickCount() == 2) {
+                            Component[] v = views.getComponents();
+                            for (int i = 0; i < v.length; i++) {
+                                if (v[i] instanceof SourceTextView) {
+                                    if (((SourceTextView)v[i]).getMarkedUpText() == beta) {
+                                        views.setSelectedComponent(v[i]);
+                                        return;
+                                    }
+                                }
+                            }
                             TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
+                            tag.addCheckingPath(tags.getPathForRow(0));
                             addView(new SourceTextView((MarkedUpText) beta, tag));
                         }
                     } else {
@@ -730,6 +723,36 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         
     }//GEN-LAST:event_importFileActionPerformed
 
+    private void signOutUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutUserActionPerformed
+        //TODO: ask are you sure?
+        signOutUser();
+    }//GEN-LAST:event_signOutUserActionPerformed
+
+    private void signOutUser() {
+        project.setCurrentUser(null);
+
+        views.removeAll();
+
+        saveProject.setEnabled(false);
+        saveAsProject.setEnabled(false);
+        mergeProject.setEnabled(false);
+        viewVersionHistory.setEnabled(false);
+        manageUsers.setEnabled(false);
+
+        signInUser.setEnabled(true);
+        signOutUser.setEnabled(false);
+
+        newSearch.setEnabled(false);
+
+        repository.setVisible(false);
+        setRepositoryToolsEnabled(false);
+
+        tags.setVisible(false);
+        setTagsToolsEnabled(false);
+
+        this.repaint();
+    }
+    
     private void addView(View v) {
         views.addTab(v.getAbbrv(), null, v, v.getTitle());
         views.setSelectedIndex(views.indexOfComponent(v));
