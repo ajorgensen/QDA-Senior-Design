@@ -25,23 +25,30 @@ public class Project implements Nameable {
         private String name;
 	private Folder mainFolder;
 	private List<User> users;
+        private int nextUserId;
         private User currUser;
 	private RootTag rootTag;
         private List<TagType> tags;
         private MarkedUpText curText;
+        
+        public Project(String name, String localPath, String adminUsername, String adminPassword){
+            this(0, name, localPath, adminUsername, adminPassword);
+        }
         /**
          * Creates a new project
          * 
          * @param localPath - taken from file selection dialog
          * @param currentUser - the user creating the file
          */
-	public Project(String name, String localPath, User currentUser){
+	public Project(int nextUId, String name, String localPath, String adminUsername, String adminPassword){
+                nextUserId = nextUId;
+                
 		this.localPath = localPath;
                 this.name = name;
                 this.mainFolder = new Folder(localPath);
 		this.users = new LinkedList<User>();
-                this.addUser(currentUser);
-                this.currUser = currentUser;
+                addUser(adminUsername, adminPassword);
+                this.currUser = null;
                 this.rootTag = new RootTag();
                 this.tags=new LinkedList<TagType>();
                 tags.add(this.rootTag);
@@ -55,19 +62,19 @@ public class Project implements Nameable {
         /**
          * Adds tag with newName to tag hierarchy with parent as its parent.
          * Does not add the tag if one already exists with the same name.
-         * Returns true if successful, false if not.
+         * Returns tag if successful, null if not.
          * @param parent
          * @param newName
          * @return 
          */
-        public boolean addTagType(TagType parent, String newName) {
+        public TagType addTagType(TagType parent, String newName) {
             for(TagType t: tags) {
-                if(t.getName().equals(newName)) return false;
+                if(t.getName().equals(newName)) return null;
             }
             TagType newTag = new TagType(newName);
             parent.add(newTag);
             tags.add(newTag);
-            return true;
+            return newTag;
         }
         /**
          * Use for logging in.
@@ -125,9 +132,23 @@ public class Project implements Nameable {
         public User getCurrentUser(){
             return currUser;
         }
+        
+        public void setCurrentUserId(int id) {
+            for (int i = 0; i < users.size(); i++) {
+                User u = users.get(i);
+                if (u.getId() == id) {
+                    currUser = u;
+                    return;
+                }
+            }
+            currUser = null;
+        }
 	
-	public void addUser(User user){
-		users.add(user);
+	public User addUser(String username, String password){
+            User added = new User(nextUserId, username, password);
+            users.add(added);
+            nextUserId += 1;
+            return added;
 	}
 	
 	public void removeUser(User user){

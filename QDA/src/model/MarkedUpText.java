@@ -44,7 +44,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             List<Comment> returnList = new LinkedList<Comment>();
             for(User t : users){
                     for(Comment c : comments){
-                        if(t.getName().equals(c.getUser())){
+                        if(t.getId() == c.getOwnerId()){
                             returnList.add(c);
                         }
                     }
@@ -86,7 +86,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
         public boolean addTag(TagType tagType, TextSection selection){
             Date dateAdded = new Date();
             Date dateModified = new Date();
-            tagInstances.add(new TagInstance(project.getCurrentUser(), dateAdded, dateModified,
+            tagInstances.add(new TagInstance(project.getCurrentUser().getId(), dateAdded, dateModified,
             selection, this, tagType));
             return true;
         }
@@ -100,7 +100,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
        public void addComment(String comment, TextSection selection){
             Date dateAdded = new Date();
             Date dateModified = new Date();
-            comments.add(new Comment((project.getCurrentUser()).getName(), dateAdded, dateModified,
+            comments.add(new Comment((project.getCurrentUser()).getId(), dateAdded, dateModified,
             selection, comment, sourceText.getPath()));
         }
        

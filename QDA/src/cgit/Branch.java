@@ -19,7 +19,7 @@ public class Branch {
         Head.writeHead(working_dir, branchName);
     }
 
-    public static void commit(String working_dir, String commiter, String message) {
+    public static void commit(String working_dir, int commiterId, String message) {
         BlobTree tree = Branch.generateBlobTree(working_dir);
 
         //The parent of this commit will be the commit before it
@@ -31,7 +31,7 @@ public class Branch {
             parents.add(parent_commit);
         }
 
-        Commit new_commit = new Commit(parents, tree, commiter, message);
+        Commit new_commit = new Commit(parents, tree, commiterId, message);
 
         //Write the blob tree
         Objects.writeBlobTree(working_dir, tree);
