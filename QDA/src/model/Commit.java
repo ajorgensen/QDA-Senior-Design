@@ -8,17 +8,17 @@ public class Commit implements GitObject {
 
     String id;
     BlobTree blobTree;
-    int commiter;
+    String commiter;
     ArrayList<Commit> parents = new ArrayList<Commit>();
     String commit_message = "";
 
-    public Commit(BlobTree tree, int commiter, String commit_message) {
+    public Commit(BlobTree tree, String commiter, String commit_message) {
         this.blobTree = tree;
         this.commiter = commiter;
         this.commit_message = commit_message;
     }
 
-    public Commit(ArrayList<Commit> parents, BlobTree tree, int commiter, String commit_message) {
+    public Commit(ArrayList<Commit> parents, BlobTree tree, String commiter, String commit_message) {
         this.parents = parents;
         this.blobTree = tree;
         this.commiter = commiter;
@@ -45,7 +45,7 @@ public class Commit implements GitObject {
         return this.parents;
     }
 
-    public int getCommiter() {
+    public String getCommiter() {
         return this.commiter;
     }
 
@@ -60,7 +60,7 @@ public class Commit implements GitObject {
 
         BlobTree tree = null;
         ArrayList<Commit> parents = new ArrayList<Commit>();
-        int commiter = -1;
+        String commiter = "";
         String commit_message = "";
 
 
@@ -75,7 +75,7 @@ public class Commit implements GitObject {
             } else if (param.equals("parent")) {
                 parents.add(Commit.parseHash(content, working_dir));
             } else if (param.equals("commiter")) {
-                commiter = Integer.parseInt(content);
+                commiter = content;
             } else if (param.equals("message")) {
                 commit_message = content;
             }

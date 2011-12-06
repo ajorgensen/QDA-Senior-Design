@@ -55,12 +55,14 @@ public class MainFrame extends JFrame {
     private void defaultSetUp() {
         MessageDialog md = new MessageDialog(this, "Opening default project.");
         md.setVisible(true);
-        openProject(new Project(99, "defaultProject","defaultPath", "default", "default"));
-        signInUser(99);
+        User u = new User ("default", "default");
+        openProject(new Project("defaultProject","defaultPath", u));
+        signInUser(u);
         Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
         MarkedUpText mut = project.importSourceText("./QDA/TestTextFile.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
         mut.addTag(tt, new TextSection(100,10));
+        mut.addComment("hey hey hey this is my comment.", new TextSection(200,25));
     }
     
     private void initializeRepository() {
@@ -544,8 +546,9 @@ private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 /*
  * User u should already have submitted their passwrd and been verified as a valid user
  */
-private void signInUser(int userId) {
-    project.setCurrentUserId(userId);
+private void signInUser(User user) {
+    if (!project.setCurrentUser(user))
+        return;
     
     saveProject.setEnabled(true);
     saveAsProject.setEnabled(true);
@@ -726,7 +729,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     }//GEN-LAST:event_signOutUserActionPerformed
 
     private void signOutUser() {
-        project.setCurrentUserId(-1);
+        project.setCurrentUser(null);
 
         views.removeAll();
 
