@@ -4,8 +4,8 @@
  */
 package userinterface;
 
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
-import model.SourceText;
+import checkboxtree.TreeCheckingModel;
+import model.MarkedUpText;
 
 /**
  *
@@ -13,20 +13,20 @@ import model.SourceText;
  */
 public class SourceTextView extends View {
     
-    private SourceText sourceText;
-    private CheckboxTree tagsTree;
+    private MarkedUpText markedUpText;
+    private TreeCheckingModel tagsModel;
     
-    public SourceTextView(SourceText st, CheckboxTree tags) {
-        super(st.getText());
-        sourceText = st;
-        tagsTree = tags;
+    public SourceTextView(MarkedUpText mut, TreeCheckingModel tm) {
+        super(mut.getSourceText().getText());
+        markedUpText = mut;
+        tagsModel = tm;
     }
     
-    public SourceText getSourceText() {
-        return sourceText;
+    public MarkedUpText getMarkedUpText() {
+        return markedUpText;
     }
     
-    public CheckboxTree getTagsTree() {
-        return tagsTree;
+    public TreeCheckingModel getTagsModel() {
+        return tagsModel;
     }
 }

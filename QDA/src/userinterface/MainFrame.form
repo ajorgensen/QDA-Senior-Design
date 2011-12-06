@@ -35,77 +35,63 @@
             <MenuItem class="javax.swing.JMenuItem" name="saveProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    saveProject.setEnabled(true);&#xa;}&#xa;else {&#xa;    saveProject.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAsProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save As"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveAsActionPerformed"/>
               </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    saveAsProject.setEnabled(true);&#xa;}&#xa;else {&#xa;    saveAsProject.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mergeProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Merge"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    mergeProject.setEnabled(true);&#xa;}&#xa;else {&#xa;    mergeProject.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="viewVersionHistory">
               <Properties>
                 <Property name="text" type="java.lang.String" value="View Version History"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    viewVersionHistory.setEnabled(true);&#xa;}&#xa;else {&#xa;    viewVersionHistory.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="manageUsers">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Manage Users"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="manageUsersActionPerformed"/>
               </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null &amp;&amp; false/*TODO: is admin*/) {&#xa;    manageUsers.setEnabled(true);&#xa;}&#xa;else {&#xa;    manageUsers.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="closeProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Close"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EXIT_ON_CLOSE"/>
               </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null) {&#xa;    closeProject.setEnabled(true);&#xa;}&#xa;else {&#xa;    closeProject.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="userMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="User"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusCycleRoot" type="boolean" value="true"/>
             <Property name="focusPainted" type="boolean" value="true"/>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null) {&#xa;    userMenu.setEnabled(true);&#xa;}&#xa;else {&#xa;    userMenu.setEnabled(false);&#xa;}"/>
-          </AuxValues>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="accountSettings">
               <Properties>
@@ -122,20 +108,15 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="signInUserActionPerformed"/>
               </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user == null) {&#xa;    signInUser.setEnabled(true);&#xa;}&#xa;else {&#xa;    signInUser.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="signOutUser">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sign Out"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <AccessibilityProperties>
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
               </AccessibilityProperties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    signOutUser.setEnabled(true);&#xa;}&#xa;else {&#xa;    signOutUser.setEnabled(false);&#xa;}"/>
-              </AuxValues>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -252,9 +233,6 @@
                     <Property name="rollover" type="boolean" value="true"/>
                     <Property name="alignmentX" type="float" value="0.0"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    repositoryTools.setEnabled(true);&#xa;}&#xa;else {&#xa;    repositoryTools.setEnabled(false);&#xa;}"/>
-                  </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
                   <SubComponents>
@@ -264,6 +242,7 @@
                           <Image iconType="3" name="/userinterface/icons/Import File.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Import File"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -278,6 +257,7 @@
                           <Image iconType="3" name="/userinterface/icons/New Folder.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="New Folder"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -289,6 +269,7 @@
                           <Image iconType="3" name="/userinterface/icons/Cut.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Cut"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -300,6 +281,7 @@
                           <Image iconType="3" name="/userinterface/icons/Copy.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Copy"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -311,6 +293,7 @@
                           <Image iconType="3" name="/userinterface/icons/Paste.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Paste"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -322,6 +305,7 @@
                           <Image iconType="3" name="/userinterface/icons/Rename.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Rename"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -336,6 +320,7 @@
                           <Image iconType="3" name="/userinterface/icons/Delete.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Delete"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -347,22 +332,11 @@
                   <Properties>
                     <Property name="alignmentX" type="float" value="0.0"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="repositoryPane.setViewportView(repository);"/>
+                  </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTree" name="repository">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="true"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="repositoryMousePressed"/>
-                      </Events>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="repository.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;repository.setSelectionInterval(0, 0);"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    repository = new javax.swing.JTree(project.getMainFolder());&#xa;    repository.setRootVisible(true);&#xa;}&#xa;else {&#xa;    repository.setRootVisible(false);&#xa;}&#xa;&#xa;DefaultTreeCellRenderer uncheckedElements = new DefaultTreeCellRenderer();&#xa;uncheckedElements.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Folder.png&quot;)));&#xa;uncheckedElements.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Folder.png&quot;)));&#xa;uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/File.png&quot;)));&#xa;repository.setCellRenderer(uncheckedElements);"/>
-                      </AuxValues>
-                    </Component>
-                  </SubComponents>
                 </Container>
               </SubComponents>
             </Container>
@@ -389,7 +363,7 @@
                     <Property name="alignmentX" type="float" value="0.0"/>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    tagsTools.setEnabled(true);&#xa;}&#xa;else {&#xa;    tagsTools.setEnabled(false);&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tagsPane.setViewportView(tags);"/>
                   </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
@@ -400,6 +374,7 @@
                           <Image iconType="3" name="/userinterface/icons/New Tag.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="New Tag"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -411,6 +386,7 @@
                           <Image iconType="3" name="/userinterface/icons/New Tag Set.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="New Tag Set"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -422,6 +398,7 @@
                           <Image iconType="3" name="/userinterface/icons/Cut.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Cut"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -433,6 +410,7 @@
                           <Image iconType="3" name="/userinterface/icons/Copy.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Copy"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -444,6 +422,7 @@
                           <Image iconType="3" name="/userinterface/icons/Paste.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Paste"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -455,6 +434,7 @@
                           <Image iconType="3" name="/userinterface/icons/Rename.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Rename"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -469,6 +449,7 @@
                           <Image iconType="3" name="/userinterface/icons/Delete.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Delete"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -477,26 +458,8 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JScrollPane" name="tagsPane">
-                  <Properties>
-                    <Property name="alignmentX" type="float" value="0.0"/>
-                  </Properties>
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTree" name="tags">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="true"/>
-                      </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    tags = new javax.swing.JTree(project.getRootTag());&#xa;    tags.setRootVisible(true);&#xa;}&#xa;else {&#xa;    tags.setRootVisible(false);&#xa;}&#xa;&#xa;DefaultTreeCellRenderer uncheckedTags = new DefaultTreeCellRenderer();&#xa;uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="tags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;tags.setSelectionInterval(0, 0);"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="tags.setCellRenderer(uncheckedTags);"/>
-                      </AuxValues>
-                    </Component>
-                  </SubComponents>
                 </Container>
               </SubComponents>
             </Container>
@@ -508,7 +471,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="TabbedPaneFactory.createCloseButtonTabbedPane()"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, &#xa;new PropertyChangeListener() {&#xa;    public void propertyChange(java.beans.PropertyChangeEvent evt) {&#xa;        viewsPropertyChange(evt);&#xa;    }&#xa;});"/>
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
@@ -523,13 +486,11 @@
     <Component class="javax.swing.JButton" name="newSearch">
       <Properties>
         <Property name="text" type="java.lang.String" value="New Search"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newSearchActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if (project != null &amp;&amp; user != null) {&#xa;    newSearch.setEnabled(true);&#xa;}&#xa;else {&#xa;    newSearch.setEnabled(false);&#xa;}"/>
-      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

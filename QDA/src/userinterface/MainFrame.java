@@ -17,52 +17,94 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import org.openide.awt.TabbedPaneFactory;
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.*;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import checkboxtree.*;
 import model.*;
 /**
  *
  * @author Brittany Nkounkou
  */
-public class MainFrame extends JFrame implements PropertyChangeListener{
+public class MainFrame extends JFrame {
     private Project project;
     private User user;
     
     
     /** Creates new from ApplicationStart */
     public MainFrame() {
-        //TODO  Make it so it asks for user/pass and the project to open
-        
-        //project = null;
-        //user = null;
-        
-        user = new User("default", "default");
-        project = new Project("defaultProject","defaultPath", user);
-        Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
-        project.importSourceText("./QDA/TestTextFile.txt", folder1);
+        project = null;
+        user = null;
         
         helpViewIndex = -1;
         
-        checkedElements = new DefaultCheckboxTreeCellRenderer();
-        checkedElements.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
-        checkedElements.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
-        checkedElements.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
-        
-        checkedTags = new DefaultCheckboxTreeCellRenderer();
-        checkedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
-        checkedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
-        checkedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
-        
+        initializeRepository();
+        initializeTags();
+
         initComponents();
-        
-        project.addTagType(project.getRootTag(),"child");
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int w = (int) screenSize.getWidth();
         int h = (int) screenSize.getHeight();
         setBounds(w/10, h/10, w*4/5, h*3/4);
         projectData.requestFocusInWindow();
+        
+        defaultSetUp();
+    }
+    
+    private void defaultSetUp() {
+        MessageDialog md = new MessageDialog(this, "Opening default project.");
+        md.setVisible(true);
+        openProject(new Project("defaultProject","defaultPath", user));
+        signInUser(new User("default", "default"));
+        Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
+        project.importSourceText("./QDA/TestTextFile.txt", folder1);
+        project.addTagType(project.getRootTag(),"child");  
+    }
+    
+    private void initializeRepository() {
+        uncheckedRep = new BlankCheckboxTreeCellRenderer();
+        uncheckedRep.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
+        uncheckedRep.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
+        uncheckedRep.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
+        
+        checkedRep = new DefaultCheckboxTreeCellRenderer();
+        checkedRep.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
+        checkedRep.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
+        checkedRep.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
+        
+        repository = new CheckboxTree();
+        repository.setVisible(false);
+        repository.setCellRenderer(uncheckedRep);
+        repository.setEditable(true);
+        repository.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        repository.setSelectionInterval(0, 0);
+        repository.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                repositoryMousePressed(evt);
+            }
+        });
+    }
+    
+    private void initializeTags() {
+        uncheckedTags = new BlankCheckboxTreeCellRenderer();
+        uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
+        uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
+        
+        checkedTags = new DefaultCheckboxTreeCellRenderer();
+        checkedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
+        checkedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        checkedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
+        
+        tags = new CheckboxTree();
+        tags.setVisible(false);
+        tags.setCellRenderer(uncheckedTags);
+        tags.setEditable(true);
+        tags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tags.setSelectionInterval(0, 0);
     }
 
     /** This method is called from within the constructor to
@@ -87,7 +129,6 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         renameElement = new javax.swing.JButton();
         deleteElement = new javax.swing.JButton();
         repositoryPane = new javax.swing.JScrollPane();
-        repository = new javax.swing.JTree();
         tagsWindow = new javax.swing.JPanel();
         tagsLabel = new javax.swing.JLabel();
         tagsTools = new javax.swing.JToolBar();
@@ -99,19 +140,6 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         renameTag = new javax.swing.JButton();
         deleteTag = new javax.swing.JButton();
         tagsPane = new javax.swing.JScrollPane();
-        tags = new javax.swing.JTree();
-        if (project != null && user != null) {
-            tags = new javax.swing.JTree(project.getRootTag());
-            tags.setRootVisible(true);
-        }
-        else {
-            tags.setRootVisible(false);
-        }
-
-        DefaultTreeCellRenderer uncheckedTags = new DefaultTreeCellRenderer();
-        uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
-        uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
-        uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
         views = TabbedPaneFactory.createCloseButtonTabbedPane();
         newSearch = new javax.swing.JButton();
         applicationMenu = new javax.swing.JMenuBar();
@@ -152,18 +180,13 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         repositoryLabel.setText("Repository");
         repositoryWindow.add(repositoryLabel);
 
-        if (project != null && user != null) {
-            repositoryTools.setEnabled(true);
-        }
-        else {
-            repositoryTools.setEnabled(false);
-        }
         repositoryTools.setFloatable(false);
         repositoryTools.setRollover(true);
         repositoryTools.setAlignmentX(0.0F);
 
         importFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Import File.png"))); // NOI18N
         importFile.setToolTipText("Import File");
+        importFile.setEnabled(false);
         importFile.setFocusable(false);
         importFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         importFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -176,6 +199,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         newFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Folder.png"))); // NOI18N
         newFolder.setToolTipText("New Folder");
+        newFolder.setEnabled(false);
         newFolder.setFocusable(false);
         newFolder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -183,6 +207,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         cutElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Cut.png"))); // NOI18N
         cutElement.setToolTipText("Cut");
+        cutElement.setEnabled(false);
         cutElement.setFocusable(false);
         cutElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cutElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -190,6 +215,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         copyElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Copy.png"))); // NOI18N
         copyElement.setToolTipText("Copy");
+        copyElement.setEnabled(false);
         copyElement.setFocusable(false);
         copyElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         copyElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -197,6 +223,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         pasteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Paste.png"))); // NOI18N
         pasteElement.setToolTipText("Paste");
+        pasteElement.setEnabled(false);
         pasteElement.setFocusable(false);
         pasteElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         pasteElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -204,6 +231,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         renameElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
         renameElement.setToolTipText("Rename");
+        renameElement.setEnabled(false);
         renameElement.setFocusable(false);
         renameElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         renameElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -216,6 +244,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         deleteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
         deleteElement.setToolTipText("Delete");
+        deleteElement.setEnabled(false);
         deleteElement.setFocusable(false);
         deleteElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deleteElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -225,27 +254,6 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         repositoryPane.setAlignmentX(0.0F);
 
-        if (project != null && user != null) {
-            repository = new javax.swing.JTree(project.getMainFolder());
-            repository.setRootVisible(true);
-        }
-        else {
-            repository.setRootVisible(false);
-        }
-
-        DefaultTreeCellRenderer uncheckedElements = new DefaultTreeCellRenderer();
-        uncheckedElements.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
-        uncheckedElements.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Folder.png")));
-        uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/File.png")));
-        repository.setCellRenderer(uncheckedElements);
-        repository.setEditable(true);
-        repository.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        repository.setSelectionInterval(0, 0);
-        repository.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                repositoryMousePressed(evt);
-            }
-        });
         repositoryPane.setViewportView(repository);
 
         repositoryWindow.add(repositoryPane);
@@ -257,18 +265,13 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
         tagsLabel.setText("Tags");
         tagsWindow.add(tagsLabel);
 
-        if (project != null && user != null) {
-            tagsTools.setEnabled(true);
-        }
-        else {
-            tagsTools.setEnabled(false);
-        }
         tagsTools.setFloatable(false);
         tagsTools.setRollover(true);
         tagsTools.setAlignmentX(0.0F);
 
         newTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Tag.png"))); // NOI18N
         newTag.setToolTipText("New Tag");
+        newTag.setEnabled(false);
         newTag.setFocusable(false);
         newTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -276,6 +279,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         newTagSet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Tag Set.png"))); // NOI18N
         newTagSet.setToolTipText("New Tag Set");
+        newTagSet.setEnabled(false);
         newTagSet.setFocusable(false);
         newTagSet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newTagSet.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -283,6 +287,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         cutTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Cut.png"))); // NOI18N
         cutTag.setToolTipText("Cut");
+        cutTag.setEnabled(false);
         cutTag.setFocusable(false);
         cutTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cutTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -290,6 +295,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         copyTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Copy.png"))); // NOI18N
         copyTag.setToolTipText("Copy");
+        copyTag.setEnabled(false);
         copyTag.setFocusable(false);
         copyTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         copyTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -297,6 +303,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         pasteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Paste.png"))); // NOI18N
         pasteTag.setToolTipText("Paste");
+        pasteTag.setEnabled(false);
         pasteTag.setFocusable(false);
         pasteTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         pasteTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -304,6 +311,7 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         renameTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
         renameTag.setToolTipText("Rename");
+        renameTag.setEnabled(false);
         renameTag.setFocusable(false);
         renameTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         renameTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -316,229 +324,177 @@ public class MainFrame extends JFrame implements PropertyChangeListener{
 
         deleteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
         deleteTag.setToolTipText("Delete");
+        deleteTag.setEnabled(false);
         deleteTag.setFocusable(false);
         deleteTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deleteTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         tagsTools.add(deleteTag);
 
-        tagsWindow.add(tagsTools);
-
-        tagsPane.setAlignmentX(0.0F);
-
-        tags.setCellRenderer(uncheckedTags);
-        tags.setEditable(true);
-        tags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tags.setSelectionInterval(0, 0);
         tagsPane.setViewportView(tags);
 
+        tagsWindow.add(tagsTools);
         tagsWindow.add(tagsPane);
 
         projectData.setRightComponent(tagsWindow);
 
         applicationPane.setLeftComponent(projectData);
 
-        views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);
-        views.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                viewsStateChanged(evt);
-            }
-        });
-        applicationPane.setRightComponent(views);
+        views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE,
+            new PropertyChangeListener() {
+                public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                    viewsPropertyChange(evt);
+                }
+            });
+            views.addChangeListener(new javax.swing.event.ChangeListener() {
+                public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                    viewsStateChanged(evt);
+                }
+            });
+            applicationPane.setRightComponent(views);
 
-        if (project != null && user != null) {
-            newSearch.setEnabled(true);
-        }
-        else {
+            newSearch.setText("New Search");
             newSearch.setEnabled(false);
-        }
-        newSearch.setText("New Search");
-        newSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newSearchActionPerformed(evt);
-            }
-        });
+            newSearch.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    newSearchActionPerformed(evt);
+                }
+            });
 
-        projectMenu.setText("Project");
-        projectMenu.setFocusCycleRoot(true);
-        projectMenu.setFocusPainted(true);
+            projectMenu.setText("Project");
+            projectMenu.setFocusCycleRoot(true);
+            projectMenu.setFocusPainted(true);
 
-        newProject.setText("New");
-        newProject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newProjectActionPerformed(evt);
-            }
-        });
-        projectMenu.add(newProject);
+            newProject.setText("New");
+            newProject.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    newProjectActionPerformed(evt);
+                }
+            });
+            projectMenu.add(newProject);
 
-        openProject.setText("Open");
-        openProject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openProjectActionPerformed(evt);
-            }
-        });
-        projectMenu.add(openProject);
-        projectMenu.add(jSeparator1);
+            openProject.setText("Open");
+            openProject.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    openProjectActionPerformed(evt);
+                }
+            });
+            projectMenu.add(openProject);
+            projectMenu.add(jSeparator1);
 
-        if (project != null && user != null) {
-            saveProject.setEnabled(true);
-        }
-        else {
+            saveProject.setText("Save");
             saveProject.setEnabled(false);
-        }
-        saveProject.setText("Save");
-        projectMenu.add(saveProject);
+            projectMenu.add(saveProject);
 
-        if (project != null && user != null) {
-            saveAsProject.setEnabled(true);
-        }
-        else {
+            saveAsProject.setText("Save As");
             saveAsProject.setEnabled(false);
-        }
-        saveAsProject.setText("Save As");
-        saveAsProject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SaveAsActionPerformed(evt);
-            }
-        });
-        projectMenu.add(saveAsProject);
-        projectMenu.add(jSeparator3);
+            saveAsProject.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    SaveAsActionPerformed(evt);
+                }
+            });
+            projectMenu.add(saveAsProject);
+            projectMenu.add(jSeparator3);
 
-        if (project != null && user != null) {
-            mergeProject.setEnabled(true);
-        }
-        else {
+            mergeProject.setText("Merge");
             mergeProject.setEnabled(false);
-        }
-        mergeProject.setText("Merge");
-        projectMenu.add(mergeProject);
+            projectMenu.add(mergeProject);
 
-        if (project != null && user != null) {
-            viewVersionHistory.setEnabled(true);
-        }
-        else {
+            viewVersionHistory.setText("View Version History");
             viewVersionHistory.setEnabled(false);
-        }
-        viewVersionHistory.setText("View Version History");
-        projectMenu.add(viewVersionHistory);
-        projectMenu.add(jSeparator4);
+            projectMenu.add(viewVersionHistory);
+            projectMenu.add(jSeparator4);
 
-        if (project != null && user != null && false/*TODO: is admin*/) {
-            manageUsers.setEnabled(true);
-        }
-        else {
+            manageUsers.setText("Manage Users");
             manageUsers.setEnabled(false);
-        }
-        manageUsers.setText("Manage Users");
-        manageUsers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                manageUsersActionPerformed(evt);
-            }
-        });
-        projectMenu.add(manageUsers);
-        projectMenu.add(jSeparator2);
+            manageUsers.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    manageUsersActionPerformed(evt);
+                }
+            });
+            projectMenu.add(manageUsers);
+            projectMenu.add(jSeparator2);
 
-        if (project != null) {
-            closeProject.setEnabled(true);
-        }
-        else {
+            closeProject.setText("Close");
             closeProject.setEnabled(false);
-        }
-        closeProject.setText("Close");
-        closeProject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EXIT_ON_CLOSE(evt);
-            }
-        });
-        projectMenu.add(closeProject);
+            closeProject.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    EXIT_ON_CLOSE(evt);
+                }
+            });
+            projectMenu.add(closeProject);
 
-        applicationMenu.add(projectMenu);
+            applicationMenu.add(projectMenu);
 
-        if (project != null) {
-            userMenu.setEnabled(true);
-        }
-        else {
+            userMenu.setText("User");
             userMenu.setEnabled(false);
-        }
-        userMenu.setText("User");
-        userMenu.setFocusCycleRoot(true);
-        userMenu.setFocusPainted(true);
+            userMenu.setFocusCycleRoot(true);
+            userMenu.setFocusPainted(true);
 
-        accountSettings.setText("Account Settings");
-        accountSettings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accountSettingsActionPerformed(evt);
-            }
-        });
-        userMenu.add(accountSettings);
+            accountSettings.setText("Account Settings");
+            accountSettings.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    accountSettingsActionPerformed(evt);
+                }
+            });
+            userMenu.add(accountSettings);
 
-        if (project != null && user == null) {
-            signInUser.setEnabled(true);
-        }
-        else {
-            signInUser.setEnabled(false);
-        }
-        signInUser.setText("Sign In");
-        signInUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                signInUserActionPerformed(evt);
-            }
-        });
-        userMenu.add(signInUser);
+            signInUser.setText("Sign In");
+            signInUser.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    signInUserActionPerformed(evt);
+                }
+            });
+            userMenu.add(signInUser);
 
-        if (project != null && user != null) {
-            signOutUser.setEnabled(true);
-        }
-        else {
+            signOutUser.setText("Sign Out");
             signOutUser.setEnabled(false);
-        }
-        signOutUser.setText("Sign Out");
-        userMenu.add(signOutUser);
-        signOutUser.getAccessibleContext().setAccessibleName("");
+            userMenu.add(signOutUser);
+            signOutUser.getAccessibleContext().setAccessibleName("");
 
-        applicationMenu.add(userMenu);
+            applicationMenu.add(userMenu);
 
-        helpMenu.setText("Help");
-        helpMenu.setFocusCycleRoot(true);
-        helpMenu.setFocusPainted(true);
+            helpMenu.setText("Help");
+            helpMenu.setFocusCycleRoot(true);
+            helpMenu.setFocusPainted(true);
 
-        helpContents.setText("Help Contents");
-        helpContents.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpContentsActionPerformed(evt);
-            }
-        });
-        helpMenu.add(helpContents);
+            helpContents.setText("Help Contents");
+            helpContents.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    helpContentsActionPerformed(evt);
+                }
+            });
+            helpMenu.add(helpContents);
 
-        about.setText("About");
-        about.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutActionPerformed(evt);
-            }
-        });
-        helpMenu.add(about);
+            about.setText("About");
+            about.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    aboutActionPerformed(evt);
+                }
+            });
+            helpMenu.add(about);
 
-        applicationMenu.add(helpMenu);
+            applicationMenu.add(helpMenu);
 
-        applicationMenu.add(Box.createHorizontalGlue());
-        applicationMenu.add(newSearch);
+            applicationMenu.add(Box.createHorizontalGlue());
+            applicationMenu.add(newSearch);
 
-        setJMenuBar(applicationMenu);
+            setJMenuBar(applicationMenu);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(applicationPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(applicationPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
-        );
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(applicationPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(applicationPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+            );
 
-        getAccessibleContext().setAccessibleName("");
+            getAccessibleContext().setAccessibleName("");
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+            pack();
+        }// </editor-fold>//GEN-END:initComponents
 
 private void helpContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContentsActionPerformed
     if (helpViewIndex == -1) {
@@ -578,6 +534,61 @@ private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     sid.setVisible(true);
 }//GEN-LAST:event_signInUserActionPerformed
 
+/*
+ * User u should already have submitted their passwrd and been verified as a valid user
+ */
+private void signInUser(User u) {
+    user = u;
+    
+    saveProject.setEnabled(true);
+    saveAsProject.setEnabled(true);
+    mergeProject.setEnabled(true);
+    viewVersionHistory.setEnabled(true);
+    if (false /*TODO: user is admin*/) {
+        manageUsers.setEnabled(true);
+    }
+    
+    signInUser.setEnabled(false);
+    signOutUser.setEnabled(true);
+    
+    newSearch.setEnabled(true);
+    
+    repository.setModel(new DefaultTreeModel(project.getMainFolder()));
+    repository.setVisible(true);
+    setRepositoryToolsEnabled(true);
+    
+    tags.setModel(new DefaultTreeModel(project.getRootTag()));
+    tags.setVisible(true);
+    setTagsToolsEnabled(true);
+    
+    this.repaint();
+}
+
+private void signOutUser() {
+    user = null;
+    
+    //TODO: close views
+    
+    saveProject.setEnabled(false);
+    saveAsProject.setEnabled(false);
+    mergeProject.setEnabled(false);
+    viewVersionHistory.setEnabled(false);
+    manageUsers.setEnabled(false);
+    
+    signInUser.setEnabled(true);
+    signOutUser.setEnabled(false);
+    
+    newSearch.setEnabled(false);
+    
+    repository.setVisible(false);
+    setRepositoryToolsEnabled(false);
+    
+    tags.setVisible(false);
+    setTagsToolsEnabled(false);
+    
+    this.repaint();
+}
+
 private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXIT_ON_CLOSE
 // TODO add your handling code here:
     System.exit(0); // Exit the application
@@ -591,6 +602,33 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         char[] password = opd.getPassword();
     }
 }//GEN-LAST:event_openProjectActionPerformed
+
+/*
+ * The project should already have been loaded into memory
+ */
+private void openProject(Project p) {
+    if (project != null) {
+        //TODO: new application
+    }
+    else {
+        project = p;
+        closeProject.setEnabled(true);
+        userMenu.setEnabled(true);
+    }
+    this.repaint();
+}
+
+private void closeProject(Project p) {
+    if (user != null) {
+        signOutUser();
+    }
+    else {
+        project = null;
+        closeProject.setEnabled(false);
+        userMenu.setEnabled(false);
+    }
+    this.repaint();
+}
 
 private void SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsActionPerformed
     SaveAsProjectDialog sap = new SaveAsProjectDialog(this);
@@ -608,66 +646,37 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private void viewsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_viewsStateChanged
         View view = (View) views.getSelectedComponent();
         if (view instanceof SearchView) {
-            repositoryPane.setViewportView(((SearchView) view).getFilesTree());
-            tagsPane.setViewportView(((SearchView) view).getTagsTree());
+            repository.setCellRenderer(checkedRep);
+            repository.setCheckingModel(((SearchView) view).getFilesModel());
+            tags.setCellRenderer(checkedTags);
+            tags.setCheckingModel(((SearchView) view).getTagsModel());
         }
         else {
-            repositoryPane.setViewportView(repository);
+            repository.setCellRenderer(uncheckedRep);
             if (view instanceof SourceTextView) {
-                tagsPane.setViewportView(((SourceTextView) view).getTagsTree());
+                tags.setCellRenderer(checkedTags);
+                tags.setCheckingModel(((SourceTextView) view).getTagsModel());
             }
             else {
-                tagsPane.setViewportView(tags);
+                tags.setCellRenderer(uncheckedTags);
             }
         }
+        repaint();
     }//GEN-LAST:event_viewsStateChanged
 
+    private void viewsPropertyChange(PropertyChangeEvent evt) {   
+        int indexToDelete = views.indexOfComponent((java.awt.Component)evt.getNewValue());
+        if (helpViewIndex == indexToDelete) {
+            helpViewIndex = -1;
+        }
+        views.removeTabAt(indexToDelete);
+    }   
+    
     private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
-        CheckboxTree rep = new CheckboxTree(repository.getModel());
-        rep.setCellRenderer(checkedElements);
-        rep.setEditable(true);
-        rep.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        rep.setSelectionInterval(0, 0);
-        rep.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                repositoryMousePressed(evt);
-            }
-        });
-        
-        CheckboxTree tag = new CheckboxTree(tags.getModel());
-        tags.setCellRenderer(checkedTags);
-        tags.setEditable(true);
-        tags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tags.setSelectionInterval(0, 0);
+        TreeCheckingModel rep = new DefaultTreeCheckingModel(repository);
+        TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
         addView(new SearchView("New Search", rep, tag));
     }//GEN-LAST:event_newSearchActionPerformed
-
-    private void repositoryMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_repositoryMousePressed
-        JTree rep = (JTree) repositoryPane.getViewport().getView();
-        int selRow = rep.getRowForLocation(evt.getX(), evt.getY());
-        TreePath alpha = rep.getSelectionPath();
-        String beta = alpha.getLastPathComponent().toString();
-        //check if node
-        if(beta.contains("/")) { //it is a node
-            int start = beta.lastIndexOf("/") + 1;
-            int end = beta.lastIndexOf(".");
-            String filename = beta.substring(start, end);
-            if(selRow != -1) {
-            if(evt.getClickCount() == 2 ) {
-                CheckboxTree tag = new CheckboxTree();
-                tag.setCellRenderer(checkedTags);
-                tag.setSelectionModel(null);
-                //TODO
-                //addView(new SourceTextView(filename, tag));
-            }
-        }
-            
-        } else {
-            // Do nothing since a node wasn't selected
-        }
-
-    }//GEN-LAST:event_repositoryMousePressed
 
     private void renameElementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameElementActionPerformed
         JTree rep = (JTree) repositoryPane.getViewport().getView();
@@ -692,27 +701,68 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }//GEN-LAST:event_renameTagActionPerformed
 
+    private void repositoryMousePressed(java.awt.event.MouseEvent evt) {
+        JTree rep = (JTree) repositoryPane.getViewport().getView();
+        int selRow = rep.getRowForLocation(evt.getX(), evt.getY());
+        TreePath alpha = rep.getSelectionPath();
+        if (alpha != null) {
+            Object beta = alpha.getLastPathComponent();
+            if (beta != null) {
+                String gamma = beta.toString();
+                //check if node
+                if (gamma.contains("/")) { //it is a node
+                    int start = gamma.lastIndexOf("/") + 1;
+                    int end = gamma.lastIndexOf(".");
+                    String filename = gamma.substring(start, end);
+                    if (selRow != -1) {
+                        if (evt.getClickCount() == 2) {
+                            TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
+                            addView(new SourceTextView((MarkedUpText) alpha.getLastPathComponent(), tag));
+                        }
+                    } else {
+                        // Do nothing since a node wasn't selected
+                    }
+                }
+            }
+        }
+    }
+    
     private void importFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFileActionPerformed
         
     }//GEN-LAST:event_importFileActionPerformed
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        int indexToDelete = views.indexOfComponent((java.awt.Component)evt.getNewValue());
-        if (helpViewIndex == indexToDelete) {
-            helpViewIndex = -1;
-        }
-        views.removeTabAt(indexToDelete);
-    }
-
-    public void addView(View v) {
+    private void addView(View v) {
         views.addTab(v.getAbbrv(), null, v, v.getTitle());
         views.setSelectedIndex(views.indexOfComponent(v));
     }
     
+    private void setRepositoryToolsEnabled(boolean enabled) {
+        importFile.setEnabled(enabled);
+        newFolder.setEnabled(enabled);
+        cutElement.setEnabled(enabled);
+        copyElement.setEnabled(enabled);
+        pasteElement.setEnabled(enabled);
+        renameElement.setEnabled(enabled);
+        deleteElement.setEnabled(enabled);
+    }
+    
+    private void setTagsToolsEnabled(boolean enabled) {
+        newTag.setEnabled(enabled);
+        newTagSet.setEnabled(enabled);
+        cutTag.setEnabled(enabled);
+        copyTag.setEnabled(enabled);
+        pasteTag.setEnabled(enabled);
+        renameTag.setEnabled(enabled);
+        deleteTag.setEnabled(enabled);
+    }
+    
     private int helpViewIndex;
-    private DefaultCheckboxTreeCellRenderer checkedElements = new DefaultCheckboxTreeCellRenderer();
-    private DefaultCheckboxTreeCellRenderer checkedTags = new DefaultCheckboxTreeCellRenderer();
+    private CheckboxTree repository;
+    private BlankCheckboxTreeCellRenderer uncheckedRep;
+    private DefaultCheckboxTreeCellRenderer checkedRep;
+    private CheckboxTree tags;
+    private BlankCheckboxTreeCellRenderer uncheckedTags;
+    private DefaultCheckboxTreeCellRenderer checkedTags;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about;
     private javax.swing.JMenuItem accountSettings;
@@ -746,7 +796,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JMenu projectMenu;
     private javax.swing.JButton renameElement;
     private javax.swing.JButton renameTag;
-    private javax.swing.JTree repository;
     private javax.swing.JLabel repositoryLabel;
     private javax.swing.JScrollPane repositoryPane;
     private javax.swing.JToolBar repositoryTools;
@@ -755,7 +804,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JMenuItem saveProject;
     private javax.swing.JMenuItem signInUser;
     private javax.swing.JMenuItem signOutUser;
-    private javax.swing.JTree tags;
     private javax.swing.JLabel tagsLabel;
     private javax.swing.JScrollPane tagsPane;
     private javax.swing.JToolBar tagsTools;

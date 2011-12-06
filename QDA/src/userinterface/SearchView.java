@@ -4,7 +4,7 @@
  */
 package userinterface;
 
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
+import checkboxtree.TreeCheckingModel;
 
 /**
  *
@@ -12,20 +12,20 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
  */
 public class SearchView extends View {
     
-    private CheckboxTree filesTree;
-    private CheckboxTree tagsTree;
+    private TreeCheckingModel filesModel;
+    private TreeCheckingModel tagsModel;
     
-    public SearchView(String t, CheckboxTree files, CheckboxTree tags) {
+    public SearchView(String t, TreeCheckingModel fm, TreeCheckingModel tm) {
         super(t);
-        filesTree = files;
-        tagsTree = tags;
+        filesModel = fm;
+        tagsModel = tm;
     }
     
-    public CheckboxTree getFilesTree() {
-        return filesTree;
+    public TreeCheckingModel getFilesModel() {
+        return filesModel;
     }
     
-    public CheckboxTree getTagsTree() {
-        return tagsTree;
+    public TreeCheckingModel getTagsModel() {
+        return tagsModel;
     }
 }
