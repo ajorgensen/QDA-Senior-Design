@@ -18,27 +18,27 @@ public class cgitTests {
         
         //Add some comments
         comments comments = new comments(working_dir);
-        Comment comment = comments.new_comment("aj", new TextSection(0,10), "comment", "SourceText1.txt");
+        Comment comment = comments.new_comment(0, new TextSection(0,10), "comment", "SourceText1.txt");
         
         comments.addComment(comment);
         
-        comment = comments.new_comment("ryan", new TextSection(0,10), "1134", "SourceText1.txt");
+        comment = comments.new_comment(1, new TextSection(0,10), "1134", "SourceText1.txt");
         
         comments.addComment(comment);
         
         //Commit changes
-        Branch.commit(working_dir, "aj", "first commit");
+        Branch.commit(working_dir, 0, "first commit");
         
         //some more comments
-        comment = comments.new_comment("hemal", new TextSection(0,10), "1134", "SourceText1.txt");
+        comment = comments.new_comment(2, new TextSection(0,10), "1134", "SourceText1.txt");
         
-        Branch.commit(working_dir, "aj", "second commit");
+        Branch.commit(working_dir, 0, "second commit");
         
         Branch.newBranch(working_dir, "new_branch");
         
-        comment = comments.new_comment("hemal", new TextSection(0,10), "hello world", "SourceText1.txt");
+        comment = comments.new_comment(2, new TextSection(0,10), "hello world", "SourceText1.txt");
         comments.addComment(comment);
         
-        Branch.commit(working_dir, "hemal", "new commit");
+        Branch.commit(working_dir, 2, "new commit");
     }  
 }

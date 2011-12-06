@@ -14,9 +14,9 @@ public class TagInstance extends MarkUp{
     
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public TagInstance(String user, Date dateAdded, Date dateModified,
+    public TagInstance(int userId, Date dateAdded, Date dateModified,
             TextSection selection, MarkedUpText markedUpText , TagType tagType) {
-        super(user, dateAdded, dateModified, selection);
+        super(userId, dateAdded, dateModified, selection);
         this.tagType=tagType;
         this.sourceFileName = markedUpText.getSourceText().getPath();
         this.markedUpText = markedUpText;

@@ -2,21 +2,21 @@ package model;
 import java.util.Date;
 public abstract class MarkUp implements Ownable, Deletable {
 
-    private final String user;
+    private final int userId;
     private final Date dateAdded;
     private Date dateModified;
     private TextSection textSection;
 
-    protected MarkUp(String u, Date da, Date dm, TextSection ts) {
-        user = u;
+    protected MarkUp(int ui, Date da, Date dm, TextSection ts) {
+        userId = ui;
         dateAdded = da;
         dateModified = dm;
         textSection = ts;
     }
     
     @Override
-    public String getOwner() {
-        return user;
+    public int getOwnerId() {
+        return userId;
     }
 
     public Date getDateAdded() {

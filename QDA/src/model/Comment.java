@@ -14,8 +14,8 @@ public class Comment extends MarkUp{
     
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment, String sourceFilePath){
-        super(user, dateAdded, dateModified, selection);
+    public Comment(int userId, Date dateAdded, Date dateModified, TextSection selection, String comment, String sourceFilePath){
+        super(userId, dateAdded, dateModified, selection);
         this.comment = comment;
         this.sourceFileName = sourceFilePath;
     }
@@ -39,9 +39,9 @@ public class Comment extends MarkUp{
         //TODO
     }
     
-    public static Comment generateNewComment(String user, TextSection selected, String comment, String sourceFilePath)
+    public static Comment generateNewComment(int userId, TextSection selected, String comment, String sourceFilePath)
     {
         Date now = new Date();
-        return new Comment(user, now, now, selected, comment, sourceFilePath);
+        return new Comment(userId, now, now, selected, comment, sourceFilePath);
     }
 }

@@ -25,23 +25,29 @@ public class Project implements Nameable {
         private String name;
 	private Folder mainFolder;
 	private List<User> users;
+        private int nextUserId;
         private User currUser;
 	private RootTag rootTag;
         private List<TagType> tags;
         private MarkedUpText curText;
-
+        
+        public Project(String name, String localPath, String adminUsername, String adminPassword){
+            this(0, name, localPath, adminUsername, adminPassword);
+        }
         /**
          * Creates a new project
          * 
          * @param localPath - taken from file selection dialog
          * @param currentUser - the user creating the file
          */
-	public Project(String name, String localPath, User admin){                
+	public Project(int nextUId, String name, String localPath, String adminUsername, String adminPassword){
+                nextUserId = nextUId;
+                
 		this.localPath = localPath;
                 this.name = name;
                 this.mainFolder = new Folder(localPath);
 		this.users = new LinkedList<User>();
-                addUser(admin);
+                addUser(adminUsername, adminPassword);
                 this.currUser = null;
                 this.rootTag = new RootTag();
                 this.tags=new LinkedList<TagType>();
@@ -127,20 +133,22 @@ public class Project implements Nameable {
             return currUser;
         }
         
-        public boolean setCurrentUser(User user) {
+        public void setCurrentUserId(int id) {
             for (int i = 0; i < users.size(); i++) {
                 User u = users.get(i);
-                if (u == user) {
+                if (u.getId() == id) {
                     currUser = u;
-                    return true;
+                    return;
                 }
             }
             currUser = null;
-            return false;
         }
 	
-	public void addUser(User u){
-            users.add(u);
+	public User addUser(String username, String password){
+            User added = new User(nextUserId, username, password);
+            users.add(added);
+            nextUserId += 1;
+            return added;
 	}
 	
 	public void removeUser(User user){

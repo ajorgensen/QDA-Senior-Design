@@ -101,7 +101,7 @@ public class comments {
         // username|dateAdded|dateModified|startingPos|startingLine|endingPos|endingLine|comment|filepath
         try {
 
-            String uname;
+            int uid;
             Date dateAdded;
             Date dateModified;
             int offset;
@@ -109,7 +109,7 @@ public class comments {
             String comment_text;
             String sourceFilePath;
 
-            uname = comment_params[0];
+            uid = Integer.parseInt(comment_params[0]);
             dateAdded = new SimpleDateFormat(Comment.DATE_FORMAT).parse(comment_params[1]);
             dateModified = new SimpleDateFormat(Comment.DATE_FORMAT).parse(comment_params[2]);
             offset = Integer.parseInt(comment_params[3]);
@@ -117,22 +117,22 @@ public class comments {
             comment_text = comment_params[7];
             sourceFilePath = comment_params[8];
 
-            return new Comment(uname, dateAdded, dateModified, new TextSection(offset, length), comment_text, sourceFilePath);
+            return new Comment(uid, dateAdded, dateModified, new TextSection(offset, length), comment_text, sourceFilePath);
         } catch (java.text.ParseException e) {
             MyLogger.LogMessageToConsole(null, "Error parsing date", LogType.ERROR);
             return null;
         }
     }
 
-    public static final Comment new_comment(String uname, TextSection selectedText, String comment_text, String sourceFilePath) {
+    public static final Comment new_comment(int uid, TextSection selectedText, String comment_text, String sourceFilePath) {
         Date now = new Date();
-        return new Comment(uname, now, now, selectedText, comment_text, sourceFilePath);
+        return new Comment(uid, now, now, selectedText, comment_text, sourceFilePath);
     }
 
     private String commentToString(Comment comment) {
         SimpleDateFormat formatter = new SimpleDateFormat(comment.DATE_FORMAT);
 
-        return comment.getOwner() + cgitDirectory.DELIMETER
+        return comment.getOwnerId() + cgitDirectory.DELIMETER
                 + new StringBuilder(formatter.format(comment.getDateAdded())) + cgitDirectory.DELIMETER
                 + new StringBuilder(formatter.format(comment.getDateModified())) + cgitDirectory.DELIMETER
                 + Integer.toString(comment.getTextSection().getOffset()) + cgitDirectory.DELIMETER
