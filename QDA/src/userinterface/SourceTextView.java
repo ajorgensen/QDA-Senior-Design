@@ -17,7 +17,7 @@ public class SourceTextView extends View {
     private TreeCheckingModel tagsModel;
     
     public SourceTextView(MarkedUpText mut, TreeCheckingModel tm) {
-        super(mut.getSourceText().getText());
+        super(mut.toString());
         markedUpText = mut;
         tagsModel = tm;
     }

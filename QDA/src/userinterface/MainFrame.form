@@ -193,7 +193,7 @@
   <SubComponents>
     <Container class="javax.swing.JSplitPane" name="applicationPane">
       <Properties>
-        <Property name="dividerLocation" type="int" value="205"/>
+        <Property name="dividerLocation" type="int" value="200"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
@@ -231,7 +231,7 @@
                   <Properties>
                     <Property name="floatable" type="boolean" value="false"/>
                     <Property name="rollover" type="boolean" value="true"/>
-                    <Property name="alignmentX" type="float" value="0.0"/>
+                    <Property name="alignmentX" type="float" value="0.03"/>
                   </Properties>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
@@ -330,7 +330,7 @@
                 </Container>
                 <Container class="javax.swing.JScrollPane" name="repositoryPane">
                   <Properties>
-                    <Property name="alignmentX" type="float" value="0.0"/>
+                    <Property name="alignmentX" type="float" value="0.03"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="repositoryPane.setViewportView(repository);"/>
@@ -360,7 +360,7 @@
                   <Properties>
                     <Property name="floatable" type="boolean" value="false"/>
                     <Property name="rollover" type="boolean" value="true"/>
-                    <Property name="alignmentX" type="float" value="0.0"/>
+                    <Property name="alignmentX" type="float" value="0.03"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tagsPane.setViewportView(tags);"/>
@@ -458,6 +458,9 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JScrollPane" name="tagsPane">
+                  <Properties>
+                    <Property name="alignmentX" type="float" value="0.03"/>
+                  </Properties>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                 </Container>

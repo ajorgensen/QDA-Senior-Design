@@ -170,7 +170,7 @@ public class MainFrame extends JFrame {
         setMinimumSize(new java.awt.Dimension(500, 300));
         setName(""); // NOI18N
 
-        applicationPane.setDividerLocation(205);
+        applicationPane.setDividerLocation(200);
 
         projectData.setDividerLocation(250);
         projectData.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -182,7 +182,7 @@ public class MainFrame extends JFrame {
 
         repositoryTools.setFloatable(false);
         repositoryTools.setRollover(true);
-        repositoryTools.setAlignmentX(0.0F);
+        repositoryTools.setAlignmentX(0.03F);
 
         importFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Import File.png"))); // NOI18N
         importFile.setToolTipText("Import File");
@@ -252,7 +252,7 @@ public class MainFrame extends JFrame {
 
         repositoryWindow.add(repositoryTools);
 
-        repositoryPane.setAlignmentX(0.0F);
+        repositoryPane.setAlignmentX(0.03F);
 
         repositoryPane.setViewportView(repository);
 
@@ -267,7 +267,7 @@ public class MainFrame extends JFrame {
 
         tagsTools.setFloatable(false);
         tagsTools.setRollover(true);
-        tagsTools.setAlignmentX(0.0F);
+        tagsTools.setAlignmentX(0.03F);
 
         newTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Tag.png"))); // NOI18N
         newTag.setToolTipText("New Tag");
@@ -333,6 +333,8 @@ public class MainFrame extends JFrame {
         tagsPane.setViewportView(tags);
 
         tagsWindow.add(tagsTools);
+
+        tagsPane.setAlignmentX(0.03F);
         tagsWindow.add(tagsPane);
 
         projectData.setRightComponent(tagsWindow);
@@ -711,13 +713,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
                 String gamma = beta.toString();
                 //check if node
                 if (gamma.contains("/")) { //it is a node
-                    int start = gamma.lastIndexOf("/") + 1;
-                    int end = gamma.lastIndexOf(".");
-                    String filename = gamma.substring(start, end);
                     if (selRow != -1) {
                         if (evt.getClickCount() == 2) {
                             TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
-                            addView(new SourceTextView((MarkedUpText) alpha.getLastPathComponent(), tag));
+                            addView(new SourceTextView((MarkedUpText) beta, tag));
                         }
                     } else {
                         // Do nothing since a node wasn't selected
