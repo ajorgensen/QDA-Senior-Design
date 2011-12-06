@@ -1,5 +1,5 @@
 package model;
 
 public interface Ownable {
-	public int getOwnerId();
+	public String getOwner();
 }

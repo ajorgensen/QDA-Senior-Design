@@ -136,7 +136,7 @@ public class SourceTextView extends View {
                 getStyle(StyleContext.DEFAULT_STYLE));
         
         commentStyle = doc.addStyle("comment", defaultStyle);
-        StyleConstants.setBackground(commentStyle, Color.LIGHT_GRAY);
+        StyleConstants.setBackground(commentStyle, new Color(225,225,225));
         
         // mark up comments
         List<Comment> comments = markedUpText.getComments();
