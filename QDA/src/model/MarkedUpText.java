@@ -56,6 +56,12 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
 	public String getName() {
 		return name;
 	}
+        
+        public String getPrettyName(){
+            return name.substring(name.lastIndexOf("/") + 1);
+            //If you don't want the file extension:
+            //return name.substring(name.lastIndexOf("/") + 1, name.lastIndexOf(".")); 
+        }
 
 	@Override
 	public void rename(String name) {
@@ -71,7 +77,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
         
         @Override
         public String toString(){
-            return this.getName();
+            return this.getPrettyName();
         }
         
         public SourceText getSourceText(){
