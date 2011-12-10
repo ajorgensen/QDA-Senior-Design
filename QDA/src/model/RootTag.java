@@ -4,18 +4,18 @@ import java.util.Enumeration;
 import java.util.List;
 import javax.swing.tree.*;
 
-public class RootTag extends Tag {
+public class RootTag extends TagType {
     private User owner;
-    private List<Tag> children;
+    private List<TagType> children;
 	
     public User getOwner() {
         return owner;
     }
-    public List<Tag> getChildren() {
+    public List<TagType> getChildren() {
 	return children;
     }
         
-    public RootTag(User owner){
-        super(owner.getName(),owner);
+    public RootTag(){
+        super("Tags");
     }
 }

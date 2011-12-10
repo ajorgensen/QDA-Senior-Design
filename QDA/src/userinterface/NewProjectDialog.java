@@ -50,8 +50,8 @@ public class NewProjectDialog extends AppDialog{
     }
     
     @Override
-    protected void initComponents() {
-        super.initComponents();
+    protected void initComponents(Object[] args) {
+        super.initComponents(args);
         
         setMinimumSize(new java.awt.Dimension(420, 240));
         

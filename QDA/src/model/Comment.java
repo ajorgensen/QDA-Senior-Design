@@ -7,29 +7,17 @@ import java.util.Date;
 import cgit.MyLogger;
 import cgit.LogType;
 
-public class Comment {
+public class Comment extends MarkUp{
 
-    private String user;
     private String comment;
-    private TextSection selectedText;
-    private Date dateAdded;
-    private Date dateModified;
     private String sourceFileName;
     
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment, String sourceFilePath) {
-        this.user = user;
-        this.comment = comment;
-        this.dateAdded = dateAdded;
-        this.dateModified = dateModified;
-        this.selectedText = selection;
+    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment, String sourceFilePath){
+        super(user, dateAdded, dateModified, selection);
         this.comment = comment;
         this.sourceFileName = sourceFilePath;
-    }
-
-    public String getUser() {
-        return this.user;
     }
 
     public String getComment() {
@@ -38,25 +26,17 @@ public class Comment {
 
     public void setComment(String comment) {
         this.comment = comment;
-        this.dateModified = new Date();
+        modified(new Date());
     }
 
-    public Date getDateAdded() {
-        return this.dateAdded;
-    }
-
-    public Date getDateModified() {
-        return this.dateModified;
-    }
-
-    public TextSection getTextSection()
-    {
-        return selectedText;
-    }
-    
     public String getSourcePath()
     {
         return this.sourceFileName;
+    }
+    
+    @Override
+    public void delete() {
+        //TODO
     }
     
     public static Comment generateNewComment(String user, TextSection selected, String comment, String sourceFilePath)

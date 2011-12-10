@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="applicationMenu">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="applicationMenu.add(Box.createHorizontalGlue());&#xd;&#xa;applicationMenu.add(newSearch);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="applicationMenu.add(Box.createHorizontalGlue());&#xa;applicationMenu.add(newSearch);"/>
       </AuxValues>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="projectMenu">
@@ -35,11 +35,13 @@
             <MenuItem class="javax.swing.JMenuItem" name="saveProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveAsProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save As"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveAsActionPerformed"/>
@@ -50,11 +52,13 @@
             <MenuItem class="javax.swing.JMenuItem" name="mergeProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Merge"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="viewVersionHistory">
               <Properties>
                 <Property name="text" type="java.lang.String" value="View Version History"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
@@ -62,6 +66,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="manageUsers">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Manage Users"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="manageUsersActionPerformed"/>
@@ -72,6 +77,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="closeProject">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Close"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EXIT_ON_CLOSE"/>
@@ -82,6 +88,7 @@
         <Menu class="javax.swing.JMenu" name="userMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="User"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusCycleRoot" type="boolean" value="true"/>
             <Property name="focusPainted" type="boolean" value="true"/>
           </Properties>
@@ -105,10 +112,14 @@
             <MenuItem class="javax.swing.JMenuItem" name="signOutUser">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sign Out"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <AccessibilityProperties>
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
               </AccessibilityProperties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="signOutUserActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -173,19 +184,19 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="project" alignment="1" pref="441" max="32767" attributes="0"/>
+          <Component id="applicationPane" alignment="1" pref="587" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="project" alignment="1" pref="393" max="32767" attributes="0"/>
+          <Component id="applicationPane" alignment="1" pref="393" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JSplitPane" name="project">
+    <Container class="javax.swing.JSplitPane" name="applicationPane">
       <Properties>
-        <Property name="dividerLocation" type="int" value="205"/>
+        <Property name="dividerLocation" type="int" value="200"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
@@ -210,42 +221,21 @@
                 </Constraint>
               </Constraints>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+                <Property name="axis" type="int" value="1"/>
+              </Layout>
               <SubComponents>
-                <Container class="javax.swing.JScrollPane" name="repository">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="Center"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTree" name="sourceFolder">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="true"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sourceFolderMousePressed"/>
-                      </Events>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree(currProject.getMainFolder());"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="sourceFolder.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;sourceFolder.setSelectionInterval(0, 0);"/>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTreeCellRenderer uncheckedElements = new DefaultTreeCellRenderer();&#xa;uncheckedElements.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Folder.png&quot;)));&#xa;uncheckedElements.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Folder.png&quot;)));&#xa;uncheckedElements.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/File.png&quot;)));&#xa;sourceFolder.setCellRenderer(uncheckedElements);"/>
-                      </AuxValues>
-                    </Component>
-                  </SubComponents>
-                </Container>
+                <Component class="javax.swing.JLabel" name="repositoryLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Repository"/>
+                  </Properties>
+                </Component>
                 <Container class="javax.swing.JToolBar" name="repositoryTools">
                   <Properties>
                     <Property name="floatable" type="boolean" value="false"/>
                     <Property name="rollover" type="boolean" value="true"/>
+                    <Property name="alignmentX" type="float" value="0.03"/>
                   </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="North"/>
-                    </Constraint>
-                  </Constraints>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
                   <SubComponents>
@@ -255,10 +245,14 @@
                           <Image iconType="3" name="/userinterface/icons/Import File.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Import File"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importFileActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="newFolder">
                       <Properties>
@@ -266,6 +260,7 @@
                           <Image iconType="3" name="/userinterface/icons/New Folder.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="New Folder"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -277,6 +272,7 @@
                           <Image iconType="3" name="/userinterface/icons/Cut.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Cut"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -288,6 +284,7 @@
                           <Image iconType="3" name="/userinterface/icons/Copy.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Copy"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -299,6 +296,7 @@
                           <Image iconType="3" name="/userinterface/icons/Paste.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Paste"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -310,6 +308,7 @@
                           <Image iconType="3" name="/userinterface/icons/Rename.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Rename"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -324,6 +323,7 @@
                           <Image iconType="3" name="/userinterface/icons/Delete.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Delete"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -331,175 +331,141 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Container class="javax.swing.JScrollPane" name="repositoryPane">
+                  <Properties>
+                    <Property name="alignmentX" type="float" value="0.03"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="repositoryPane.setViewportView(repository);"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                </Container>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JTabbedPane" name="tags">
+            <Container class="javax.swing.JPanel" name="tagsWindow">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                  <JSplitPaneConstraints position="bottom"/>
+                  <JSplitPaneConstraints position="right"/>
                 </Constraint>
               </Constraints>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+                <Property name="axis" type="int" value="1"/>
+              </Layout>
               <SubComponents>
-                <Container class="javax.swing.JScrollPane" name="viewAllTags">
+                <Component class="javax.swing.JLabel" name="tagsLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tags"/>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JToolBar" name="tagsTools">
+                  <Properties>
+                    <Property name="floatable" type="boolean" value="false"/>
+                    <Property name="rollover" type="boolean" value="true"/>
+                    <Property name="alignmentX" type="float" value="0.03"/>
+                  </Properties>
                   <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                    <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tagsPane.setViewportView(tags);"/>
                   </AuxValues>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="View All Tags">
-                        <Property name="tabTitle" type="java.lang.String" value="View All Tags"/>
-                      </JTabbedPaneConstraints>
-                    </Constraint>
-                  </Constraints>
 
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTree" name="allTags">
+                    <Component class="javax.swing.JButton" name="newTag">
                       <Properties>
-                        <Property name="selectionModel" type="javax.swing.tree.TreeSelectionModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="null"/>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/New Tag.png"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="New Tag"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultTreeCellRenderer uncheckedTags = new DefaultTreeCellRenderer();&#xa;uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Open Tag Set.png&quot;)));&#xa;uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Closed Tag Set.png&quot;)));&#xa;uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource(&quot;/userinterface/icons/Tag.png&quot;)));&#xa;allTags.setCellRenderer(uncheckedTags);"/>
-                      </AuxValues>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="newTagSet">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/New Tag Set.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="New Tag Set"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="cutTag">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Cut.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Cut"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="copyTag">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Copy.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Copy"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="pasteTag">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Paste.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Paste"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="renameTag">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Rename.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Rename"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="renameTagActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="deleteTag">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/userinterface/icons/Delete.png"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Delete"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JPanel" name="editMyTagsWindow">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Edit My Tags">
-                        <Property name="tabTitle" type="java.lang.String" value="Edit My Tags"/>
-                      </JTabbedPaneConstraints>
-                    </Constraint>
-                  </Constraints>
+                <Container class="javax.swing.JScrollPane" name="tagsPane">
+                  <Properties>
+                    <Property name="alignmentX" type="float" value="0.03"/>
+                  </Properties>
 
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                  <SubComponents>
-                    <Container class="javax.swing.JScrollPane" name="editMyTags">
-                      <AuxValues>
-                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                      </AuxValues>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="Center"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                      <SubComponents>
-                        <Component class="javax.swing.JTree" name="myTags">
-                          <Properties>
-                            <Property name="editable" type="boolean" value="true"/>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree(user.getRootTag());"/>
-                            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="user.getRootTag().add(new Tag(&quot;child&quot;,user));"/>
-                            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="myTags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);&#xa;myTags.setSelectionInterval(0, 0);"/>
-                            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="myTags.setCellRenderer(uncheckedTags);"/>
-                          </AuxValues>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JToolBar" name="editMyTagsTools">
-                      <Properties>
-                        <Property name="floatable" type="boolean" value="false"/>
-                        <Property name="rollover" type="boolean" value="true"/>
-                      </Properties>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="North"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-                      <SubComponents>
-                        <Component class="javax.swing.JButton" name="newTag">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/userinterface/icons/New Tag.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="New Tag"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="newTagSet">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/userinterface/icons/New Tag Set.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="New Tag Set"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="cutTag">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/userinterface/icons/Cut.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Cut"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="copyTag">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/userinterface/icons/Copy.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Copy"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="pasteTag">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/userinterface/icons/Paste.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Paste"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="renameTag">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/userinterface/icons/Rename.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Rename"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="renameTagActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="deleteTag">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/userinterface/icons/Delete.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Delete"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
-                          </Properties>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                  </SubComponents>
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                 </Container>
               </SubComponents>
             </Container>
@@ -511,7 +477,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="TabbedPaneFactory.createCloseButtonTabbedPane()"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, this);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, &#xa;new PropertyChangeListener() {&#xa;    public void propertyChange(java.beans.PropertyChangeEvent evt) {&#xa;        viewsPropertyChange(evt);&#xa;    }&#xa;});"/>
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
@@ -526,6 +492,7 @@
     <Component class="javax.swing.JButton" name="newSearch">
       <Properties>
         <Property name="text" type="java.lang.String" value="New Search"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newSearchActionPerformed"/>

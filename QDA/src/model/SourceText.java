@@ -47,39 +47,6 @@ public class SourceText {
 		
 		text = content.toString();
 	}
-	/**
-	 * Selects the text from the source that starts on startChar of startLine
-	 * and ends on endLine of endChar.
-	 * @param startLine
-	 * @param endLine
-	 * @param startChar
-	 * @param endChar
-	 * @return selection
-	 */
-	public String getSelection(int startLine, int endLine, 
-			int startChar, int endChar){
-		//TODO: 
-		String retVal;
-		StringBuilder selection = new StringBuilder();
-		try{
-		String firstLine = lines.get(startLine);
-		selection.append(firstLine.substring(startChar));
-		
-		for(int i = startLine; i < endLine; i++){
-			selection.append(lines.get(i));
-			selection.append(System.getProperty("line.separator"));
-		}
-		
-		String lastLine = lines.get(endLine);
-		selection.append(lastLine.substring(0,endChar));
-		retVal = selection.toString();
-		
-		}catch(IndexOutOfBoundsException e){
-			System.err.println("Invalid index. Could not get selection.");
-			retVal = null;
-		}
-		return retVal;
-	}
 	
 	public String getText(){
 		System.out.println("# lines =  " + lines.size());

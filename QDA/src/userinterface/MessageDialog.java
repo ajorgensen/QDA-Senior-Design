@@ -16,10 +16,10 @@ import javax.swing.JLabel;
  *
  * @author Brittany Nkounkou
  */
-public class ErrorDialog extends AppDialog{
+public class MessageDialog extends AppDialog{
     
-    public ErrorDialog(MainFrame mf, String errorMessage) {
-        super(mf, "Error", new Object[]{errorMessage});
+    public MessageDialog(MainFrame mf, String errorMessage) {
+        super(mf, "Message", new Object[]{errorMessage});
     }
     
     @Override

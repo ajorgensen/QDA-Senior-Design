@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nameable, Deletable {
 	private List<Comment> comments;
-        private List<TagInstance> tags;
+        private List<TagInstance> tagInstances;
 	private SourceText sourceText;
         private String name;
         private Project project;
@@ -20,28 +20,48 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
 	public MarkedUpText(SourceText sourceText, Project project){
             super(null,false);
             this.project = project;
-            this.tags = new LinkedList<TagInstance>();
+            this.tagInstances = new LinkedList<TagInstance>();
             this.comments = new LinkedList<Comment>();
             this.sourceText = sourceText;
             this.name = sourceText.getPath();
 	}
  
 	@Override
-	public List<TagInstance> searchTags(List<Tag> tags, List<User> users) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TagInstance> searchTags(List<TagType> tagTypes) {
+            List<TagInstance> returnList = new LinkedList<TagInstance>();
+            for(TagType t : tagTypes){
+                    for(TagInstance u : tagInstances){
+                        if(t == u.getTagType()){
+                            returnList.add(u);
+                        }
+                    }
+                }
+            return returnList;
         }
 
 	@Override
 	public List<Comment> searchComments(List<User> users) {
-		// TODO Auto-generated method stub
-		return null;
+            List<Comment> returnList = new LinkedList<Comment>();
+            for(User t : users){
+                    for(Comment c : comments){
+                        if(t.getName().equals(c.getOwner())){
+                            returnList.add(c);
+                        }
+                    }
+                }
+            return returnList;
 	}
 
 	@Override
 	public String getName() {
 		return name;
 	}
+        
+        public String getPrettyName(){
+            return name.substring(name.lastIndexOf("/") + 1);
+            //If you don't want the file extension:
+            //return name.substring(name.lastIndexOf("/") + 1, name.lastIndexOf(".")); 
+        }
 
 	@Override
 	public void rename(String name) {
@@ -57,7 +77,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
         
         @Override
         public String toString(){
-            return this.getName();
+            return this.getPrettyName();
         }
         
         public SourceText getSourceText(){
@@ -69,11 +89,12 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
          * @param tagType
          * @param selection 
          */
-        public void addTag(Tag tagType, TextSection selection){
+        public boolean addTag(TagType tagType, TextSection selection){
             Date dateAdded = new Date();
             Date dateModified = new Date();
-            tags.add(new TagInstance(project.getCurrentUser(), dateAdded, dateModified,
-            selection, sourceText.getPath(), tagType));
+            tagInstances.add(new TagInstance(project.getCurrentUser().getName(), dateAdded, dateModified,
+            selection, this, tagType));
+            return true;
         }
        
        /**
@@ -85,17 +106,15 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
        public void addComment(String comment, TextSection selection){
             Date dateAdded = new Date();
             Date dateModified = new Date();
-            comments.add(new Comment((project.getCurrentUser()).getName(), dateAdded, dateModified,
+            comments.add(new Comment(project.getCurrentUser().getName(), dateAdded, dateModified,
             selection, comment, sourceText.getPath()));
         }
        
        public List<TagInstance> getTags(){
-           return tags;
+           return tagInstances;
        }
        
        public List<Comment> getComments(){
            return comments;
        }
-       
-       
 }
