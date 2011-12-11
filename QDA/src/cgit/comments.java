@@ -94,21 +94,11 @@ public class comments {
         out.write(this.commentToString(comment) + "\n");
     }
 
-    /**
-     * 
-     * @param comment_string
-     * @return 
-     */
     public static final Comment process_comment(String comment_string) {
         String[] comment_params = comment_string.split("\\" + cgitDirectory.DELIMETER);
 
-        //TODO: Error checking on split....did we actually get anything back?
-        if (comment_params.length != 9) {
-            return null;
-        }
-
         //Format will be:
-        // username|dateAdded|dateModified|startingPos|startingLine|endingPos|endingLine|comment|filepath
+        // username|dateAdded|dateModified|offset|length|comment|filepath
         try {
 
             String uname;

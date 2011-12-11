@@ -48,6 +48,11 @@ public class Project implements Nameable {
                 tags.add(this.rootTag);
                 this.curText = null;
 	}
+        
+        public String getLocalPath()
+        {
+            return this.localPath;
+        }
 	  
         public RootTag getRootTag() {
             return rootTag;
