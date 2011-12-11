@@ -20,22 +20,38 @@ public class tags {
 
     public static final String delimeter = "|";
 
-    
-    private static void saveTags(Project project, ArrayList<TagInstance> tagHolder) {
-        String tag_path = project.getLocalPath() + cgitDirectory.TAGS_PATH.getPath();
+    /**
+     * This function will handle writing the tags to disk.
+     * 
+     * @param working_dir is the directory that contains the project we are working on.
+     * @param tagHolder the list of tags we want to save
+     */
+    private static void saveTags(String working_dir, ArrayList<TagInstance> tagHolder) {
+        String tag_path = working_dir + cgitDirectory.TAGS_PATH.getPath();
 
+        //clear the tag file out
         FileUtil.writeFile(false, tag_path, "");
 
+        //write all the tags to refs/tags
         for (TagInstance currTag : tagHolder) {
             FileUtil.writeFile(true, tag_path, tags.tagToString(currTag) + "\n");
         }
     }
 
+    /**
+     * This will parse a tag string into a TagInstance. It needs to know about the project to check to see if the tag is belongs to a project.
+     * Future revisions of this will allow for the project to be optional and it will return a TagInstance with an empty project.
+     * 
+     * @param  data is properly formatted tag data
+     * @param project the reference to the current project
+     * @return a TagInstance from the parsed text
+     * @throws ParseException 
+     */
     public static TagInstance parseTag(String data, Project project) throws ParseException {
         //TODO error checking
 
         //format is user|data added|date modified|offset|length|tag type|tag path|project name
-        String[] tag_parameters = data.split("|");
+        String[] tag_parameters = data.split(cgitDirectory.DELIMETER);
 
         String user;
         Date dateAdded;
@@ -90,6 +106,12 @@ public class tags {
         return new TagInstance(user, dateAdded, dateModified, selection, new MarkedUpText(sourceText, project), tagType);
     }
 
+    /**
+     * This will load all the tags for a specific project
+     * 
+     * @param project is a reference to the project we want to load the tags from
+     * @return an ArrayList of TagInstances
+     */
     public static ArrayList<TagInstance> loadTagsForProject(Project project) {
         String tagPath = project.getLocalPath() + cgitDirectory.TAGS_PATH.getPath();
         ArrayList<TagInstance> tagHolder = new ArrayList<TagInstance>();
@@ -113,6 +135,12 @@ public class tags {
         return tagHolder;
     }
 
+    /**
+     * Used to convert the TagInstance to a string so we can save it to the tag file
+     * 
+     * @param tag the instance for the tag we wont to turn into a string
+     * @return the string version of the TagInstance
+     */
     public static String tagToString(TagInstance tag) {
         String tagString = "";
         SimpleDateFormat formatter = new SimpleDateFormat(tag.DATE_FORMAT);
