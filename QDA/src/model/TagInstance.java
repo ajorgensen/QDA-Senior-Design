@@ -47,4 +47,7 @@ public class TagInstance extends MarkUp{
         return equal;
     }
    
+    public MarkedUpText getMarkedUpText() {
+        return markedUpText;
+    }
 }

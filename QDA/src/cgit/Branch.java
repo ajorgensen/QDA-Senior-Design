@@ -165,7 +165,7 @@ public class Branch {
     /**
      * commitWalker
      * 
-     * Goes from a starting commit and follows the parent to the root node. Current used for debul purposes
+     * Goes from a starting commit and follows the parent to the root node. Current used for debug purposes
      * 
      * @param working_dir refers to the root directory where the .cgit folder lives. This is usually in the same place as the source text.
      * @param starting_commit 

@@ -7,6 +7,11 @@ import model.Comment;
 import model.TextSection;
 import model.cgitDirectory;
 
+
+ /**
+ * 
+ * @author andrewjorgensen
+ */
 public class comments {
 
     private String working_dir;
@@ -89,6 +94,11 @@ public class comments {
         out.write(this.commentToString(comment) + "\n");
     }
 
+    /**
+     * 
+     * @param comment_string
+     * @return 
+     */
     public static final Comment process_comment(String comment_string) {
         String[] comment_params = comment_string.split("\\" + cgitDirectory.DELIMETER);
 
