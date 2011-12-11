@@ -150,13 +150,11 @@ public class MainFrame extends JFrame {
         openProject = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         saveProject = new javax.swing.JMenuItem();
-        saveAsProject = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        commitProject = new javax.swing.JMenuItem();
         mergeProject = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         viewVersionHistory = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        manageUsers = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         closeProject = new javax.swing.JMenuItem();
         userMenu = new javax.swing.JMenu();
         accountSettings = new javax.swing.JMenuItem();
@@ -389,34 +387,24 @@ public class MainFrame extends JFrame {
             saveProject.setEnabled(false);
             projectMenu.add(saveProject);
 
-            saveAsProject.setText("Save As");
-            saveAsProject.setEnabled(false);
-            saveAsProject.addActionListener(new java.awt.event.ActionListener() {
+            commitProject.setText("Commit");
+            commitProject.setEnabled(false);
+            commitProject.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    SaveAsActionPerformed(evt);
+                    commitProjectActionPerformed(evt);
                 }
             });
-            projectMenu.add(saveAsProject);
-            projectMenu.add(jSeparator3);
+            projectMenu.add(commitProject);
 
             mergeProject.setText("Merge");
             mergeProject.setEnabled(false);
             projectMenu.add(mergeProject);
+            projectMenu.add(jSeparator3);
 
             viewVersionHistory.setText("View Version History");
             viewVersionHistory.setEnabled(false);
             projectMenu.add(viewVersionHistory);
             projectMenu.add(jSeparator4);
-
-            manageUsers.setText("Manage Users");
-            manageUsers.setEnabled(false);
-            manageUsers.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    manageUsersActionPerformed(evt);
-                }
-            });
-            projectMenu.add(manageUsers);
-            projectMenu.add(jSeparator2);
 
             closeProject.setText("Close");
             closeProject.setEnabled(false);
@@ -528,11 +516,6 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 }//GEN-LAST:event_newProjectActionPerformed
 
-private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageUsersActionPerformed
-    ManageUsersDialog mud = new ManageUsersDialog(this);
-    mud.setVisible(true);
-}//GEN-LAST:event_manageUsersActionPerformed
-
 private void accountSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountSettingsActionPerformed
     AccountSettingsDialog asd = new AccountSettingsDialog(this);
     asd.setVisible(true);
@@ -551,11 +534,12 @@ private void signInUser(User user) {
         return;
     
     saveProject.setEnabled(true);
-    saveAsProject.setEnabled(true);
+    commitProject.setEnabled(true);
+    //saveAsProject.setEnabled(true); // This option removed (future implemntation?)
     mergeProject.setEnabled(true);
     viewVersionHistory.setEnabled(true);
     if (false /*TODO: user is admin*/) {
-        manageUsers.setEnabled(true);
+    //    manageUsers.setEnabled(true);  // This option removed (future ipmlemntation?)
     }
     
     signInUser.setEnabled(false);
@@ -582,10 +566,11 @@ private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EX
 private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectActionPerformed
     OpenProjectDialog opd = new OpenProjectDialog(this);
     opd.setVisible(true);
-    if(opd.hasResults()) {
-        String user = opd.getUserName();
-        char[] password = opd.getPassword();
-    }
+// No longer asks for username and password when opening a project
+//    if(opd.hasResults()) {
+//        String user = opd.getUserName();
+//        char[] password = opd.getPassword();
+//    }
 }//GEN-LAST:event_openProjectActionPerformed
 
 /*
@@ -614,14 +599,6 @@ private void closeProject(Project p) {
     }
     this.repaint();
 }
-
-private void SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsActionPerformed
-    SaveAsProjectDialog sap = new SaveAsProjectDialog(this);
-    sap.setVisible(true);
-    if(sap.hasResults()) {
-        String location = sap.getSaveLocation();
-    }
-}//GEN-LAST:event_SaveAsActionPerformed
 
 private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
     AboutProjectDialog apd = new AboutProjectDialog(this);
@@ -728,16 +705,21 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         signOutUser();
     }//GEN-LAST:event_signOutUserActionPerformed
 
+    private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_commitProjectActionPerformed
+
     private void signOutUser() {
         project.setCurrentUser(null);
 
         views.removeAll();
 
         saveProject.setEnabled(false);
-        saveAsProject.setEnabled(false);
+        commitProject.setEnabled(false);
+        //saveAsProject.setEnabled(false); // This option removed (future ipmlementation?)
         mergeProject.setEnabled(false);
         viewVersionHistory.setEnabled(false);
-        manageUsers.setEnabled(false);
+        //manageUsers.setEnabled(false);  // This option removed (future ipmlementation?)
 
         signInUser.setEnabled(true);
         signOutUser.setEnabled(false);
@@ -791,6 +773,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JMenuBar applicationMenu;
     private javax.swing.JSplitPane applicationPane;
     private javax.swing.JMenuItem closeProject;
+    private javax.swing.JMenuItem commitProject;
     private javax.swing.JButton copyElement;
     private javax.swing.JButton copyTag;
     private javax.swing.JButton cutElement;
@@ -801,10 +784,8 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton importFile;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JMenuItem manageUsers;
     private javax.swing.JMenuItem mergeProject;
     private javax.swing.JButton newFolder;
     private javax.swing.JMenuItem newProject;
@@ -822,7 +803,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JScrollPane repositoryPane;
     private javax.swing.JToolBar repositoryTools;
     private javax.swing.JPanel repositoryWindow;
-    private javax.swing.JMenuItem saveAsProject;
     private javax.swing.JMenuItem saveProject;
     private javax.swing.JMenuItem signInUser;
     private javax.swing.JMenuItem signOutUser;
