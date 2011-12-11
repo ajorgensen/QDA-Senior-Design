@@ -17,126 +17,118 @@ import model.TextSection;
 import model.cgitDirectory;
 
 public class tags {
-    
-    private String working_dir;
-    private ArrayList<TagInstance> tagHolder;
+
     public static final String delimeter = "|";
+
     
-    public tags(String working_dir)
-    {
-        this.working_dir = working_dir;
-        this.tagHolder = new ArrayList<TagInstance>();
-        this.loadTags();
-    }
-    
-    public void addTag(TagInstance tag)
-    {
-        this.tagHolder.add(tag);
-        this.saveTags();
-    }
-    
-    public void removeTag(TagInstance tag)
-    {
-        this.tagHolder.remove(tag);
-        this.saveTags();
-    }
-    
-    private void saveTags()
-    {
-        String tag_path = this.working_dir + cgitDirectory.TAGS_PATH.getPath();
-        
+    private static void saveTags(Project project, ArrayList<TagInstance> tagHolder) {
+        String tag_path = project.getLocalPath() + cgitDirectory.TAGS_PATH.getPath();
+
         FileUtil.writeFile(false, tag_path, "");
-        
-        for(TagInstance currTag : this.tagHolder)
-        {
+
+        for (TagInstance currTag : tagHolder) {
             FileUtil.writeFile(true, tag_path, tags.tagToString(currTag) + "\n");
         }
     }
-    
-    private void loadTags()
-    {
-        String tagPath = working_dir + cgitDirectory.TAGS_PATH.getPath();
-        
-        try{
-            String tag_data = FileUtil.readFile(tagPath);
-            
-            for(String tag_line : tag_data.split("\n"))
-            {
-                tagHolder.add(tags.parseTag(tag_line));
-            }
-        } catch (Exception e)
-        {
-            
-            return;
-        }
-    }
-    
-    public static TagInstance parseTag(String data) throws ParseException
-    {
+
+    public static TagInstance parseTag(String data, Project project) throws ParseException {
         //TODO error checking
-        
-        //format is user|data added|date modified|offset|length|tag type|tag path
-        String [] tag_parameters = data.split("|");
-        
+
+        //format is user|data added|date modified|offset|length|tag type|tag path|project name
+        String[] tag_parameters = data.split("|");
+
         String user;
         Date dateAdded;
         Date dateModified;
         TextSection selection;
         SourceText sourceText;
-        Project project;
         MarkedUpText markedUpText;
         TagType tagType;
-        
-        if(tag_parameters[0] != null)
+
+        if (tag_parameters[0] != null) {
             user = tag_parameters[0];
-        else
+        } else {
             return null;
-        
-        if(tag_parameters[1] != null)
+        }
+
+        if (tag_parameters[1] != null) {
             dateAdded = new SimpleDateFormat(TagInstance.DATE_FORMAT).parse(tag_parameters[1]);
-        else
+        } else {
             return null;
-        
-        if(tag_parameters[2] != null)
+        }
+
+        if (tag_parameters[2] != null) {
             dateModified = new SimpleDateFormat(TagInstance.DATE_FORMAT).parse(tag_parameters[2]);
-        else
+        } else {
             return null;
-        
-        if(tag_parameters[3] != null && tag_parameters[4] != null)
+        }
+
+        if (tag_parameters[3] != null && tag_parameters[4] != null) {
             selection = new TextSection(Integer.parseInt(tag_parameters[3]), Integer.parseInt(tag_parameters[4]));
-        else
+        } else {
             return null;
-        
-        if(tag_parameters[4] != null)
+        }
+
+        if (tag_parameters[5] != null) {
             tagType = new TagType(tag_parameters[4]);
-        else
+        } else {
             return null;
+        }
+
+        if (tag_parameters[6] != null) {
+            sourceText = new SourceText(tag_parameters[5]);
+        } else {
+            return null;
+        }
         
-        if(tag_parameters[5] != null)
-            sourceText = new SourceText(tag_parameters[5]); 
+        if(tag_parameters[7] != null && !project.getName().equals(tag_parameters[7]))
+        {
+          return null;
+        }
         
-        
-        return null;
+
+        return new TagInstance(user, dateAdded, dateModified, selection, new MarkedUpText(sourceText, project), tagType);
     }
-    
-    public static String tagToString(TagInstance tag)
-    {
+
+    public static ArrayList<TagInstance> loadTagsForProject(Project project) {
+        String tagPath = project.getLocalPath() + cgitDirectory.TAGS_PATH.getPath();
+        ArrayList<TagInstance> tagHolder = new ArrayList<TagInstance>();
+
+
+        try {
+            String tag_data = FileUtil.readFile(tagPath);
+
+            for (String tag_line : tag_data.split("\n")) {
+                TagInstance currTag = tags.parseTag(tag_line, project);
+                
+                if(currTag != null)
+                    tagHolder.add(currTag);
+                
+            }
+        } catch (Exception e) {
+
+            return null;
+        }
+
+        return tagHolder;
+    }
+
+    public static String tagToString(TagInstance tag) {
         String tagString = "";
         SimpleDateFormat formatter = new SimpleDateFormat(tag.DATE_FORMAT);
-        
+
         tagString += tag.getOwner() + cgitDirectory.DELIMETER;
         tagString += new StringBuilder(formatter.format(tag.getDateAdded())) + cgitDirectory.DELIMETER;
         tagString += new StringBuilder(formatter.format(tag.getDateModified())) + cgitDirectory.DELIMETER;
         tagString += Integer.toString(tag.getTextSection().getOffset()) + cgitDirectory.DELIMETER;
         tagString += Integer.toString(tag.getTextSection().getLength()) + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getName() + cgitDirectory.DELIMETER;
-        tagString += tag.getTagType().getPathString();
-        
+        tagString += tag.getSourcePath() + cgitDirectory.DELIMETER;
+        tagString += tag.getMarkedUpText().getProject().getName();
+
         return tagString;
     }
-    
-    public static void main(String[] args)
-    {
+
+    public static void main(String[] args) {
     }
-    
 }

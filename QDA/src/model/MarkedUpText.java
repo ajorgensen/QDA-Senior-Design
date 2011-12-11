@@ -25,6 +25,11 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             this.sourceText = sourceText;
             this.name = sourceText.getPath();
 	}
+        
+        public Project getProject()
+        {
+            return project;
+        }
  
 	@Override
 	public List<TagInstance> searchTags(List<TagType> tagTypes) {
