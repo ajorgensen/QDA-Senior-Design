@@ -2,13 +2,14 @@ package model;
 import java.util.Enumeration;
 import javax.swing.tree.*;
 import java.util.List;
+import java.util.LinkedList;
 
 public class TagType extends DefaultMutableTreeNode implements Nameable, Deletable{
 	private String name;
 	
 	public TagType(String name){
             super();
-            this.name = name;
+            this.name = name.replace("/","");
 	}
 	
 	@Override
@@ -36,6 +37,7 @@ public class TagType extends DefaultMutableTreeNode implements Nameable, Deletab
             TagType curr = (TagType)getParent();
             
             while (curr != null) {
+                path.insert(0,"/");
                 path.insert(0, curr.getName());
                 curr = (TagType)curr.getParent();
             }

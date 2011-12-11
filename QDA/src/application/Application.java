@@ -50,7 +50,6 @@ public class Application {
                 /**
                  * Example code 
                  */
-                
                 /*
                 //Creating a user
                 User user = new User("User","pass");
@@ -60,6 +59,9 @@ public class Application {
               
                 Project p = new Project("NewProject","localPath/path",user);
                 
+                TagType newTag = p.addTagType("Tags/animal/mammal/dog");
+                System.out.println(newTag.getPathString());
+                /*
                 //Add a source text to the project using importSourceText()
                 //Source texts are stored in folders as children of the folders.
                 p.importSourceText("QDA/TestTextFile.txt", p.getMainFolder());
@@ -74,7 +76,7 @@ public class Application {
                 }
                 p.addTagType(p.getRootTag(),"NewTagType");
                 
-                TextSection selection = new TextSection(0,0,10,0);
+                TextSection selection = new TextSection(0,10);
                 p.addTagInstance("NewTagType", selection);
                 //System.out.print();
                 
@@ -86,8 +88,8 @@ public class Application {
                 List<TagInstance> tagInstances = p.search(folders,tags);
                 
                 for(TagInstance t: tagInstances) {
-                    t.print();
-                    System.out.print(t.getTaggedText());
+                    System.out.print(t.getTagType().getPathString());
+                    //System.out.print(t.getTaggedText());
                 }
                 //p.searchTags()
                 */

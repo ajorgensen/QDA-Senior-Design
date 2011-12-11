@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
 import model.RootTag;
-
+import java.util.Enumeration;
 /**
  * Project 
  * The project class should be an adapter for most of the functions used by the 
@@ -67,13 +67,57 @@ public class Project implements Nameable {
          * @return 
          */
         public TagType addTagType(TagType parent, String newName) {
-            for(TagType t: tags) {
-                if(t.getName().equals(newName)) return null;
-            }
+            //for(TagType t: tags) {
+            //This was for disallowing multiple tags of the same name
+            //We'll allow them for now.
+            //    if(t.getName().equals(newName)) return null;
+            //}
             TagType newTag = new TagType(newName);
             parent.add(newTag);
             tags.add(newTag);
             return newTag;
+        }
+        
+        /**
+         * Adds any tags in path that do not already exist.
+         * Eg if path is is Tags/Animal/Mammal/Dog, and only
+         * Tags/Animal exists, it will add both Mammal and Dog.
+         * @param path
+         * @returns the last node (TagType) in path
+         */
+        public TagType addTagType(String path) {
+            TagType parent = getRootTag();
+            //List<TagType> children = new LinkedList<TagType>();//parent.getChildren();
+            String soughtTag;
+            path=path.substring(path.indexOf("/")+1);//skip root tag
+            do {
+                //List<TagType> children = parent.getChildren();
+                Enumeration children = parent.children();
+                if(!path.contains("/")) {
+                    soughtTag=path;
+                    path="";
+                } else {
+                    soughtTag = path.substring(0,path.indexOf("/"));
+                    path=path.substring(path.indexOf("/")+1);
+                }
+                //System.out.println("Seeking " + soughtTag);
+                //System.out.println("Remaining path is " + path);
+                boolean matched = false;
+                //System.out.println(children.size());
+                //for(TagType t : children) {
+                while(children.hasMoreElements()) {
+                    TagType t = (TagType) children.nextElement();
+                    if(t.getName().equals(soughtTag)) {
+                        parent=t;
+                        matched=true;
+                    }
+                }
+                if(!matched) {
+                    parent=addTagType(parent,soughtTag);
+                }
+            } while(path!="");
+            
+            return parent;
         }
         /**
          * Use for logging in.
@@ -219,6 +263,7 @@ public class Project implements Nameable {
             }
             return null;
         }
+        
         
         /**
          * Returns a string representation of the current source text.
