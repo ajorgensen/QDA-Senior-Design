@@ -14,6 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import model.Project;
+import model.User;
 /**
 import java.awt.Color;
 import java.awt.Dimension;
@@ -213,6 +215,8 @@ public class NewProjectDialog extends AppDialog{
     
     private void createActionPerformed(ActionEvent evt) {
         if (validateInput()) {
+            User userAdmin = new User(admin.getText(), password.getPassword().toString());
+            Project p = new Project(pName.getText(), location.getText(), userAdmin);
             hasResults = true;
             setVisible(false);
         }
