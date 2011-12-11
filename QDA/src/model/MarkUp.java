@@ -1,5 +1,7 @@
 package model;
+
 import java.util.Date;
+
 public abstract class MarkUp implements Ownable, Deletable {
 
     private final String user;
@@ -13,7 +15,7 @@ public abstract class MarkUp implements Ownable, Deletable {
         dateModified = dm;
         textSection = ts;
     }
-    
+
     @Override
     public String getOwner() {
         return user;
@@ -26,12 +28,11 @@ public abstract class MarkUp implements Ownable, Deletable {
     public Date getDateModified() {
         return dateModified;
     }
-    
-    public TextSection getTextSection()
-    {
+
+    public TextSection getTextSection() {
         return textSection;
     }
-    
+
     protected void modified(Date dm) {
         dateModified = dm;
     }
