@@ -95,6 +95,18 @@ public class Branch {
         } 
     }
     
+    /**
+     * checkoutCommit
+     * 
+     * This function is used to revert to an older commit on a branch. Please note currently i assume you know what you are doing and you are not reverting to a commit on another branch.
+     * This would be bad. If I have time I will add more rigorous checking later but for not I just want to get this working.
+     * 
+     * So remember kids, if the commit hash is not on the same branch as the one that is currently checked out...DONT DO IT. If you must switch to a commit on another branch please switch
+     * the branch first and then revert to the commit. That is all.
+     * 
+     * @param working_dir
+     * @param commitHash the hash of the commit object that exits on the current branch
+     */
     public static void checkoutCommit(String working_dir, String commitHash)
     {
         //make sure the commit hash is correct
