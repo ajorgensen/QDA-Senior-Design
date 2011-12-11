@@ -84,6 +84,10 @@ public class Commit implements GitObject {
     
 
     public static Commit parseCommitContent(String data, String working_dir) {
+        
+        if(data.isEmpty())
+            return null;
+        
         String[] data_lines = data.split("\n");
 
         BlobTree tree = null;
@@ -108,6 +112,9 @@ public class Commit implements GitObject {
                 commit_message = content;
             }
         }
+        
+        if(tree == null)
+            return null;
 
 
         return new Commit(parents, tree, commiter, commit_message);

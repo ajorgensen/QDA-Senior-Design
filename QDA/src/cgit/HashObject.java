@@ -7,6 +7,15 @@ import java.util.logging.Logger;
 
 public class HashObject {
 
+    /**
+     * convertToHex
+     * 
+     * This function takes a byte array and converts it to a hashed hex string.
+     * This is used to take the data returned from the sha1 and turn it into a string that is easier to handle
+     * 
+     * @param data
+     * @return string with the sha1 hash of the data
+     */
     private static String convertToHex(byte[] data) {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < data.length; i++) {
@@ -24,6 +33,14 @@ public class HashObject {
         return buf.toString();
     }
 
+    /**
+     * hashString
+     * 
+     * This will take a string and then produce a sha1 hash of that string
+     * 
+     * @param toHash is the string to be hashed
+     * @return sha1 hash of the string passed to the function
+     */
     public static String hashString(String toHash) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -36,10 +53,21 @@ public class HashObject {
         }
     }
 
-    public static String hashObject(String filename) {
+    /**
+     * hashObject
+     * 
+     * This function is used to hash Blob objects as a specific filepath. It reads the content
+     * of the file and then produces a unique hash based on the the following algorith:
+     * 
+     * "blob " + filesize + "\0" + file_data
+     * 
+     * @param filepath
+     * @return the hash string of the object
+     */
+    public static String hashObject(String filepath) {
         try {
-            String file_data = FileUtil.readFile(filename);
-            int filesize = (int) FileUtil.getFilesize(filename);
+            String file_data = FileUtil.readFile(filepath);
+            int filesize = (int) FileUtil.getFilesize(filepath);
 
             String toEncrypt = "blob " + filesize + "\0" + file_data;
 

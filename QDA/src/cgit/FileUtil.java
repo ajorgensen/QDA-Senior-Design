@@ -14,6 +14,17 @@ import java.nio.charset.Charset;
 
 public class FileUtil {
 
+    /**
+     * readFile
+     * 
+     * This function takes a filepath as an argument and returns the contents of the file in a string object.
+     * 
+     * NOTE: If the file cannot be read it simply returns a blank string.
+     * TODO: Have this function throw an exception if it cannot read a file. But personally I hate exception chains.
+     * 
+     * @param filepath is self explanatory
+     * @return string with the file contents
+     */
     public static String readFile(String filepath) {
         try {
             FileInputStream stream = new FileInputStream(new File(filepath));
@@ -26,7 +37,16 @@ public class FileUtil {
             return "";
         }
     }
-
+    
+    /**
+     * writeFile
+     * 
+     * Write the contents of a file to the filepath specified. 
+     * 
+     * @param append determines whether the contents will be appended to the end of the file or whether it should overwrite the file completely
+     * @param filepath 
+     * @param data the data that will be written to the file
+     */
     public static void writeFile(boolean append, String filepath, String data) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filepath, append));
@@ -40,6 +60,14 @@ public class FileUtil {
         }
     }
 
+    /**
+     * listFileInDirectory
+     * 
+     * Returns a string array of the file names within a directory
+     * 
+     * @param directory_path
+     * @return String[] with the filenames in it
+     */
     public static String [] listFilesInDirectory(String directory_path) {
 
         String files;
@@ -65,6 +93,14 @@ public class FileUtil {
         return fileNames;
     }
 
+    /**
+     * 
+     * gets the filesize of the file specified
+     * 
+     * @param filepath
+     * @return long length of the file
+     * @throws Exception if the file cannot be read
+     */
     public static long getFilesize(String filepath) throws Exception {
         File file = new File(filepath);
 
