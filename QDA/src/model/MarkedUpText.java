@@ -123,6 +123,10 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
            return comments;
        }
        
+       /**
+        * Save the current state of the tags and comments using cgit
+        * 
+        */
        public void saveCurrentState()
        {
            cgit.tags.saveTags(project.getLocalPath(), tagInstances);
