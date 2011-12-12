@@ -47,7 +47,7 @@ public class tags {
      * @return a TagInstance from the parsed text
      * @throws ParseException 
      */
-    public static TagInstance parseTag(String data, Project project) throws ParseException {
+    public static TagInstance parseTag(String data, MarkedUpText markedUp) throws ParseException {
         //TODO error checking
 
         //format is user|data added|date modified|offset|length|tag type|tag path|project name
@@ -97,13 +97,13 @@ public class tags {
             return null;
         }
         
-        if(tag_parameters[7] != null && !project.getName().equals(tag_parameters[7]))
+        if(tag_parameters[7] != null && !markedUp.getName().equals(tag_parameters[7]))
         {
           return null;
         }
         
 
-        return new TagInstance(user, dateAdded, dateModified, selection, new MarkedUpText(sourceText, project), tagType);
+        return new TagInstance(user, dateAdded, dateModified, selection, markedUp, tagType);
     }
 
     /**
@@ -112,16 +112,15 @@ public class tags {
      * @param project is a reference to the project we want to load the tags from
      * @return an ArrayList of TagInstances
      */
-    public static ArrayList<TagInstance> loadTagsForProject(Project project) {
-        String tagPath = project.getLocalPath() + cgitDirectory.TAGS_PATH.getPath();
+    public static ArrayList<TagInstance> loadTagsForProject(MarkedUpText markedup) {
+        String tagPath = markedup.getProject().getLocalPath() + cgitDirectory.TAGS_PATH.getPath();
         ArrayList<TagInstance> tagHolder = new ArrayList<TagInstance>();
-
 
         try {
             String tag_data = FileUtil.readFile(tagPath);
 
             for (String tag_line : tag_data.split("\n")) {
-                TagInstance currTag = tags.parseTag(tag_line, project);
+                TagInstance currTag = tags.parseTag(tag_line, markedup);
                 
                 if(currTag != null)
                     tagHolder.add(currTag);
@@ -152,7 +151,7 @@ public class tags {
         tagString += Integer.toString(tag.getTextSection().getLength()) + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getName() + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getPathString() + cgitDirectory.DELIMETER;
-        tagString += tag.getMarkedUpText().getProject().getName();
+        tagString += tag.getMarkedUpText().getName();
 
         return tagString;
     }
