@@ -15,7 +15,7 @@ import model.cgitDirectory;
  */
 public class comments {
 
-    public static void saveComments(String working_dir, ArrayList<Comment> commentHolder) {
+    public static void saveComments(String working_dir, List<Comment> commentHolder) {
         String comment_path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
 
         //clear the file

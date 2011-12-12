@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import model.MarkedUpText;
 import model.Project;
 import model.SourceText;
@@ -26,7 +27,7 @@ public class tags {
      * @param working_dir is the directory that contains the project we are working on.
      * @param tagHolder the list of tags we want to save
      */
-    public static void saveTags(String working_dir, ArrayList<TagInstance> tagHolder) {
+    public static void saveTags(String working_dir, List<TagInstance> tagHolder) {
         String tag_path = working_dir + cgitDirectory.TAGS_PATH.getPath();
 
         //clear the tag file out

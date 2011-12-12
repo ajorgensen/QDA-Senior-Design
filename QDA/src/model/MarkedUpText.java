@@ -122,4 +122,10 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
        public List<Comment> getComments(){
            return comments;
        }
+       
+       public void saveCurrentState()
+       {
+           cgit.tags.saveTags(project.getLocalPath(), tagInstances);
+           cgit.comments.saveComments(project.getLocalPath(), comments);
+       }
 }
