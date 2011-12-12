@@ -57,12 +57,24 @@ public class MainFrame extends JFrame {
         md.setVisible(true);
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
-        signInUser(u);
+        signInUser(u, project);
         Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
         MarkedUpText mut = project.importSourceText("./QDA/TestTextFile.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
         mut.addTag(tt, new TextSection(100,10));
         mut.addComment("hey hey hey this is my comment.", new TextSection(200,25));
+    }
+    
+    private void setUp(String dialog, User user, Project p, String sourceTextPath) {
+        MessageDialog md = new MessageDialog(this, dialog);
+        md.setVisible(true);
+        openProject(p);
+        signInUser(user, p);
+        Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
+//        This is how it should be once importSourceText is changed to take input like C:\Users\dumnzzz-sager\QDA-Senior-Design\QDA\ipsum.txt        
+//        MarkedUpText mut = p.importSourceText(sourceTextPath, folder1);
+        MarkedUpText mut = p.importSourceText("./QDA/ipsum.txt", folder1);
+
     }
     
     private void initializeRepository() {
@@ -474,16 +486,24 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String name = npd.getProjectName();
         String path = npd.getProjectPath();
         String admin = npd.getAdministrator();
-        char[] password = npd.getPassword();
-        //TODO
+        String password = npd.getPassword().toString();
+        User userAdmin = new User(admin, password);
+        String sourcePath = npd.getSourcePath();
+        this.closeProject();
+        Project p = new Project(name, path, userAdmin);
+        String dialog = "Opening " + name + " Project";
+        setUp(dialog, userAdmin, p, sourcePath);
+
     }
 }//GEN-LAST:event_newProjectActionPerformed
 
 /*
  * User u should already have submitted their passwrd and been verified as a valid user
  */
-private void signInUser(User user) {
-    if (!project.setCurrentUser(user))
+//private void signInUser(User user) {
+private void signInUser(User user, Project p) {
+    //if (!project.setCurrentUser(user))
+    if (!p.setCurrentUser(user))
         return;
     
     saveProject.setEnabled(true);
@@ -500,11 +520,13 @@ private void signInUser(User user) {
     
     newSearch.setEnabled(true);
     
-    repository.setModel(new DefaultTreeModel(project.getMainFolder()));
+    
+    //repository.setModel(new DefaultTreeModel(project.getMainFolder()));
+    repository.setModel(new DefaultTreeModel(p.getMainFolder()));
     repository.setVisible(true);
     setRepositoryToolsEnabled(true);
-    
-    tags.setModel(new DefaultTreeModel(project.getRootTag()));
+    //tags.setModel(new DefaultTreeModel(project.getRootTag()));
+    tags.setModel(new DefaultTreeModel(p.getRootTag()));
     tags.setVisible(true);
     setTagsToolsEnabled(true);
     
@@ -542,16 +564,8 @@ private void openProject(Project p) {
     this.repaint();
 }
 
-private void closeProject(Project p) {
-    if (project.getCurrentUser() != null) {
-        signOutUser();
-    }
-    else {
-        project = null;
-        closeProject.setEnabled(false);
-        // Removed User Menu (Future Implementation?)
-//        userMenu.setEnabled(false);
-    }
+private void closeProject() {
+      signOutUser();
     this.repaint();
 }
 
@@ -709,6 +723,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         renameTag.setEnabled(enabled);
         deleteTag.setEnabled(enabled);
     }
+
     
     private int helpViewIndex;
     private CheckboxTree repository;

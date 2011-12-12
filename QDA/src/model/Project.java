@@ -53,6 +53,16 @@ public class Project implements Nameable {
         {
             return this.localPath;
         }
+        public void setName(String n) {
+            name = n;
+        }
+        public void setLocalPath(String l) {
+            localPath = l;
+        }
+        public void setUser(User u) {
+            currUser = u;
+        }
+        
 	  
         public RootTag getRootTag() {
             return rootTag;
