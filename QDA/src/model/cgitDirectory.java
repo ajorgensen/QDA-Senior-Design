@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class cgitDirectory {
 
-    public static final FileStructure QDA_PATH = new FileStructure(true, "/qda");
+    public static final FileStructure QDA_PATH = new FileStructure(true, "/cgit");
     public static final FileStructure HEAD_PATH = new FileStructure(false, QDA_PATH.getPath() + "/HEAD");
     public static final FileStructure ORIG_HEAD_PATH = new FileStructure(false, QDA_PATH.getPath() + "/ORIG_HEAD");
     public static final FileStructure OBJECTS_PATH = new FileStructure(true, QDA_PATH.getPath() + "/objects");

@@ -47,7 +47,13 @@ public class Project implements Nameable {
                 this.tags=new LinkedList<TagType>();
                 tags.add(this.rootTag);
                 this.curText = null;
+                
+                this.initialize_cgit();
 	}
+        
+        private void initialize_cgit(){
+            cgit.setup.setup_qda_directory(localPath);
+        }
         
         public String getLocalPath()
         {
