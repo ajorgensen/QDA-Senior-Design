@@ -25,6 +25,11 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             this.sourceText = sourceText;
             this.name = sourceText.getPath();
 	}
+        
+        public Project getProject()
+        {
+            return project;
+        }
  
 	@Override
 	public List<TagInstance> searchTags(List<TagType> tagTypes) {
@@ -107,7 +112,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             Date dateAdded = new Date();
             Date dateModified = new Date();
             comments.add(new Comment(project.getCurrentUser().getName(), dateAdded, dateModified,
-            selection, comment, sourceText.getPath()));
+            selection, comment, this));
         }
        
        public List<TagInstance> getTags(){

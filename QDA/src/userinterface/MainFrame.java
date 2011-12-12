@@ -50,11 +50,11 @@ public class MainFrame extends JFrame {
     }
     
     private void defaultSetUp() {
-        MessageDialog md = new MessageDialog(this, "Opening default project.");
+        MessageDialog md = new MessageDialog(this, "Opening Default Project.");
         md.setVisible(true);
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
-        signInUser(u);
+        signInUser(u, project);
         Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
         MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
@@ -62,6 +62,18 @@ public class MainFrame extends JFrame {
         mut.addTag(tt, new TextSection(1000,100));
         mut.addComment("hey hey hey this is my comment.", new TextSection(200,25));
         mut.addComment("this is my comment that overlapa a tag.", new TextSection(1050,250));
+    }
+    
+    private void setUp(String dialog, User user, Project p, String sourceTextPath) {
+        MessageDialog md = new MessageDialog(this, dialog);
+        md.setVisible(true);
+        openProject(p);
+        signInUser(user, p);
+        Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
+//        This is how it should be once importSourceText is changed to take input like C:\Users\dumnzzz-sager\QDA-Senior-Design\QDA\ipsum.txt        
+//        MarkedUpText mut = p.importSourceText(sourceTextPath, folder1);
+        MarkedUpText mut = p.importSourceText("./QDA/ipsum.txt", folder1);
+
     }
     
     private void initializeRepository() {
@@ -149,18 +161,12 @@ public class MainFrame extends JFrame {
         openProject = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         saveProject = new javax.swing.JMenuItem();
-        saveAsProject = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        commitProject = new javax.swing.JMenuItem();
         mergeProject = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         viewVersionHistory = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        manageUsers = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         closeProject = new javax.swing.JMenuItem();
-        userMenu = new javax.swing.JMenu();
-        accountSettings = new javax.swing.JMenuItem();
-        signInUser = new javax.swing.JMenuItem();
-        signOutUser = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         helpContents = new javax.swing.JMenuItem();
         about = new javax.swing.JMenuItem();
@@ -388,34 +394,24 @@ public class MainFrame extends JFrame {
             saveProject.setEnabled(false);
             projectMenu.add(saveProject);
 
-            saveAsProject.setText("Save As");
-            saveAsProject.setEnabled(false);
-            saveAsProject.addActionListener(new java.awt.event.ActionListener() {
+            commitProject.setText("Commit");
+            commitProject.setEnabled(false);
+            commitProject.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    SaveAsActionPerformed(evt);
+                    commitProjectActionPerformed(evt);
                 }
             });
-            projectMenu.add(saveAsProject);
-            projectMenu.add(jSeparator3);
+            projectMenu.add(commitProject);
 
             mergeProject.setText("Merge");
             mergeProject.setEnabled(false);
             projectMenu.add(mergeProject);
+            projectMenu.add(jSeparator3);
 
             viewVersionHistory.setText("View Version History");
             viewVersionHistory.setEnabled(false);
             projectMenu.add(viewVersionHistory);
             projectMenu.add(jSeparator4);
-
-            manageUsers.setText("Manage Users");
-            manageUsers.setEnabled(false);
-            manageUsers.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    manageUsersActionPerformed(evt);
-                }
-            });
-            projectMenu.add(manageUsers);
-            projectMenu.add(jSeparator2);
 
             closeProject.setText("Close");
             closeProject.setEnabled(false);
@@ -427,39 +423,6 @@ public class MainFrame extends JFrame {
             projectMenu.add(closeProject);
 
             applicationMenu.add(projectMenu);
-
-            userMenu.setText("User");
-            userMenu.setEnabled(false);
-            userMenu.setFocusCycleRoot(true);
-            userMenu.setFocusPainted(true);
-
-            accountSettings.setText("Account Settings");
-            accountSettings.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    accountSettingsActionPerformed(evt);
-                }
-            });
-            userMenu.add(accountSettings);
-
-            signInUser.setText("Sign In");
-            signInUser.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    signInUserActionPerformed(evt);
-                }
-            });
-            userMenu.add(signInUser);
-
-            signOutUser.setText("Sign Out");
-            signOutUser.setEnabled(false);
-            signOutUser.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    signOutUserActionPerformed(evt);
-                }
-            });
-            userMenu.add(signOutUser);
-            signOutUser.getAccessibleContext().setAccessibleName("");
-
-            applicationMenu.add(userMenu);
 
             helpMenu.setText("Help");
             helpMenu.setFocusCycleRoot(true);
@@ -522,51 +485,47 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String name = npd.getProjectName();
         String path = npd.getProjectPath();
         String admin = npd.getAdministrator();
-        char[] password = npd.getPassword();
-        //TODO
+        String password = npd.getPassword().toString();
+        User userAdmin = new User(admin, password);
+        String sourcePath = npd.getSourcePath();
+        this.closeProject();
+        Project p = new Project(name, path, userAdmin);
+        String dialog = "Opening " + name + " Project";
+        setUp(dialog, userAdmin, p, sourcePath);
+
     }
 }//GEN-LAST:event_newProjectActionPerformed
-
-private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageUsersActionPerformed
-    ManageUsersDialog mud = new ManageUsersDialog(this);
-    mud.setVisible(true);
-}//GEN-LAST:event_manageUsersActionPerformed
-
-private void accountSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountSettingsActionPerformed
-    AccountSettingsDialog asd = new AccountSettingsDialog(this);
-    asd.setVisible(true);
-}//GEN-LAST:event_accountSettingsActionPerformed
-
-private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInUserActionPerformed
-    SignInDialog sid = new SignInDialog(this, project);
-    sid.setVisible(true);
-}//GEN-LAST:event_signInUserActionPerformed
 
 /*
  * User u should already have submitted their passwrd and been verified as a valid user
  */
-private void signInUser(User user) {
-    if (!project.setCurrentUser(user))
+//private void signInUser(User user) {
+private void signInUser(User user, Project p) {
+    //if (!project.setCurrentUser(user))
+    if (!p.setCurrentUser(user))
         return;
     
     saveProject.setEnabled(true);
-    saveAsProject.setEnabled(true);
+    commitProject.setEnabled(true);
+    //saveAsProject.setEnabled(true); // This option removed (future implemntation?)
     mergeProject.setEnabled(true);
     viewVersionHistory.setEnabled(true);
     if (false /*TODO: user is admin*/) {
-        manageUsers.setEnabled(true);
+    //    manageUsers.setEnabled(true);  // This option removed (future ipmlemntation?)
     }
-    
-    signInUser.setEnabled(false);
-    signOutUser.setEnabled(true);
+//    Removed User Menu (Future Implementation?)    
+//    signInUser.setEnabled(false);
+//    signOutUser.setEnabled(true);
     
     newSearch.setEnabled(true);
     
-    repository.setModel(new DefaultTreeModel(project.getMainFolder()));
+    
+    //repository.setModel(new DefaultTreeModel(project.getMainFolder()));
+    repository.setModel(new DefaultTreeModel(p.getMainFolder()));
     repository.setVisible(true);
     setRepositoryToolsEnabled(true);
-    
-    tags.setModel(new DefaultTreeModel(project.getRootTag()));
+    //tags.setModel(new DefaultTreeModel(project.getRootTag()));
+    tags.setModel(new DefaultTreeModel(p.getRootTag()));
     tags.setVisible(true);
     setTagsToolsEnabled(true);
     
@@ -581,10 +540,11 @@ private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EX
 private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectActionPerformed
     OpenProjectDialog opd = new OpenProjectDialog(this);
     opd.setVisible(true);
-    if(opd.hasResults()) {
-        String user = opd.getUserName();
-        char[] password = opd.getPassword();
-    }
+// No longer asks for username and password when opening a project
+//    if(opd.hasResults()) {
+//        String user = opd.getUserName();
+//        char[] password = opd.getPassword();
+//    }
 }//GEN-LAST:event_openProjectActionPerformed
 
 /*
@@ -597,30 +557,16 @@ private void openProject(Project p) {
     else {
         project = p;
         closeProject.setEnabled(true);
-        userMenu.setEnabled(true);
+        // Removed User Menu (Future Implementation?)
+//        userMenu.setEnabled(true);
     }
     this.repaint();
 }
 
-private void closeProject(Project p) {
-    if (project.getCurrentUser() != null) {
-        signOutUser();
-    }
-    else {
-        project = null;
-        closeProject.setEnabled(false);
-        userMenu.setEnabled(false);
-    }
+private void closeProject() {
+      signOutUser();
     this.repaint();
 }
-
-private void SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsActionPerformed
-    SaveAsProjectDialog sap = new SaveAsProjectDialog(this);
-    sap.setVisible(true);
-    if(sap.hasResults()) {
-        String location = sap.getSaveLocation();
-    }
-}//GEN-LAST:event_SaveAsActionPerformed
 
 private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
     AboutProjectDialog apd = new AboutProjectDialog(this);
@@ -722,10 +668,9 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         
     }//GEN-LAST:event_importFileActionPerformed
 
-    private void signOutUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutUserActionPerformed
-        //TODO: ask are you sure?
-        signOutUser();
-    }//GEN-LAST:event_signOutUserActionPerformed
+    private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_commitProjectActionPerformed
 
     private void signOutUser() {
         project.setCurrentUser(null);
@@ -733,13 +678,14 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         views.removeAll();
 
         saveProject.setEnabled(false);
-        saveAsProject.setEnabled(false);
+        commitProject.setEnabled(false);
+        //saveAsProject.setEnabled(false); // This option removed (future ipmlementation?)
         mergeProject.setEnabled(false);
         viewVersionHistory.setEnabled(false);
-        manageUsers.setEnabled(false);
-
-        signInUser.setEnabled(true);
-        signOutUser.setEnabled(false);
+        //manageUsers.setEnabled(false);  // This option removed (future ipmlementation?)
+//        Removed User Menu Option (Future Implementatin?)
+//        signInUser.setEnabled(true);
+//        signOutUser.setEnabled(false);
 
         newSearch.setEnabled(false);
 
@@ -776,6 +722,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         renameTag.setEnabled(enabled);
         deleteTag.setEnabled(enabled);
     }
+
     
     private int helpViewIndex;
     private CheckboxTree repository;
@@ -786,10 +733,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private DefaultCheckboxTreeCellRenderer checkedTags;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about;
-    private javax.swing.JMenuItem accountSettings;
     private javax.swing.JMenuBar applicationMenu;
     private javax.swing.JSplitPane applicationPane;
     private javax.swing.JMenuItem closeProject;
+    private javax.swing.JMenuItem commitProject;
     private javax.swing.JButton copyElement;
     private javax.swing.JButton copyTag;
     private javax.swing.JButton cutElement;
@@ -800,10 +747,8 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton importFile;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JMenuItem manageUsers;
     private javax.swing.JMenuItem mergeProject;
     private javax.swing.JButton newFolder;
     private javax.swing.JMenuItem newProject;
@@ -821,15 +766,11 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JScrollPane repositoryPane;
     private javax.swing.JToolBar repositoryTools;
     private javax.swing.JPanel repositoryWindow;
-    private javax.swing.JMenuItem saveAsProject;
     private javax.swing.JMenuItem saveProject;
-    private javax.swing.JMenuItem signInUser;
-    private javax.swing.JMenuItem signOutUser;
     private javax.swing.JLabel tagsLabel;
     private javax.swing.JScrollPane tagsPane;
     private javax.swing.JToolBar tagsTools;
     private javax.swing.JPanel tagsWindow;
-    private javax.swing.JMenu userMenu;
     private javax.swing.JMenuItem viewVersionHistory;
     private javax.swing.JTabbedPane views;
     // End of variables declaration//GEN-END:variables

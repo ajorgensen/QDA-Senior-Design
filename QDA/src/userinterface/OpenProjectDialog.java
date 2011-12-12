@@ -28,7 +28,7 @@ public class OpenProjectDialog extends AppDialog{
     private JLabel passwordLabel;
     private JPasswordField password;
     private JLabel spacer;
-    private JButton SignIn;
+    private JButton Open;
     private JButton Cancel;
     private JFileChooser chooser;
     private String choosertitle;
@@ -49,6 +49,7 @@ public class OpenProjectDialog extends AppDialog{
         locationLabel = new JLabel("Location ");
         locationLabel.setHorizontalAlignment(JLabel.RIGHT);
         c.weightx = 0.5;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
@@ -73,7 +74,7 @@ public class OpenProjectDialog extends AppDialog{
         c.gridx = 3;
         c.gridy = 0;
         panel.add(browse, c);
-        
+        /*
         pUserLabel = new JLabel("User Name ");
         pUserLabel.setHorizontalAlignment(JLabel.RIGHT);
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -102,25 +103,25 @@ public class OpenProjectDialog extends AppDialog{
         c.gridx = 1;
         c.gridy = 2;
         panel.add(password, c);
-        
-        spacer = new JLabel(" ");
+        */
+        spacer = new JLabel("                                        ");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
         c.gridy = 3;
         panel.add(spacer, c);
         
-        SignIn = new JButton("Sign In");
-        SignIn.addActionListener(new ActionListener() {
+        Open = new JButton("Open");
+        Open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                SignInActionPerformed(evt);
+                OpenActionPerformed(evt);
             } 
         });
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
-        c.gridy = 3;
-        panel.add(SignIn, c);
+        c.gridy = 2;
+        panel.add(Open, c);
         
         Cancel = new JButton("Cancel");
         Cancel.addActionListener(new ActionListener() {
@@ -131,7 +132,7 @@ public class OpenProjectDialog extends AppDialog{
         });
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
-        c.gridy = 3;
+        c.gridy = 2;
         panel.add(Cancel, c);
     }
     
@@ -164,7 +165,7 @@ public class OpenProjectDialog extends AppDialog{
         setVisible(false);
     }
     
-    private void SignInActionPerformed(ActionEvent evt) {
+    private void OpenActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
             setVisible(false);
@@ -172,36 +173,37 @@ public class OpenProjectDialog extends AppDialog{
     }
 
     private boolean validateInput() {
-        String n = pUser.getText();
-        if(n.equals("")) {
-            pUser.setText("Please enter a User Name");
-        }
+// No longer asks for username and password when opening a project
+//        String n = pUser.getText();
+//        if(n.equals("")) {
+//            pUser.setText("Please enter a User Name");
+//        }
         String l = location.getText();
         if(l.equals("")) {
             location.setText("Please enter a location");
         }
-        if(n.equals("") || l.equals("")) {
-            return false;
-        }
+//        if(n.equals("") || l.equals("")) {
+//            return false;
+//        }
         return true;
     }    
-    
-    public String getUserName() {
-        if(hasResults) {
-            return pUser.getText();
-        }
-        else {
-            return null;
-        }
-    }
-
-    public char[] getPassword() {
-        if (hasResults) {
-            return password.getPassword();
-        }
-        else {
-            return null;
-        }
-    }
+// No longer aks for username and password when opening a project    
+//    public String getUserName() {
+//        if(hasResults) {
+//            return pUser.getText();
+//        }
+//        else {
+//            return null;
+//        }
+//    }
+// No longer aks for username and password when opening a project
+//    public char[] getPassword() {
+//        if (hasResults) {
+//            return password.getPassword();
+//        }
+//        else {
+//            return null;
+//        }
+//    }
     
 }
