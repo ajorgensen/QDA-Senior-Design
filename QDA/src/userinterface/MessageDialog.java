@@ -36,44 +36,17 @@ public class MessageDialog extends AppDialog{
         panel.add(message);
         
         panel.add(Box.createRigidArea(new Dimension(150, 20)));
-        
-        userName = new JLabel("Enter A User Name:");
-        userName.setAlignmentX((float)0.5);
-        panel.add(userName);
-        
-        user = new JTextField();
-        user.setAlignmentX((float)0.5);
-        panel.add(user);
-        
-        error = new JLabel("  ");
-        error.setAlignmentX((float)0.5);
-        panel.add(error);
-        
+
         JButton ok = new JButton("OK");
         ok.setAlignmentX((float)0.5);
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(validateInput() == true) {
-                    setVisible(false);
-                } else {
-                    
-                }
+                setVisible(false);
             }
         });
         panel.add(ok);
     }
     
-    public String getUserName() {
-        return user.getText();
-    }
-    public Boolean validateInput() {
-        String n = user.getText();
-        if(n.equals("")) {
-            error.setText("User Name Required");
-            return false;
-        } else {
-            return true;
-        }
-    }
+
 }

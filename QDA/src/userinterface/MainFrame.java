@@ -55,6 +55,8 @@ public class MainFrame extends JFrame {
     private void defaultSetUp() {
         MessageDialog md = new MessageDialog(this, "Opening Default Project.");
         md.setVisible(true);
+        SignInDialog sid = new SignInDialog(this, project);
+        sid.setVisible(true);
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
         signInUser(u, project);
@@ -68,6 +70,8 @@ public class MainFrame extends JFrame {
     private void setUp(String dialog, User user, Project p, String sourceTextPath) {
         MessageDialog md = new MessageDialog(this, dialog);
         md.setVisible(true);
+        SignInDialog sid = new SignInDialog(this, p);
+        sid.setVisible(true);
         openProject(p);
         signInUser(user, p);
         Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
