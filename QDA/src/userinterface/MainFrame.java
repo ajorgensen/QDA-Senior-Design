@@ -406,6 +406,11 @@ public class MainFrame extends JFrame {
 
             mergeProject.setText("Merge");
             mergeProject.setEnabled(false);
+            mergeProject.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    mergeProjectActionPerformed(evt);
+                }
+            });
             projectMenu.add(mergeProject);
             projectMenu.add(jSeparator3);
 
@@ -671,7 +676,15 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
     private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
         // TODO add your handling code here:
+        CommitProjectDialog cpd = new CommitProjectDialog(this);
+        cpd.setVisible(true);
     }//GEN-LAST:event_commitProjectActionPerformed
+
+    private void mergeProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeProjectActionPerformed
+        // TODO add your handling code here:
+        MergeProjectDialog mpd = new MergeProjectDialog(this);
+        mpd.setVisible(true);
+    }//GEN-LAST:event_mergeProjectActionPerformed
 
     private void signOutUser() {
         project.setCurrentUser(null);
