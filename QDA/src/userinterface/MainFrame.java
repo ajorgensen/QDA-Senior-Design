@@ -53,7 +53,7 @@ public class MainFrame extends JFrame {
     }
     
     private void defaultSetUp() {
-        MessageDialog md = new MessageDialog(this, "Opening default project.");
+        MessageDialog md = new MessageDialog(this, "Opening Default Project.");
         md.setVisible(true);
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
@@ -156,10 +156,6 @@ public class MainFrame extends JFrame {
         viewVersionHistory = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         closeProject = new javax.swing.JMenuItem();
-        userMenu = new javax.swing.JMenu();
-        accountSettings = new javax.swing.JMenuItem();
-        signInUser = new javax.swing.JMenuItem();
-        signOutUser = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         helpContents = new javax.swing.JMenuItem();
         about = new javax.swing.JMenuItem();
@@ -417,39 +413,6 @@ public class MainFrame extends JFrame {
 
             applicationMenu.add(projectMenu);
 
-            userMenu.setText("User");
-            userMenu.setEnabled(false);
-            userMenu.setFocusCycleRoot(true);
-            userMenu.setFocusPainted(true);
-
-            accountSettings.setText("Account Settings");
-            accountSettings.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    accountSettingsActionPerformed(evt);
-                }
-            });
-            userMenu.add(accountSettings);
-
-            signInUser.setText("Sign In");
-            signInUser.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    signInUserActionPerformed(evt);
-                }
-            });
-            userMenu.add(signInUser);
-
-            signOutUser.setText("Sign Out");
-            signOutUser.setEnabled(false);
-            signOutUser.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    signOutUserActionPerformed(evt);
-                }
-            });
-            userMenu.add(signOutUser);
-            signOutUser.getAccessibleContext().setAccessibleName("");
-
-            applicationMenu.add(userMenu);
-
             helpMenu.setText("Help");
             helpMenu.setFocusCycleRoot(true);
             helpMenu.setFocusPainted(true);
@@ -516,16 +479,6 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 }//GEN-LAST:event_newProjectActionPerformed
 
-private void accountSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountSettingsActionPerformed
-    AccountSettingsDialog asd = new AccountSettingsDialog(this);
-    asd.setVisible(true);
-}//GEN-LAST:event_accountSettingsActionPerformed
-
-private void signInUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInUserActionPerformed
-    SignInDialog sid = new SignInDialog(this, project);
-    sid.setVisible(true);
-}//GEN-LAST:event_signInUserActionPerformed
-
 /*
  * User u should already have submitted their passwrd and been verified as a valid user
  */
@@ -541,9 +494,9 @@ private void signInUser(User user) {
     if (false /*TODO: user is admin*/) {
     //    manageUsers.setEnabled(true);  // This option removed (future ipmlemntation?)
     }
-    
-    signInUser.setEnabled(false);
-    signOutUser.setEnabled(true);
+//    Removed User Menu (Future Implementation?)    
+//    signInUser.setEnabled(false);
+//    signOutUser.setEnabled(true);
     
     newSearch.setEnabled(true);
     
@@ -583,7 +536,8 @@ private void openProject(Project p) {
     else {
         project = p;
         closeProject.setEnabled(true);
-        userMenu.setEnabled(true);
+        // Removed User Menu (Future Implementation?)
+//        userMenu.setEnabled(true);
     }
     this.repaint();
 }
@@ -595,7 +549,8 @@ private void closeProject(Project p) {
     else {
         project = null;
         closeProject.setEnabled(false);
-        userMenu.setEnabled(false);
+        // Removed User Menu (Future Implementation?)
+//        userMenu.setEnabled(false);
     }
     this.repaint();
 }
@@ -700,11 +655,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         
     }//GEN-LAST:event_importFileActionPerformed
 
-    private void signOutUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutUserActionPerformed
-        //TODO: ask are you sure?
-        signOutUser();
-    }//GEN-LAST:event_signOutUserActionPerformed
-
     private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_commitProjectActionPerformed
@@ -720,9 +670,9 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         mergeProject.setEnabled(false);
         viewVersionHistory.setEnabled(false);
         //manageUsers.setEnabled(false);  // This option removed (future ipmlementation?)
-
-        signInUser.setEnabled(true);
-        signOutUser.setEnabled(false);
+//        Removed User Menu Option (Future Implementatin?)
+//        signInUser.setEnabled(true);
+//        signOutUser.setEnabled(false);
 
         newSearch.setEnabled(false);
 
@@ -769,7 +719,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private DefaultCheckboxTreeCellRenderer checkedTags;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about;
-    private javax.swing.JMenuItem accountSettings;
     private javax.swing.JMenuBar applicationMenu;
     private javax.swing.JSplitPane applicationPane;
     private javax.swing.JMenuItem closeProject;
@@ -804,13 +753,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JToolBar repositoryTools;
     private javax.swing.JPanel repositoryWindow;
     private javax.swing.JMenuItem saveProject;
-    private javax.swing.JMenuItem signInUser;
-    private javax.swing.JMenuItem signOutUser;
     private javax.swing.JLabel tagsLabel;
     private javax.swing.JScrollPane tagsPane;
     private javax.swing.JToolBar tagsTools;
     private javax.swing.JPanel tagsWindow;
-    private javax.swing.JMenu userMenu;
     private javax.swing.JMenuItem viewVersionHistory;
     private javax.swing.JTabbedPane views;
     // End of variables declaration//GEN-END:variables
