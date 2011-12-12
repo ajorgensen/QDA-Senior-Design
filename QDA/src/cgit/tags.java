@@ -26,7 +26,7 @@ public class tags {
      * @param working_dir is the directory that contains the project we are working on.
      * @param tagHolder the list of tags we want to save
      */
-    private static void saveTags(String working_dir, ArrayList<TagInstance> tagHolder) {
+    public static void saveTags(String working_dir, ArrayList<TagInstance> tagHolder) {
         String tag_path = working_dir + cgitDirectory.TAGS_PATH.getPath();
 
         //clear the tag file out
@@ -50,7 +50,7 @@ public class tags {
     public static TagInstance parseTag(String data, MarkedUpText markedUp) throws ParseException {
         //TODO error checking
 
-        //format is user|data added|date modified|offset|length|tag type|tag path|project name
+        //format is user|data added|date modified|offset|length|tag type|tag path|source path
         String[] tag_parameters = data.split(cgitDirectory.DELIMETER);
 
         String user;

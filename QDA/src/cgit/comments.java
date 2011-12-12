@@ -1,143 +1,143 @@
 package cgit;
 
 import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import model.Comment;
+import model.MarkedUpText;
 import model.TextSection;
 import model.cgitDirectory;
 
-
- /**
+/**
  * 
  * @author andrewjorgensen
  */
 public class comments {
 
-    private String working_dir;
-    private ArrayList<Comment> comments;
-    private final String delimeter = "|";
+    public static void saveComments(String working_dir, ArrayList<Comment> commentHolder) {
+        String comment_path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
 
-    public comments(String working_dir) {
-        this.working_dir = working_dir;
-        this.comments = new ArrayList<Comment>();
-        this.loadComments();
-    }
+        //clear the file
+        FileUtil.writeFile(false, comment_path, "");
 
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-        this.saveComments();
-    }
-
-    public void removeComment(Comment comment) {
-        this.comments.remove(comment);
-        this.saveComments();
-    }
-
-    public ArrayList<Comment> getCommentsForFile(String filepath) {
-        ArrayList<Comment> matchingComments = new ArrayList<Comment>();
-
-        for (Comment comment : this.comments) {
-            if (comment.getSourcePath().equals(filepath)) {
-                matchingComments.add(comment);
-            }
-        }
-
-        return matchingComments;
-    }
-
-    public ArrayList<Comment> getComments() {
-        return this.comments;
-    }
-
-    private void loadComments() {
-        String comment_path = this.working_dir + cgitDirectory.COMMENTS_PATH.getPath();
-
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(comment_path));
-            String str;
-            int line_num = 0;
-
-            //read each line of the comment file and add it to the arraylist
-            while ((str = in.readLine()) != null) {
-                Comment comment = this.process_comment(str);
-                if (comment != null) {
-                    comments.add(comment);
-                } else {
-                    MyLogger.LogMessageToConsole(this, "Error reading comment on line " + line_num, LogType.ERROR);
-                }
-            }
-            in.close();
-        } catch (IOException e) {
-            MyLogger.LogMessageToConsole(this, "Error reading description file from: " + comment_path, LogType.ERROR);
+        for (Comment comment : commentHolder) {
+            FileUtil.writeFile(true, comment_path, comments.commentToString(comment));
         }
     }
 
-    private void saveComments() {
-        String comment_path = this.working_dir + cgitDirectory.COMMENTS_PATH.getPath();
-
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(comment_path, false));
-
-            for (Comment comment : this.comments) {
-                this.writeComment(out, comment);
-            }
-
-            out.close();
-            MyLogger.LogMessageToConsole(this, "Wrote to: " + comment_path, LogType.DEBUG);
-        } catch (IOException e) {
-            MyLogger.LogMessageToConsole(this, "Error writing description file to: " + comment_path, LogType.ERROR);
-        }
-    }
-
-    private void writeComment(BufferedWriter out, Comment comment) throws IOException {
-        out.write(this.commentToString(comment) + "\n");
-    }
-
-    public static final Comment process_comment(String comment_string) {
-        String[] comment_params = comment_string.split("\\" + cgitDirectory.DELIMETER);
-
-        //Format will be:
-        // username|dateAdded|dateModified|offset|length|comment|filepath
-        try {
-
-            String uname;
-            Date dateAdded;
-            Date dateModified;
-            int offset;
-            int length;
-            String comment_text;
-            String sourceFilePath;
-
-            uname = comment_params[0];
-            dateAdded = new SimpleDateFormat(Comment.DATE_FORMAT).parse(comment_params[1]);
-            dateModified = new SimpleDateFormat(Comment.DATE_FORMAT).parse(comment_params[2]);
-            offset = Integer.parseInt(comment_params[3]);
-            length = Integer.parseInt(comment_params[4]);
-            comment_text = comment_params[7];
-            sourceFilePath = comment_params[8];
-
-            return new Comment(uname, dateAdded, dateModified, new TextSection(offset, length), comment_text, sourceFilePath);
-        } catch (java.text.ParseException e) {
-            MyLogger.LogMessageToConsole(null, "Error parsing date", LogType.ERROR);
-            return null;
-        }
-    }
-
-    public static final Comment new_comment(String uname, TextSection selectedText, String comment_text, String sourceFilePath) {
-        Date now = new Date();
-        return new Comment(uname, now, now, selectedText, comment_text, sourceFilePath);
-    }
-
-    private String commentToString(Comment comment) {
+    public static String commentToString(Comment comment) {
+        String comment_string = "";
         SimpleDateFormat formatter = new SimpleDateFormat(comment.DATE_FORMAT);
 
-        return comment.getOwner() + cgitDirectory.DELIMETER
-                + new StringBuilder(formatter.format(comment.getDateAdded())) + cgitDirectory.DELIMETER
-                + new StringBuilder(formatter.format(comment.getDateModified())) + cgitDirectory.DELIMETER
-                + Integer.toString(comment.getTextSection().getOffset()) + cgitDirectory.DELIMETER
-                + Integer.toString(comment.getTextSection().getLength()) + cgitDirectory.DELIMETER
-                + comment.getComment() + cgitDirectory.DELIMETER
-                + comment.getSourcePath();
+        comment_string += comment.getOwner() + cgitDirectory.DELIMETER;
+        comment_string += new StringBuilder(formatter.format(comment.getDateAdded())) + cgitDirectory.DELIMETER;
+        comment_string += new StringBuilder(formatter.format(comment.getDateModified())) + cgitDirectory.DELIMETER;
+        comment_string += Integer.toString(comment.getTextSection().getOffset()) + cgitDirectory.DELIMETER;
+        comment_string += Integer.toString(comment.getTextSection().getLength()) + cgitDirectory.DELIMETER;
+        comment_string += comment.getComment() + cgitDirectory.DELIMETER; //TODO we need to escape the new line characters so it doesnt break the parser when we pass them back in
+        comment_string += comment.getSourcePath();
+
+        return comment_string;
+    }
+
+    public static Comment parseComment(String comment_line, MarkedUpText markedUp) throws ParseException {
+        //comment format: owner|date added|date modified|offset|length|comment|sourcePath
+
+        String[] params = comment_line.split(cgitDirectory.DELIMETER);
+        int i = 0;
+
+        String owner;
+        Date dateAdded;
+        Date dateModified;
+        TextSection section;
+        String comment;
+        String sourcePath;
+
+        if (params[i] != null) { //i=0
+            owner = params[i++];
+        } else {
+            return null;
+        }
+
+        if (params[i] != null) { //i=1
+            dateAdded = new SimpleDateFormat(Comment.DATE_FORMAT).parse(params[i++]);
+        } else {
+            return null;
+        }
+
+        if (params[i] != null) { //i=2
+            dateModified = new SimpleDateFormat(Comment.DATE_FORMAT).parse(params[i++]);
+        } else {
+            return null;
+        }
+
+        if (params[i] != null && params[i + 1] != null) { //i=3&4
+            section = new TextSection(Integer.parseInt(params[i++]), Integer.parseInt(params[i++]));
+        } else {
+            return null;
+        }
+
+        if (params[i] != null) { //i=5
+            comment = params[i++];
+        } else {
+            return null;
+        }
+
+        if (params[i] != null && params[i].equals(markedUp.getName())) { //i=5
+            sourcePath = params[i++];
+        } else {
+            return null;
+        }
+        
+        
+
+        return new Comment(owner, dateAdded, dateModified, section, comment, markedUp);
+    }
+
+    public static ArrayList<Comment> loadCommentsForProject(MarkedUpText markUp) {
+        ArrayList<Comment> commentHolder = new ArrayList<Comment>();
+        String comment_path = markUp.getProject().getLocalPath() + cgitDirectory.COMMENTS_PATH.getPath();
+
+        try {
+            String data = FileUtil.readFile(comment_path);
+            
+            for(String line : data.split("\n"))
+            {
+                Comment tempComment = comments.parseComment(line, markUp);
+                if(tempComment != null)
+                {
+                    commentHolder.add(tempComment);
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    /*
+    
+    private String commentToString(Comment comment) {
+    SimpleDateFormat formatter = new SimpleDateFormat(comment.DATE_FORMAT);
+    
+    return comment.getOwner() + cgitDirectory.DELIMETER
+    + new StringBuilder(formatter.format(comment.getDateAdded())) + cgitDirectory.DELIMETER
+    + new StringBuilder(formatter.format(comment.getDateModified())) + cgitDirectory.DELIMETER
+    + Integer.toString(comment.getTextSection().getOffset()) + cgitDirectory.DELIMETER
+    + Integer.toString(comment.getTextSection().getLength()) + cgitDirectory.DELIMETER
+    + comment.getComment() + cgitDirectory.DELIMETER
+    + comment.getSourcePath();
+    }
+     * 
+     */
+    public static void main(String[] args) {
+        int i = 0;
+        System.out.println("i++: " + i++);
+        System.out.println("i++: " + i++);
+        System.out.println("i++: " + i++);
+        System.out.println("++i: " + ++i);
+        System.out.println("i: " + i);
     }
 }
