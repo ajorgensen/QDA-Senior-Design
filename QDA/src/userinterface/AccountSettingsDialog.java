@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import model.User;
 /**
  *
  * @author Brittany Nkounkou
@@ -210,8 +211,17 @@ public class AccountSettingsDialog extends AppDialog{
     
     private void submitPassActionPerformed(ActionEvent evt) {
         if(validatePasswordInput()) {
-            hasResults = true;
-            setVisible(false);
+            User alpha = new User(userName.getText(), oldPass.getPassword().toString());
+            User beta = new User(userName.getText(), newPass.getPassword().toString());
+            if(alpha.comparePassword(oldPass.getPassword().toString()) == true) {
+                //MainFrame.project.removeUser(alpha);
+                //MainFrame.project.addUser(beta);
+                hasResults = true;
+                setVisible(false);
+            } else {
+                error.setText("Old Password Is Incorrect");
+            }
+            
         }
     }
     private void changeUserNameActionPerformed(ActionEvent evt) {
@@ -309,8 +319,17 @@ public class AccountSettingsDialog extends AppDialog{
     }
     private void submitUserActionPerformed(ActionEvent evt) {
         if (validateUserInput()) {
-            hasResults = true;
-            setVisible(false);
+            User alpha = new User(userOld.getText(), pass.getPassword().toString());
+            User beta = new User(userNew.getText(), pass.getPassword().toString());
+            if(alpha.comparePassword(pass.getPassword().toString()) == true) {
+                //MainFrame.project.removeUser(alpha);
+                //MainFrame.project.addUseR(beta);
+                hasResults = true;
+                setVisible(false);  
+            } else {
+                error.setText("Password Is Incorrect");
+            }
+            
         }
                
     }

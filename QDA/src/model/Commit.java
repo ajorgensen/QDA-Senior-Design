@@ -44,6 +44,29 @@ public class Commit implements GitObject {
     public ArrayList<Commit> getParents() {
         return this.parents;
     }
+    
+    public boolean hasParents()
+    {
+        if(this.parents != null && this.parents.size() > 0)
+            return true;
+        else 
+            return false;
+    }
+    
+    public boolean hasParentWithHash(String hash)
+    {
+        boolean contains = false;
+        
+        for(Commit parent : this.parents)
+        {
+            if(parent.generateHash().equals(hash))
+            {
+                contains = true;
+            }
+        }
+        
+        return contains;
+    }
 
     public String getCommiter() {
         return this.commiter;
@@ -56,6 +79,15 @@ public class Commit implements GitObject {
     public static Commit parseHash(String hash, String working_dir) {
         String data = Objects.readHash(hash, working_dir);
 
+        return Commit.parseCommitContent(data, working_dir);
+    }
+    
+
+    public static Commit parseCommitContent(String data, String working_dir) {
+        
+        if(data.isEmpty())
+            return null;
+        
         String[] data_lines = data.split("\n");
 
         BlobTree tree = null;
@@ -81,6 +113,9 @@ public class Commit implements GitObject {
             }
         }
         
+        if(tree == null)
+            return null;
+
 
         return new Commit(parents, tree, commiter, commit_message);
     }
@@ -108,7 +143,6 @@ public class Commit implements GitObject {
 
         return content;
     }
-   
 
     public static void main(String[] args) {
         Commit.parseHash("434589f206ebbe5150d927bb91ec333c5857936e", "/Volumes/DATA/Users/andrewjorgensen/temp/qda_project");

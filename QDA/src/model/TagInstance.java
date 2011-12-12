@@ -36,4 +36,18 @@ public class TagInstance extends MarkUp{
     public void delete() {
         //TODO
     }
+    
+    public boolean isEqualTo(TagInstance obj) {
+        boolean equal = true;
+
+        equal = obj.getOwner().equals(this.getOwner());
+        equal = obj.getTagType().equals(this.getTagType());
+        equal = obj.getDateAdded().equals(this.getDateAdded());
+
+        return equal;
+    }
+   
+    public MarkedUpText getMarkedUpText() {
+        return markedUpText;
+    }
 }

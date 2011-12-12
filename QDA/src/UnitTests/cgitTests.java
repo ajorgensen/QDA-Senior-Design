@@ -12,7 +12,7 @@ public class cgitTests {
     public static void main(String [] args)
     {
         String working_dir = "/Volumes/DATA/Users/andrewjorgensen/temp/qda_project";
-        
+        /*
         //Setup the cgit directory
         setup.setup_qda_directory(working_dir);
         
@@ -36,9 +36,15 @@ public class cgitTests {
         
         Branch.newBranch(working_dir, "new_branch");
         
-        comment = comments.new_comment("hemal", new TextSection(0,10), "hello world", "SourceText1.txt");
+        comment = comments.new_comment("hemal", new TextSectioyn(0,10), "hello world", "SourceText1.txt");
         comments.addComment(comment);
         
         Branch.commit(working_dir, "hemal", "new commit");
+        
+        Branch.checkoutBranch(working_dir, "master");
+         * 
+         */
+        
+        Branch.checkoutCommit(working_dir, "565f4b71db7f7b020c6fdf19f36ee49711cfbcfb");
     }  
 }

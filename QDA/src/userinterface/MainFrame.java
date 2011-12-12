@@ -694,7 +694,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             if (beta != null) {
                 String gamma = beta.toString();
                 //check if node
-                if (gamma.contains("/")) { //it is a node
+                if (gamma.contains(".")) { //it is a node
                     if (selRow != -1) {
                         if (evt.getClickCount() == 2) {
                             Component[] v = views.getComponents();
