@@ -15,10 +15,8 @@ import java.awt.Toolkit;
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import org.openide.awt.TabbedPaneFactory;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import checkboxtree.*;
@@ -30,7 +28,6 @@ import model.*;
  */
 public class MainFrame extends JFrame {
     private Project project;
-    
     
     /** Creates new from ApplicationStart */
     public MainFrame() {
@@ -59,10 +56,12 @@ public class MainFrame extends JFrame {
         openProject(new Project("defaultProject","defaultPath", u));
         signInUser(u);
         Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
-        MarkedUpText mut = project.importSourceText("./QDA/TestTextFile.txt", folder1);
+        MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
         mut.addTag(tt, new TextSection(100,10));
+        mut.addTag(tt, new TextSection(1000,100));
         mut.addComment("hey hey hey this is my comment.", new TextSection(200,25));
+        mut.addComment("this is my comment that overlapa a tag.", new TextSection(1050,250));
     }
     
     private void initializeRepository() {
@@ -709,7 +708,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
                             }
                             TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
                             tag.addCheckingPath(tags.getPathForRow(0));
-                            addView(new SourceTextView((MarkedUpText) beta, tag));
+                            addView(new SourceTextView(this, (MarkedUpText) beta, tag));
                         }
                     } else {
                         // Do nothing since a node wasn't selected

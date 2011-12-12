@@ -49,8 +49,7 @@ public class SourceText {
 	}
 	
 	public String getText(){
-		System.out.println("# lines =  " + lines.size());
-		return text;
+            return text;
 	}
 
 	/* Used to test 

@@ -7,55 +7,46 @@ package userinterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 
 /**
  *
  * @author Brittany Nkounkou
  */
-public class View extends javax.swing.JScrollPane {
+public class View extends javax.swing.JPanel {
     private String title;
     private String abbrv;
     
-    private JPanel panel;
+    private JPanel west;
+    protected JPanel tools;
     protected JPanel left;
-    protected JPanel center;
-    protected JPanel right;
+    protected JScrollPane center;
     
     protected View(String t) {
         setTitle(t);
+        setBackground(Color.WHITE);
+        setLayout(new BorderLayout());
         
-        panel = new JPanel();
-        panel.setBackground(Color.BLUE);
-        panel.setLayout(new java.awt.BorderLayout());
+        west = new JPanel();
+        west.setLayout(new BorderLayout());
+        
+        tools = new JPanel();
+        tools.setBackground(new Color(250,250,250));
+        west.add(tools, BorderLayout.NORTH);
         
         left = new JPanel();
         left.setBackground(new Color(250,250,250));
-        left.setPreferredSize(new Dimension(200, 500));
-        left.setMinimumSize(new Dimension(200, 500));
-        left.setMaximumSize(new Dimension(200, 0));
-        left.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(left, BorderLayout.LINE_START);
+        west.add(left, BorderLayout.CENTER);
         
-        center = new JPanel();
+        add(west, BorderLayout.LINE_START);
+        
+        center = new JScrollPane();
         center.setBackground(Color.WHITE);
-        center.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(0,1,0,1,Color.BLACK),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        center.setPreferredSize(new Dimension(500, 500));
-        center.setMinimumSize(new Dimension(500, 500));
-        panel.add(center, BorderLayout.CENTER);
-
-        right = new JPanel();
-        right.setBackground(new Color(250,250,250));
-        right.setPreferredSize(new Dimension(200, 500));
-        right.setMinimumSize(new Dimension(200, 500));
-        right.setMaximumSize(new Dimension(200, 0));
-        right.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(right, BorderLayout.LINE_END);
+        center.setBorder(BorderFactory.createEmptyBorder());
+        center.setViewportBorder(BorderFactory.createMatteBorder(0,1,0,1,Color.DARK_GRAY));
         
-        setViewportView(panel);
+        add(center, BorderLayout.CENTER);
     }
     
     public final String getTitle() {
