@@ -49,10 +49,14 @@ public class MainFrame extends JFrame {
         
         defaultSetUp();
     }
-    
+    /**
+     * Starts the default project up
+     */
     private void defaultSetUp() {
         MessageDialog md = new MessageDialog(this, "Opening Default Project.");
         md.setVisible(true);
+        SignInDialog sid = new SignInDialog(this, project);
+        sid.setVisible(true);
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
         signInUser(u, project);
@@ -64,10 +68,25 @@ public class MainFrame extends JFrame {
         mut.addComment("hey hey hey this is my comment.", new TextSection(200,25));
         mut.addComment("this is my comment that overlapa a tag.", new TextSection(1050,250));
     }
-    
+    /**
+     * setUp is used to start new project that are not the default one.
+     * Still needs to correctly importSourceText
+     * 
+     * @param dialog
+     * dialog is what the message box says when it first pops up
+     * @param user
+     * user is the Admin user entered for the new project
+     * @param p
+     * p is the new project created
+     * @param sourceTextPath 
+     * sourceTextPath is the location of the sourcetext the user choose
+     * when creating a new project
+     */
     private void setUp(String dialog, User user, Project p, String sourceTextPath) {
         MessageDialog md = new MessageDialog(this, dialog);
         md.setVisible(true);
+        SignInDialog sid = new SignInDialog(this, p);
+        sid.setVisible(true);
         openProject(p);
         signInUser(user, p);
         Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
@@ -406,6 +425,11 @@ public class MainFrame extends JFrame {
 
             mergeProject.setText("Merge");
             mergeProject.setEnabled(false);
+            mergeProject.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    mergeProjectActionPerformed(evt);
+                }
+            });
             projectMenu.add(mergeProject);
             projectMenu.add(jSeparator3);
 
@@ -479,6 +503,13 @@ private void helpContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     views.getSelectedComponent().requestFocusInWindow();
 }//GEN-LAST:event_helpContentsActionPerformed
 
+/**
+ * When New Project menu button is pressed it opens a NewProjectDialog box
+ * User then enters the required information
+ * That information is then used to create a new project and all the information
+ * is passed onto setUp
+ * @param evt 
+ */
 private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectActionPerformed
     NewProjectDialog npd = new NewProjectDialog(this);
     npd.setVisible(true);
@@ -532,7 +563,12 @@ private void signInUser(User user, Project p) {
     
     this.repaint();
 }
-
+/**
+ * When user presses Close it exits the application.
+ * Right now there is no check to make sure the user saved
+ * before the project is closed
+ * @param evt 
+ */
 private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXIT_ON_CLOSE
 // TODO add your handling code here:
     System.exit(0); // Exit the application
@@ -563,12 +599,17 @@ private void openProject(Project p) {
     }
     this.repaint();
 }
-
+/**
+ * Signs out the current user and then repaints the application
+ * This causes certain menu items to become grayed out
+ */
 private void closeProject() {
       signOutUser();
     this.repaint();
 }
-
+/*
+ * Opens the About dialogs box describing the program
+ */
 private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
     AboutProjectDialog apd = new AboutProjectDialog(this);
     apd.setVisible(true);
@@ -671,7 +712,15 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
     private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
         // TODO add your handling code here:
+        CommitProjectDialog cpd = new CommitProjectDialog(this);
+        cpd.setVisible(true);
     }//GEN-LAST:event_commitProjectActionPerformed
+
+    private void mergeProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeProjectActionPerformed
+        // TODO add your handling code here:
+        MergeProjectDialog mpd = new MergeProjectDialog(this);
+        mpd.setVisible(true);
+    }//GEN-LAST:event_mergeProjectActionPerformed
 
     private void signOutUser() {
         project.setCurrentUser(null);

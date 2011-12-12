@@ -23,11 +23,10 @@ public class SignInDialog extends AppDialog{
     
     private JLabel pUserLabel;
     private JTextField pUser;
-    private JLabel passwordLabel;
-    private JPasswordField password;
     private JLabel spacer;
     private JButton SignIn;
     private JButton Cancel;
+    private JLabel error;
     
     public SignInDialog(MainFrame mf, Project p) {
         super(mf, "Sign In", new Object[]{p});
@@ -41,19 +40,11 @@ public class SignInDialog extends AppDialog{
         
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        
-//        pNameLabel = new JLabel("Project Name:  ");
-//        pNameLabel.setHorizontalAlignment(JLabel.RIGHT);
-//        c.weightx = 0.5;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.gridx = 0;
-//        c.gridy = 0;
-//        panel.add(pNameLabel, c);
-        
-        
-        pUserLabel = new JLabel("User Name ");
+
+        pUserLabel = new JLabel("User Name:   ");
         pUserLabel.setHorizontalAlignment(JLabel.RIGHT);
         c.weightx = 0.5;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
@@ -61,31 +52,23 @@ public class SignInDialog extends AppDialog{
         
         pUser = new JTextField();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 3;
+        c.gridwidth = 2;
         c.gridx = 1;
         c.gridy = 0;
         panel.add(pUser, c);
+      
         
-        passwordLabel = new JLabel("Password ");
-        passwordLabel.setHorizontalAlignment(JLabel.RIGHT);
+        spacer = new JLabel("                      ");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 1;
-        panel.add(passwordLabel, c);
+        panel.add(spacer, c);
         
-        password = new JPasswordField();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 3;
-        c.gridx = 1;
-        c.gridy = 1;
-        panel.add(password, c);
-        
-        spacer = new JLabel(" ");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 1;
         panel.add(spacer, c);
         
         SignIn = new JButton("Sign In");
@@ -97,29 +80,17 @@ public class SignInDialog extends AppDialog{
         });
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
-        c.gridy = 2;
+        c.gridy = 1;
         panel.add(SignIn, c);
         
-        Cancel = new JButton("Cancel");
-        Cancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                CancelActionPerformed(evt);
-            }
-        });
+        error = new JLabel(" ");
+        error.setHorizontalAlignment(JLabel.CENTER);
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
+        c.gridwidth = 3;
+        c.gridx = 0;
         c.gridy = 2;
-        panel.add(Cancel, c);
-                
-//        panel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-//        panel.add(pUserLabel);
-//        panel.add(pUser);
-//        
-//        panel.add(passwordLabel);
-//        panel.add(password);
-//        panel.add(SignIn);
-//        panel.add(Cancel);
+        panel.add(error, c);
+
     }
     
     private void CancelActionPerformed(ActionEvent evt) {
@@ -136,11 +107,11 @@ public class SignInDialog extends AppDialog{
     private boolean validateInput() {
         String n = pUser.getText();
         if(n.equals("")) {
-            pUser.setText("Please enter a User Name");
+            error.setText("User Name Required");
             return false;
         }
         return true;
-    }    
+    }
     
     public String getUserName() {
         if(hasResults) {
@@ -151,12 +122,4 @@ public class SignInDialog extends AppDialog{
         }
     }
 
-    public char[] getPassword() {
-        if (hasResults) {
-            return password.getPassword();
-        }
-        else {
-            return null;
-        }
-    }
 }
