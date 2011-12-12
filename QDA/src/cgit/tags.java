@@ -151,7 +151,7 @@ public class tags {
         tagString += Integer.toString(tag.getTextSection().getOffset()) + cgitDirectory.DELIMETER;
         tagString += Integer.toString(tag.getTextSection().getLength()) + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getName() + cgitDirectory.DELIMETER;
-        tagString += tag.getSourcePath() + cgitDirectory.DELIMETER;
+        tagString += tag.getTagType().getPathString() + cgitDirectory.DELIMETER;
         tagString += tag.getMarkedUpText().getProject().getName();
 
         return tagString;

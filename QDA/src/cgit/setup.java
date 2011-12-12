@@ -10,13 +10,24 @@ import model.cgitDirectory;
 public class setup {
 
     /**
-     * This function starts at the working directory and creates a new repository at that location
+     * This function starts at the working directory and creates a new repository at that location. Please note this function does not do a branch and commit
      * 
      * @param working_dir
      * @return boolean indicating whether the directory was created successfully or not.
      */
     public static boolean setup_qda_directory(String working_dir) {
         boolean success = false;
+        
+        //check if the directory exists
+        if(!new File(working_dir).exists())
+        {
+            return false;
+        } 
+        else if(new File(working_dir + cgitDirectory.QDA_PATH).exists()) //TODO more checking to make sure the directory structure is still O.K.
+        {
+            MyLogger.LogMessageToConsole(setup.class, "cgit directory already exists", LogType.DEBUG);
+            return true;
+        }
 
         ArrayList<FileStructure> directoryStructure = cgitDirectory.getDirectoryStructure();
 
@@ -34,6 +45,7 @@ public class setup {
             }
         }
         
+        /*
         try {
             //generate new master branch.
             Head.writeHead(working_dir, "master");
@@ -42,6 +54,8 @@ public class setup {
             Logger.getLogger(setup.class.getName()).log(Level.SEVERE, null, ex);
             success = false;
         }
+         * 
+         */
 
         return success;
     }
