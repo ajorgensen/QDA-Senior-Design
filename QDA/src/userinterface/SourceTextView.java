@@ -9,7 +9,6 @@ import checkboxtree.TreeCheckingListener;
 import checkboxtree.TreeCheckingModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -21,16 +20,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextPane;
-import javax.swing.OverlayLayout;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -41,7 +36,6 @@ import model.MarkedUpText;
 import model.TagInstance;
 import model.TagType;
 import model.TextSection;
-import org.openide.util.Exceptions;
 
 /**
  *
@@ -76,7 +70,6 @@ public class SourceTextView extends View {
     private HashMap<String, Integer> tagToColorIndex;
     private int prevColorIndex;
     private int vertScrollPos;
-    private boolean caretEventEnabled;
     private int selectionStart;
     private int selectionEnd;
     
@@ -95,20 +88,22 @@ public class SourceTextView extends View {
         tagsModel = tm;
         prevColorIndex = -1;
         vertScrollPos = 0;
-        caretEventEnabled = true;
         selectionStart = -1;
         selectionEnd = -1;
+        
+        initializeColorIndices();
         
         tagsModel.addTreeCheckingListener(new TreeCheckingListener() {
             @Override
             public void valueChanged(TreeCheckingEvent e) {
-                refreshTextContent();
+                initializeCenter();
             } 
         });
         
         initializeTools();
         initializeLeft();
         initializeCenter();
+        center.getVerticalScrollBar().setValue(0);
     }
     
     private void initializeTools() {
@@ -126,7 +121,7 @@ public class SourceTextView extends View {
         viewComments.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                refreshTextContent();
+                initializeCenter();
             }
         });
         
@@ -150,17 +145,15 @@ public class SourceTextView extends View {
     }
     
     private void initializeCenter() {
+        vertScrollPos = center.getVerticalScrollBar().getValue();
         text = new JTextPane();
-        center.getVerticalScrollBar().setValue(0);
-        initializeColorIndices();
-        refreshTextContent();
+        
         text.setBorder(BorderFactory.createEmptyBorder(70, 10, 70, 10));
         text.setEditable(false);
         text.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
-                if (caretEventEnabled)
-                    textSelected(e);
+                textSelected(e);
             }
         });
         text.addFocusListener(new FocusListener() {
@@ -179,10 +172,9 @@ public class SourceTextView extends View {
                     comment.setEnabled(false);
                 else
                     addComment();
-                
-                text.setCaretPosition(0);
             }
         });
+        refreshTextContent();
         
         center.setViewportView(text);
         //TODO: start at the top of the page
@@ -201,23 +193,9 @@ public class SourceTextView extends View {
     }
     
     private void refreshTextContent() {
-        refreshTextContent(-1,0,0);
-    }
-    
-    private void refreshTextContent(int boldPosition) {
-        refreshTextContent(boldPosition,0,0);
-    }
-    
-    private void refreshTextContent(int selectionOffset, int selectionLength) {
-        refreshTextContent(-1, selectionOffset, selectionLength);
-    }
-    
-    private void refreshTextContent(int boldPosition, int selectionOffset, int selectionLength) {
-        caretEventEnabled = false;
-        vertScrollPos = center.getVerticalScrollBar().getValue();
-        StyledDocument doc = new DefaultStyledDocument();
-        text.setStyledDocument(doc);
         text.setText(markedUpText.getSourceText().getText());
+        StyledDocument doc = text.getStyledDocument();
+        //text.setStyledDocument(doc);
         doc.addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {}
@@ -301,16 +279,6 @@ public class SourceTextView extends View {
                 //TODO: display tag label on left (and user?)
             }
         }
-        
-        if (selectionLength > 0) {
-            
-            Style highlightedStyle = doc.addStyle("highlighted", defaultStyle);
-            StyleConstants.setBackground(highlightedStyle, text.getSelectionColor());
-            StyleConstants.setForeground(highlightedStyle, text.getSelectedTextColor());
-
-            doc.setCharacterAttributes(selectionOffset, selectionLength, highlightedStyle, false);
-        }
-        caretEventEnabled = true;
     }
     
     private int nextColorIndex() {
@@ -334,7 +302,7 @@ public class SourceTextView extends View {
             /*AttributeSet as = text.getStyledDocument().getCharacterElement(dot).getAttributes().copyAttributes();
             if (as.containsAttribute(StyleConstants.Background, commentColor) ||
                 as.containsAttribute(StyleConstants.Underline, true)) {
-                refreshTextContent(dot);
+                initializeCenter(dot);
             }*/
         }
         else {
@@ -351,28 +319,43 @@ public class SourceTextView extends View {
     }
     
     private void addTag() {
-        refreshTextContent(selectionStart, selectionEnd-selectionStart);
+        int offset = selectionStart;
+        int length = selectionEnd-selectionStart;
         
-        
-        
-        refreshTextContent();
+        try {
+            String commentedText = text.getText(offset, length);
+            AddTagDialog atd = new AddTagDialog(mainFrame, commentedText, mainFrame.getBlankTagTree());
+            atd.setVisible(true);
+            
+            if (atd.hasResults()) {
+                TagType tt = atd.getSelectedTagType();
+                markedUpText.addTag(tt, new TextSection(offset, length));
+            }
+            
+        } catch (BadLocationException ex) {
+            (new ErrorDialog(mainFrame,"Invalid selection")).setVisible(true);
+        } finally {
+            initializeCenter();
+        }
     }
     
     private void addComment() {
         int offset = selectionStart;
         int length = selectionEnd-selectionStart;
-        refreshTextContent(offset, length);
         
         try {
             String commentedText = text.getText(offset, length);
+            AddCommentDialog acd = new AddCommentDialog(mainFrame, commentedText);
+            acd.setVisible(true);
             
-            if (true) {
-                markedUpText.addComment("", new TextSection(offset, length));
+            if (acd.hasResults()) {
+                String c = acd.getCommentText();
+                markedUpText.addComment(c, new TextSection(offset, length));
             }
         } catch (BadLocationException ex) {
             (new ErrorDialog(mainFrame,"Invalid selection")).setVisible(true);
         } finally {
-            refreshTextContent();
+            initializeCenter();
         }
     }
 }

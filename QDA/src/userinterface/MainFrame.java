@@ -21,6 +21,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import checkboxtree.*;
 import java.awt.Component;
+import javax.swing.tree.TreeModel;
 import model.*;
 /**
  *
@@ -722,7 +723,28 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         renameTag.setEnabled(enabled);
         deleteTag.setEnabled(enabled);
     }
-
+    
+    /**
+     * Provides SourceTextView with a JTree of the tag hierarchy to select from.
+     * @return a copy of tags with no checkboxes
+     */
+    public JTree getBlankTagTree() {
+        TreeModel newTreeModel = tags.getModel();
+        
+        JTree newTree = new JTree(tags.getModel());
+        newTree.setCellRenderer(uncheckedTags);
+        newTree.setEditable(false);
+        
+        // make sure this new tree won't change the model
+        newTree.addPropertyChangeListener(JTree.EDITABLE_PROPERTY, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                ((JTree)evt.getSource()).setEditable(false);
+            }   
+        });
+        
+        return newTree;
+    }
     
     private int helpViewIndex;
     private CheckboxTree repository;
