@@ -10,14 +10,22 @@ import cgit.LogType;
 public class TagInstance extends MarkUp{
     private TagType tagType;
     private String sourceFileName;
+    private String sourceHash;
     
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public TagInstance(String user, Date dateAdded, Date dateModified,
-            TextSection selection, TagType tagType) {
+            TextSection selection, TagType tagType, String sourceTextHash) {
         super(user, dateAdded, dateModified, selection);
         this.tagType=tagType;
+        
+        this.sourceHash = sourceTextHash;
         //TODO: TagInstances should know which markeduptext they belong to
+    }
+    
+    public String getSourceHash()
+    {
+        return this.sourceHash;
     }
 
     public TagType getTagType() {
@@ -29,18 +37,26 @@ public class TagInstance extends MarkUp{
         return this.sourceFileName;
     }
     
+    public static TagInstance generateNewTag(String user, TextSection section, TagType tagType, String sourceTextHash)
+    {
+        Date now = new Date();
+        
+        return new TagInstance(user, now, now, section, tagType, sourceTextHash);
+    }
+    
     @Override
     public void delete() {
         //TODO
     }
     
     public boolean isEqualTo(TagInstance obj) {
-        boolean equal = true;
-
-        equal = obj.getOwner().equals(this.getOwner());
-        equal = obj.getTagType().equals(this.getTagType());
-        equal = obj.getDateAdded().equals(this.getDateAdded());
-
-        return equal;
+        
+        if(!obj.getOwner().equals(this.getOwner()))
+            return false;
+        
+        if(!obj.getTagType().equals(this.getTagType()))
+            return false;
+        
+        return true;
     }
 }

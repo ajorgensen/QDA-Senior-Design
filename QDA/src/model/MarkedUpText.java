@@ -98,7 +98,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             Date dateAdded = new Date();
             Date dateModified = new Date();
             tagInstances.add(new TagInstance(project.getCurrentUser().getName(), dateAdded, dateModified,
-            selection,tagType));
+            selection,tagType, this.sourceText.getContentHash()));
             return true;
         }
        
@@ -112,7 +112,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             Date dateAdded = new Date();
             Date dateModified = new Date();
             comments.add(new Comment(project.getCurrentUser().getName(), dateAdded, dateModified,
-            selection, comment));
+            selection, comment, this.sourceText.getContentHash()));
         }
        
        public List<TagInstance> getTags(){
@@ -125,7 +125,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
        
        public void saveCurrentState()
        {
-           cgit.tags.saveTags(project.getLocalPath(), tagInstances, this.sourceText);
-           cgit.comments.saveComments(project.getLocalPath(), comments, this.sourceText);
+           cgit.tags.saveTags(project.getLocalPath(), tagInstances);
+           cgit.comments.saveComments(project.getLocalPath(), comments);
        }
 }

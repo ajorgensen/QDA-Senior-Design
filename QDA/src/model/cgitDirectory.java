@@ -25,6 +25,7 @@ public class cgitDirectory {
     public static final FileStructure TAGS_PATH = new FileStructure(false, REFS_PATH.getPath() + "/tags");
     public static final FileStructure COMMENTS_PATH = new FileStructure(false, REFS_PATH.getPath() + "/comments");
     public static final String DELIMETER = "|";
+    public static final String SPLITDELIMETER = "\\|";
 
     public static boolean createDirectory(String path) {
         boolean success = false;

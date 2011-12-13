@@ -32,6 +32,19 @@ public class BlobTree implements GitObject{
         
         return new BlobTree(blobs);
     }
+    
+    public Blob getBlobWithFilename(String filename)
+    {
+        for(Blob blob : blobs)
+        {
+            if(blob.getFilename().equals(filename))
+            {
+                return blob;
+            }
+        }
+        
+        return null;
+    }
 
     @Override
     public String generateHash() {

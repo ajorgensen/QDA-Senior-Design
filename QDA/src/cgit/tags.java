@@ -28,12 +28,40 @@ public class tags {
      * @param working_dir is the directory that contains the project we are working on.
      * @param tagHolder the list of tags we want to save
      */
-    public static void saveTags(String working_dir, List<TagInstance> tagHolder, SourceText text) {
+    public static void saveTags(String working_dir, List<TagInstance> tagHolder) {
         String tag_path = working_dir + cgitDirectory.TAGS_PATH.getPath();
+        
+        if(tagHolder.isEmpty())
+            return;
+        
+        List<TagInstance> allTags = tags.getAllTags(working_dir);
+        List<TagInstance> tagsForText = tags.loadTagsForSourceText(working_dir, tagHolder.get(0).getSourceHash());
+        
+        List<TagInstance> toRemove = new LinkedList<TagInstance>();
+        
+        //Remove all the comments for this project
+       for(TagInstance currTag : allTags)
+       {
+           for(TagInstance sourceTag : tagsForText)
+           {
+               if(currTag.isEqualTo(sourceTag))
+               {
+                   toRemove.add(currTag);
+               }
+           }
+       }
+       
+       allTags.removeAll(toRemove);
+       
+       //add all the comments back in
+       allTags.addAll(tagHolder);
+      
+       //clear the file out
+        FileUtil.writeFile(false, tag_path, "");
 
         //write all the tags to refs/tags
         for (TagInstance currTag : tagHolder) {
-            FileUtil.writeFile(true, tag_path, tags.tagToString(currTag, text) + "\n");
+            FileUtil.writeFile(true, tag_path, tags.tagToString(currTag) + "\n");
         }
     }
 
@@ -50,14 +78,13 @@ public class tags {
         //TODO error checking
 
         //format is user|data added|date modified|offset|length|tag type|tag path|source path
-        String[] tag_parameters = data.split(cgitDirectory.DELIMETER);
+        String[] tag_parameters = data.split(cgitDirectory.SPLITDELIMETER);
 
         String user;
         Date dateAdded;
         Date dateModified;
         TextSection selection;
-        SourceText sourceText;
-        MarkedUpText markedUpText;
+        String sourceHash;
         TagType tagType;
 
         if (tag_parameters[0] != null) {
@@ -85,18 +112,24 @@ public class tags {
         }
 
         if (tag_parameters[5] != null) {
-            tagType = new TagType(tag_parameters[4]);
+            tagType = new TagType(tag_parameters[5]);
         } else {
             return null;
         }
-
+        
         if (tag_parameters[6] != null) {
-            sourceText = new SourceText(tag_parameters[5]);
+            tagType.parsePathString(tag_parameters[6]);
         } else {
             return null;
         }
 
-        return new TagInstance(user, dateAdded, dateModified, selection, tagType);
+        if (tag_parameters[7] != null) {
+            sourceHash = tag_parameters[7];
+        } else {
+            return null;
+        }
+
+        return new TagInstance(user, dateAdded, dateModified, selection, tagType, sourceHash);
     }
 
     /**
@@ -105,17 +138,15 @@ public class tags {
      * @param project is a reference to the project we want to load the tags from
      * @return an ArrayList of TagInstances
      */
-    public static List<TagInstance> loadTagsForSourceText(String working_dir, SourceText text) {
+    public static List<TagInstance> loadTagsForSourceText(String working_dir, String sourceTextHash) {
         String tagPath = working_dir + cgitDirectory.TAGS_PATH.getPath();
         List<TagInstance> tagHolder = new LinkedList<TagInstance>();
 
         try {
             String tag_data = FileUtil.readFile(tagPath);
 
-            String sourceTextHash = text.getContentHash();
-
             for (String tag_line : tag_data.split("\n")) {
-                String[] params = tag_line.split(cgitDirectory.DELIMETER);
+                String[] params = tag_line.split(cgitDirectory.SPLITDELIMETER);
                 String commentTextHash = params[params.length - 1];
                 
                 
@@ -140,7 +171,7 @@ public class tags {
      * @param tag the instance for the tag we wont to turn into a string
      * @return the string version of the TagInstance
      */
-    public static String tagToString(TagInstance tag, SourceText text) {
+    public static String tagToString(TagInstance tag) {
         String tagString = "";
         SimpleDateFormat formatter = new SimpleDateFormat(tag.DATE_FORMAT);
 
@@ -151,11 +182,51 @@ public class tags {
         tagString += Integer.toString(tag.getTextSection().getLength()) + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getName() + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getPathString() + cgitDirectory.DELIMETER;
-        tagString += text.getContentHash();
+        tagString += tag.getSourceHash();
 
         return tagString;
     }
 
-    public static void main(String[] args) {
+    static List<TagInstance> parseTagFile(String content, SourceText text) {
+        
+        List<TagInstance> tagHolder = new LinkedList<TagInstance>();
+        
+        for(String line : content.split("\n"))
+        {
+            try{
+            TagInstance tempTag = tags.parseTag(line);
+            
+            String [] params = line.split(cgitDirectory.SPLITDELIMETER);
+            String hash = params[params.length-1];
+            
+            if(tempTag != null && hash.equals(text.getContentHash()))
+            {
+                tagHolder.add(tempTag);
+            }
+            } catch (Exception e){}
+        }
+        
+        return tagHolder;
+    }
+
+    private static List<TagInstance> getAllTags(String working_dir) {
+       String path = working_dir + cgitDirectory.TAGS_PATH.getPath();
+        
+        String tag_data = FileUtil.readFile(path);
+        List<TagInstance> tag_holder = new LinkedList<TagInstance>();
+        
+        for(String line : tag_data.split("\n"))
+        {
+            try{
+            TagInstance temp = tags.parseTag(line);
+            if(temp != null)
+            {
+                tag_holder.add(temp);
+            }
+            } catch (Exception e){ MyLogger.LogMessageToConsole(tags.class, e.getMessage(), LogType.ERROR);
+            }
+        }
+        
+        return tag_holder;
     }
 }

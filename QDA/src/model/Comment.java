@@ -12,10 +12,17 @@ public class Comment extends MarkUp {
     private String comment;
     private String sourceFileName;
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private String sourceHash = "";
 
-    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment) {
+    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment, String sourceTextHash) {
         super(user, dateAdded, dateModified, selection);
         this.comment = comment;
+        this.sourceHash= sourceTextHash;
+    }
+    
+    public String getSourceHash()
+    {
+        return this.sourceHash;
     }
 
     
@@ -39,9 +46,9 @@ public class Comment extends MarkUp {
         //TODO
     }
 
-    public static Comment generateNewComment(String user, TextSection selected, String comment) {
+    public static Comment generateNewComment(String user, TextSection selected, String comment, String sourceTextHash) {
         Date now = new Date();
-        return new Comment(user, now, now, selected, comment);
+        return new Comment(user, now, now, selected, comment, sourceTextHash);
     }
 
     public boolean isEqualTo(Comment obj) {

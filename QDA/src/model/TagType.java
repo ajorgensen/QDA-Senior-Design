@@ -44,6 +44,11 @@ public class TagType extends DefaultMutableTreeNode implements Nameable, Deletab
             
             return path.toString();
         }
+        
+        public void parsePathString(String path)
+        {
+            
+        }
        
         //public void add(Tag newChild){
         //    
