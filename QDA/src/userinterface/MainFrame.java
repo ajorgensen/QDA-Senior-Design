@@ -60,7 +60,7 @@ public class MainFrame extends JFrame {
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
         signInUser(u, project);
-        Folder folder1 = project.createFolder(project.getMainFolder(), "alpha");
+        Folder folder1 = project.createFolder(project.getMainFolder(), "Default");
         MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
         TagType t2 = project.addTagType(project.getRootTag(),"test");
