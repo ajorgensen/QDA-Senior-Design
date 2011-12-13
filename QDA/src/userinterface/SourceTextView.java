@@ -9,7 +9,12 @@ import checkboxtree.TreeCheckingListener;
 import checkboxtree.TreeCheckingModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Point;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -18,17 +23,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Caret;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -39,6 +48,7 @@ import model.MarkedUpText;
 import model.TagInstance;
 import model.TagType;
 import model.TextSection;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -48,6 +58,7 @@ public class SourceTextView extends View {
     
     private JPanel west;
     private JPanel tools;
+    private JScrollPane leftPane;
     private JPanel left;
     private JScrollPane center;
     
@@ -75,11 +86,15 @@ public class SourceTextView extends View {
     private JTextPane text;
     private Style defaultStyle;
     private Style commentStyle;
+    private Style bcommentStyle;
     private HashMap<String, Integer> tagToColorIndex;
     private int prevColorIndex;
     private int vertScrollPos;
     private int selectionStart;
     private int selectionEnd;
+    private int boldDot;
+    private boolean caretFlag;
+    private JTextArea emptyLeft;
     
     public MarkedUpText getMarkedUpText() {
         return markedUpText;
@@ -98,6 +113,22 @@ public class SourceTextView extends View {
         vertScrollPos = 0;
         selectionStart = -1;
         selectionEnd = -1;
+        boldDot= -1;
+        caretFlag = true;
+        
+        emptyLeft = new JTextArea("     Click on a tag and/or comment\n                to see details here.");
+        emptyLeft.setAlignmentX(Component.CENTER_ALIGNMENT);
+        emptyLeft.setBackground(new Color(250, 250, 250));
+        emptyLeft.setBorder(BorderFactory.createEmptyBorder());
+        emptyLeft.setPreferredSize(new Dimension(200, 50));
+        emptyLeft.setMinimumSize(new Dimension(200, 25));
+        emptyLeft.setMaximumSize(new Dimension(200, 1000));
+        emptyLeft.setEditable(false);
+        emptyLeft.setLineWrap(true);
+        emptyLeft.setWrapStyleWord(true);
+        emptyLeft.setVisible(true);
+        emptyLeft.setForeground(Color.GRAY);
+        emptyLeft.setFocusable(false);
         
         initialize();
         
@@ -106,27 +137,48 @@ public class SourceTextView extends View {
         tagsModel.addTreeCheckingListener(new TreeCheckingListener() {
             @Override
             public void valueChanged(TreeCheckingEvent e) {
-                initializeCenter();
+                if (caretFlag)
+                    initializeCenter();
             } 
         });
         
         initializeTools();
-        initializeLeft();
         initializeCenter();
         center.getVerticalScrollBar().setValue(0);
+        /*
+        center.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    refreshLeft();
+                }
+            }
+        });*/
     }
     
     private void initialize() {
         west = new JPanel();
+        west.setMinimumSize(new Dimension(200, 200));
+        west.setMaximumSize(new Dimension(200, 1000));
         west.setLayout(new BorderLayout());
         
         tools = new JPanel();
         tools.setBackground(new Color(250,250,250));
         west.add(tools, BorderLayout.NORTH);
-        
+
         left = new JPanel();
         left.setBackground(new Color(250,250,250));
-        west.add(left, BorderLayout.CENTER);
+        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+        //left.setLayout(new FlowLayout(FlowLayout.CENTER));
+        
+        leftPane = new JScrollPane();
+        leftPane.setBackground(new Color(250,250,250));
+        //left.setPreferredSize(new Dimension(200, 200));
+        leftPane.setMinimumSize(new Dimension(200, 200));
+        leftPane.setMaximumSize(new Dimension(200, 1000));
+        leftPane.setViewportView(left);
+        leftPane.setBorder(BorderFactory.createEmptyBorder());
+        west.add(leftPane, BorderLayout.CENTER);
         
         add(west, BorderLayout.LINE_START);
         
@@ -162,20 +214,6 @@ public class SourceTextView extends View {
         tools.add(viewComments);
     }
     
-    private void initializeLeft() {
-        /*left.setLayout(new OverlayLayout(left));
-        JPanel markUps = new JPanel();
-        markUps.setBackground(Color.RED);
-        JPanel option = new JPanel();
-        option.setBackground(Color.YELLOW);
-        left.add(option);
-        left.add(markUps);*/
-        
-        
-        //left.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        left.add(new JLabel("TODO"));
-    }
-    
     private void initializeCenter() {
         vertScrollPos = center.getVerticalScrollBar().getValue();
         text = new JTextPane();
@@ -209,7 +247,9 @@ public class SourceTextView extends View {
         refreshTextContent();
         
         center.setViewportView(text);
-        //TODO: start at the top of the page
+        
+        refreshLeft();
+        boldDot = -1;
     }
     
     private void initializeColorIndices() {
@@ -225,6 +265,11 @@ public class SourceTextView extends View {
     }
     
     private void refreshTextContent() {
+        left.removeAll();
+        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+        left.revalidate();
+        left.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        
         text.setText(markedUpText.getSourceText().getText());
         StyledDocument doc = text.getStyledDocument();
         //text.setStyledDocument(doc);
@@ -245,6 +290,10 @@ public class SourceTextView extends View {
         commentStyle = doc.addStyle("comment", defaultStyle);
         StyleConstants.setBackground(commentStyle, commentColor);
         
+        bcommentStyle = doc.addStyle("bcomment", commentStyle);
+        StyleConstants.setBackground(bcommentStyle, commentColor);
+        StyleConstants.setBold(bcommentStyle, true);
+        
         // comments
         if (viewComments.isSelected()) {
             List<Comment> comments = markedUpText.getComments();
@@ -254,13 +303,14 @@ public class SourceTextView extends View {
                 int offset = ts.getOffset();
                 int length = ts.getLength();
                 Style style;
-                /*if (boldPosition >= offset && boldPosition < offset+length) {
-                    style = doc.addStyle("bcomment", commentStyle);
-                    StyleConstants.setItalic(style, true);
+                if (boldDot >= offset && boldDot < offset+length) {
+                    style = bcommentStyle;
+                    left.add(new MarkUpDetail(
+                            "COMMENT:\n"+c.getComment()+" ("+c.getOwner()+")"));
+                    left.add(new Box.Filler(new Dimension(10, 10), new Dimension(10, 10), new Dimension(10, 10)));
                 }
-                else {*/
+                else
                     style = commentStyle;
-                //}
                 doc.setCharacterAttributes(offset, length, style, false);
                 //TODO: display actual comment on left
             }
@@ -299,18 +349,28 @@ public class SourceTextView extends View {
                 int length = ts.getLength();
                 
                 Style style;
-                /*if (boldPosition >= offset && boldPosition < offset+length) {
-                    style = doc.addStyle("b"+styleName, tagStyle);
-                    StyleConstants.setItalic(style, true);
+                if (boldDot >= offset && boldDot < offset+length) {
+                    style = doc.getStyle("b"+styleName);
+                    if (style == null) {
+                        style = doc.addStyle("b"+styleName, tagStyle);
+                        StyleConstants.setBold(style, true);
+                    }
+                    left.add(new MarkUpDetail(
+                                "TAG: "+ti.getTagType().getPathString()+" ("+ti.getOwner()+")"));
+                    left.add(new Box.Filler(new Dimension(10, 10), new Dimension(10, 10), new Dimension(10, 10)));
                 }
-                else {*/
+                else
                     style = tagStyle;
-                //}
                 
                 doc.setCharacterAttributes(offset, length, style, false);
                 //TODO: display tag label on left (and user?)
             }
         }
+        
+        if (left.getComponentCount()==0)
+            left.add(emptyLeft);
+        left.revalidate();
+        left.repaint();
     }
     
     private int nextColorIndex() {
@@ -326,7 +386,8 @@ public class SourceTextView extends View {
         int dot = evt.getDot();
         int mark = evt.getMark();
         
-        if (dot == mark) {// no selection
+        
+        if (evt.getSource().equals(text) && dot == mark && dot > 0 && dot < text.getDocument().getLength()) {// no selection
             selectionStart = -1;
             selectionEnd = -1;
             comment.setEnabled(false);
@@ -336,6 +397,10 @@ public class SourceTextView extends View {
                 as.containsAttribute(StyleConstants.Underline, true)) {
                 initializeCenter(dot);
             }*/
+            boldDot = dot;
+            caretFlag = false;
+            initializeCenter();
+            caretFlag = true;
         }
         else {
             if (dot < mark) {
@@ -389,5 +454,58 @@ public class SourceTextView extends View {
         } finally {
             initializeCenter();
         }
+    }
+    
+    private void refreshLeft() {
+        /*
+        center.getViewport().getViewRect();
+        text.getCaret().getMagicCaretPosition();
+        
+        // comments
+        if (viewComments.isSelected()) {
+            List<Comment> comments = markedUpText.getComments();
+            for (int i = 0; i < comments.size(); i++) {
+                Comment com = comments.get(i);
+                TextSection ts = com.getTextSection();
+                int offset = ts.getOffset();
+                int length = ts.getLength();
+                Caret car = text.getCaret();
+                car.setVisible(true);
+                car.setDot(offset);
+                Point p = car.getMagicCaretPosition();
+                car.setVisible(false);
+                if (p != null) {
+                    System.out.println(p.x + " " + p.y);
+                    try {
+                        left.add(new JLabel(text.getText(offset, length)));
+                    } catch (BadLocationException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                }
+            }
+        }
+        
+        // tags
+        
+        TreePath[] tp = tagsModel.getCheckingPaths();
+        
+        List<TagInstance> tags = markedUpText.getTags();
+        for (int i = 0; i < tags.size(); i++) {
+            TagInstance ti = tags.get(i);
+            TextSection ts = ti.getTextSection();
+            int offset = ts.getOffset();
+            int length = ts.getLength();
+            Caret car = text.getCaret();
+            car.setDot(offset);
+            Point p = car.getMagicCaretPosition();
+            if (p != null) {
+                System.out.println(p.x + " " + p.y);
+                try {
+                    left.add(new JLabel(text.getText(offset, length)));
+                } catch (BadLocationException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+            }
+        }*/
     }
 }
