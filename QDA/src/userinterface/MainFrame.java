@@ -60,7 +60,7 @@ public class MainFrame extends JFrame {
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
         signInUser(u, project);
-        Folder folder1 = project.createFolder(project.getMainFolder(), "alpha");
+        Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
         MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
         mut.addTag(tt, new TextSection(100,10));
@@ -305,6 +305,11 @@ public class MainFrame extends JFrame {
         newTag.setFocusable(false);
         newTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        newTag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newTagActionPerformed(evt);
+            }
+        });
         tagsTools.add(newTag);
 
         newTagSet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/New Tag Set.png"))); // NOI18N
@@ -313,6 +318,11 @@ public class MainFrame extends JFrame {
         newTagSet.setFocusable(false);
         newTagSet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newTagSet.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        newTagSet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newTagSetActionPerformed(evt);
+            }
+        });
         tagsTools.add(newTagSet);
 
         cutTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Cut.png"))); // NOI18N
@@ -751,6 +761,32 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
         
     }//GEN-LAST:event_createFolderActionPerformed
+
+    private void newTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagActionPerformed
+        // TODO add your handling code here:
+        NewTagDialog nd = new NewTagDialog(this, project);
+        nd.setVisible(true);
+        if(nd.hasResults()) {
+            
+            TagType parent = project.findTag(nd.getComboBox());
+            project.addTagType(parent, nd.getTagName());
+            
+            
+           // Folder fold = project.findFolder(ifd.getComboBox());
+            //project.importSourceText(ifd.getFilePath(), fold);
+           // MarkedUpText mut = project.importSourceText("./QDA/long.txt", fold);
+            
+        }
+    }//GEN-LAST:event_newTagActionPerformed
+
+    private void newTagSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagSetActionPerformed
+        // TODO add your handling code here:
+        NewTagSetDialog ntsd = new NewTagSetDialog(this);
+        ntsd.setVisible(true);
+        if(ntsd.hasResults()) {
+            project.addTagType(project.getRootTag(), ntsd.getTagSetName());
+        }
+    }//GEN-LAST:event_newTagSetActionPerformed
 
     private void signOutUser() {
         project.setCurrentUser(null);

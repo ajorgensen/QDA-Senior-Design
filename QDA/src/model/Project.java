@@ -252,6 +252,15 @@ public class Project implements Nameable {
             }
             return alpha;
         }
+        
+        public String[] getTags() {
+            int num = tags.size();
+            String[] alpha = new String[num];
+            for(int i = 0; i < num; i++) {
+                alpha[i] = tags.get(i).getName();
+            }
+            return alpha;
+        }
 
         public Folder findFolder(String name) {
             String n = name;
@@ -263,7 +272,18 @@ public class Project implements Nameable {
                 }
             }
             return null;
-            
+        }
+        
+        public TagType findTag(String name) {
+            String n = name;
+            for(int i = 0; i < tags.size(); i++) {
+                if(tags.get(i).getName().equals(n)) {
+                    return tags.get(i);
+                } else {
+                    
+                }
+            }
+            return null;
         }
 	@Override
 	public String getName() {
