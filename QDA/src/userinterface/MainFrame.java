@@ -781,8 +781,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             repository.updateUI();
 
         }
-
-
     }//GEN-LAST:event_createFolderActionPerformed
 
     private void newTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagActionPerformed
