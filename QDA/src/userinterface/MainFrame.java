@@ -35,7 +35,6 @@ public class MainFrame extends JFrame {
         project = null;
         
         helpViewIndex = -1;
-        
         initializeRepository();
         initializeTags();
 
@@ -766,8 +765,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         cfd.setVisible(true);
         if(cfd.hasResults()) {
             project.createFolder(project.getMainFolder(), cfd.getFolderName());
+            repository.updateUI();
             
         }
+        
         
     }//GEN-LAST:event_createFolderActionPerformed
 
@@ -778,6 +779,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         if(nd.hasFocus()) {
             
             project.addTagType(project.getRootTag(), nd.getTagName());
+            tags.updateUI();
         }
     }//GEN-LAST:event_newTagActionPerformed
 

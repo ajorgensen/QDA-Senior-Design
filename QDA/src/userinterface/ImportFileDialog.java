@@ -80,7 +80,8 @@ public class ImportFileDialog extends AppDialog {
         c.gridy = 0;
         panel.add(browse, c);
         
-       // String[] beta = p.getFolders();
+//       String[] beta = p.getFolders();
+       
         String[] beta = {"test1", "alpha", "test2", "beta"};
         for(int i = 0; i < beta.length; i++) {
             System.out.println("Folder" + i + " = ");

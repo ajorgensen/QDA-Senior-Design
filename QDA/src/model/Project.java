@@ -37,6 +37,9 @@ public class Project implements Nameable {
          * @param localPath - taken from file selection dialog
          * @param currentUser - the user creating the file
          */
+        public Project() {
+            
+        }
 	public Project(String name, String localPath, User admin){                
 		this.localPath = localPath;
                 this.name = name;
