@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import model.Comment;
 import model.MarkedUpText;
+import model.Project;
+import model.SourceText;
 import model.TextSection;
 import model.cgitDirectory;
 
@@ -15,18 +17,18 @@ import model.cgitDirectory;
  */
 public class comments {
 
-    public static void saveComments(String working_dir, List<Comment> commentHolder) {
+    public static void saveComments(String working_dir, List<Comment> commentHolder, Project project) {
         String comment_path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
 
         //clear the file
         FileUtil.writeFile(false, comment_path, "");
 
         for (Comment comment : commentHolder) {
-            FileUtil.writeFile(true, comment_path, comments.commentToString(comment));
+            FileUtil.writeFile(true, comment_path, comments.commentToString(comment, project) + "\n");
         }
     }
 
-    public static String commentToString(Comment comment) {
+    public static String commentToString(Comment comment, Project project) {
         String comment_string = "";
         SimpleDateFormat formatter = new SimpleDateFormat(comment.DATE_FORMAT);
 
@@ -36,14 +38,14 @@ public class comments {
         comment_string += Integer.toString(comment.getTextSection().getOffset()) + cgitDirectory.DELIMETER;
         comment_string += Integer.toString(comment.getTextSection().getLength()) + cgitDirectory.DELIMETER;
         comment_string += comment.getComment() + cgitDirectory.DELIMETER; //TODO we need to escape the new line characters so it doesnt break the parser when we pass them back in
-        comment_string += comment.getSourcePath();
+        comment_string += project.getName() + cgitDirectory.DELIMETER;
+        comment_string += comment.getMarkedUp().getPrettyName();
 
         return comment_string;
     }
 
-    public static Comment parseComment(String comment_line, MarkedUpText markedUp) throws ParseException {
+    public static Comment parseComment(String comment_line, String working_dir) throws ParseException {
         //comment format: owner|date added|date modified|offset|length|comment|sourcePath
-
         String[] params = comment_line.split(cgitDirectory.DELIMETER);
         int i = 0;
 
@@ -53,6 +55,7 @@ public class comments {
         TextSection section;
         String comment;
         String sourcePath;
+        String projectName;
 
         if (params[i] != null) { //i=0
             owner = params[i++];
@@ -84,29 +87,33 @@ public class comments {
             return null;
         }
 
-        if (params[i] != null && params[i].equals(markedUp.getName())) { //i=5
+        if (params[i] != null) { //i=6
+            projectName = params[i++];
+        } else {
+            return null;
+        }
+
+        if (params[i] != null) { //i=7
             sourcePath = params[i++];
         } else {
             return null;
         }
-        
-        
 
-        return new Comment(owner, dateAdded, dateModified, section, comment, markedUp);
+        return new Comment(owner, dateAdded, dateModified, section, comment, new MarkedUpText(new SourceText(sourcePath), new Project(projectName, working_dir)));
     }
 
-    public static ArrayList<Comment> loadCommentsForProject(MarkedUpText markUp) {
+    public static ArrayList<Comment> loadCommentsForCurrentText(MarkedUpText markUp) {
         ArrayList<Comment> commentHolder = new ArrayList<Comment>();
         String comment_path = markUp.getProject().getLocalPath() + cgitDirectory.COMMENTS_PATH.getPath();
+        
+        markUp.getSourceText().hashSourceTest();
 
         try {
             String data = FileUtil.readFile(comment_path);
-            
-            for(String line : data.split("\n"))
-            {
-                Comment tempComment = comments.parseComment(line, markUp);
-                if(tempComment != null)
-                {
+
+            for (String line : data.split("\n")) {
+                Comment tempComment = comments.parseComment(line, markUp.getProject().getLocalPath());
+                if (tempComment != null && tempComment.getMarkedUp().getProject().getName().equals(markUp.getProject().getName())) {
                     commentHolder.add(tempComment);
                 }
             }
@@ -117,21 +124,6 @@ public class comments {
         return null;
     }
 
-    /*
-    
-    private String commentToString(Comment comment) {
-    SimpleDateFormat formatter = new SimpleDateFormat(comment.DATE_FORMAT);
-    
-    return comment.getOwner() + cgitDirectory.DELIMETER
-    + new StringBuilder(formatter.format(comment.getDateAdded())) + cgitDirectory.DELIMETER
-    + new StringBuilder(formatter.format(comment.getDateModified())) + cgitDirectory.DELIMETER
-    + Integer.toString(comment.getTextSection().getOffset()) + cgitDirectory.DELIMETER
-    + Integer.toString(comment.getTextSection().getLength()) + cgitDirectory.DELIMETER
-    + comment.getComment() + cgitDirectory.DELIMETER
-    + comment.getSourcePath();
-    }
-     * 
-     */
     public static void main(String[] args) {
         int i = 0;
         System.out.println("i++: " + i++);
