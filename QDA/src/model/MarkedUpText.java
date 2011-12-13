@@ -1,5 +1,7 @@
 package model;
 
+import cgit.Branch;
+import cgit.tags;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.tree.*;
@@ -24,7 +26,27 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             this.comments = new LinkedList<Comment>();
             this.sourceText = sourceText;
             this.name = sourceText.getPath();
+            
+            this.loadTags();
+            this.loadComments();
 	}
+        
+        public void loadTags()
+        {
+            List<TagInstance> tagHolder = tags.loadTagsForSourceText(project.getLocalPath(), sourceText.getContentHash());
+            
+            if(tagHolder != null && !tagHolder.isEmpty())
+                tagInstances.addAll(tagHolder);
+        }
+        
+        public void loadComments()
+        {
+            
+            List<Comment> commentHolder = cgit.comments.loadCommentsForSourceText(project.getLocalPath(), sourceText.getContentHash());
+            
+            if(commentHolder != null && !commentHolder.isEmpty())
+                comments.addAll(commentHolder);
+        }
         
         public Project getProject()
         {
@@ -127,5 +149,10 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
        {
            cgit.tags.saveTags(project.getLocalPath(), tagInstances);
            cgit.comments.saveComments(project.getLocalPath(), comments);
+       }
+       
+       public void commitChanges(String commiter, String message)
+       {
+           Branch.commit(project.getLocalPath(), commiter, message);
        }
 }

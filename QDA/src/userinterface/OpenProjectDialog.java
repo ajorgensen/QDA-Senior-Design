@@ -136,6 +136,16 @@ public class OpenProjectDialog extends AppDialog{
         panel.add(Cancel, c);
     }
     
+    public String getWorkingDir()
+    {
+        if(chooser != null)
+            return chooser.getSelectedFile().toString();
+        else
+            return "";
+    }
+    
+    
+    
     private void browseActionPerformed(ActionEvent evt){
         //Need to make it open folder browser
         chooser = new JFileChooser();

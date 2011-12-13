@@ -346,5 +346,11 @@ public class Project implements Nameable {
             if(this.curText != null)
                 curText.saveCurrentState();
         }
+        
+       public void commitChanges(String commiter, String message)
+       {
+           if(curText != null)
+               curText.commitChanges(commiter, message);
+       }
 }
 

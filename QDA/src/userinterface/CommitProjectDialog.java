@@ -99,6 +99,11 @@ public class CommitProjectDialog extends AppDialog {
         
     }
     
+    public String getCommit()
+    {
+        return this.commit.getText();
+    }
+    
     private void enterActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
