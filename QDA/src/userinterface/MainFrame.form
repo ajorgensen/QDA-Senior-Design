@@ -369,15 +369,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
-<<<<<<< HEAD
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newTagSetActionPerformed"/>
-                      </Events>
-=======
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="newTagSet.setVisible(false);"/>
                       </AuxValues>
->>>>>>> b0d9acb754883ff62266727f46a00e3d6b1aee0d
                     </Component>
                     <Component class="javax.swing.JButton" name="cutTag">
                       <Properties>
@@ -473,7 +467,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="TabbedPaneFactory.createCloseButtonTabbedPane()"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, &#xa;new PropertyChangeListener() {&#xa;    public void propertyChange(java.beans.PropertyChangeEvent evt) {&#xa;        viewsPropertyChange(evt);&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="views.addPropertyChangeListener(TabbedPaneFactory.PROP_CLOSE, &#xa;new PropertyChangeListener() {&#xa; public void propertyChange(java.beans.PropertyChangeEvent evt) {&#xa; viewsPropertyChange(evt);&#xa; }&#xa;});"/>
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
