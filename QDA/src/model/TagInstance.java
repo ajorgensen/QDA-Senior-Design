@@ -44,5 +44,12 @@ public class TagInstance extends MarkUp{
 
         return equal;
     }
- 
+
+    public String getTaggedText() {
+        String text = markedUpText.getSourceText().getText();
+        TextSection ts = this.getTextSection();
+        int start = ts.getOffset();
+        int end = start + ts.getLength();
+        return text.substring(start, end);
+    }
 }
