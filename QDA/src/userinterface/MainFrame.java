@@ -488,7 +488,6 @@ public class MainFrame extends JFrame {
 
             applicationMenu.add(helpMenu);
 
-            applicationMenu.add(Box.createHorizontalGlue());
             applicationMenu.add(newSearch);
 
             setJMenuBar(applicationMenu);

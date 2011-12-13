@@ -5,7 +5,7 @@ Qualitative research is a method of inquiry employed in many different academic 
 
 
 Qualitative research is a method of inquiry employed in many different academic disciplines, traditionally in the 
-social sciences, but also in market research and further contexts.[1] Qualitative researchers aim to gather an 
+social sciences, but 				also in market research and further contexts.[1] Qualitative researchers aim to gather an 
 in-depth understanding of human behavior and the reasons that govern such behavior. The qualitative method 
 investigates the why and how of decision making, not just what, where, when. Hence, smaller but focused samples 
 are more often needed than large samples.

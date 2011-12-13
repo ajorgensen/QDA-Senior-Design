@@ -7,6 +7,7 @@ package userinterface;
 import checkboxtree.TreeCheckingEvent;
 import checkboxtree.TreeCheckingListener;
 import checkboxtree.TreeCheckingModel;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
@@ -20,6 +21,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -42,6 +45,11 @@ import model.TextSection;
  * @author Brittany Nkounkou
  */
 public class SourceTextView extends View {
+    
+    private JPanel west;
+    private JPanel tools;
+    private JPanel left;
+    private JScrollPane center;
     
     private static final Color commentColor = new Color(225,225,225);
     private static final Color[] tagColors = {
@@ -91,6 +99,8 @@ public class SourceTextView extends View {
         selectionStart = -1;
         selectionEnd = -1;
         
+        initialize();
+        
         initializeColorIndices();
         
         tagsModel.addTreeCheckingListener(new TreeCheckingListener() {
@@ -104,6 +114,28 @@ public class SourceTextView extends View {
         initializeLeft();
         initializeCenter();
         center.getVerticalScrollBar().setValue(0);
+    }
+    
+    private void initialize() {
+        west = new JPanel();
+        west.setLayout(new BorderLayout());
+        
+        tools = new JPanel();
+        tools.setBackground(new Color(250,250,250));
+        west.add(tools, BorderLayout.NORTH);
+        
+        left = new JPanel();
+        left.setBackground(new Color(250,250,250));
+        west.add(left, BorderLayout.CENTER);
+        
+        add(west, BorderLayout.LINE_START);
+        
+        center = new JScrollPane();
+        center.setBackground(Color.WHITE);
+        center.setBorder(BorderFactory.createEmptyBorder());
+        center.setViewportBorder(BorderFactory.createMatteBorder(0,1,0,1,Color.DARK_GRAY));
+        
+        add(center, BorderLayout.CENTER);
     }
     
     private void initializeTools() {

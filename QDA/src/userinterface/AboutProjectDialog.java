@@ -42,6 +42,8 @@ public class AboutProjectDialog extends AppDialog {
         textArea.setSize(320, 100);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
+        textArea.setFocusable(false);
+        textArea.setEditable(false);
         
         panel.add(textArea);
         

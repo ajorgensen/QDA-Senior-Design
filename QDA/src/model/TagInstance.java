@@ -10,7 +10,6 @@ import cgit.LogType;
 public class TagInstance extends MarkUp{
     private TagType tagType;
     private String sourceFileName;
-    private MarkedUpText markedUpText;
     
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -43,13 +42,5 @@ public class TagInstance extends MarkUp{
         equal = obj.getDateAdded().equals(this.getDateAdded());
 
         return equal;
-    }
-
-    public String getTaggedText() {
-        String text = markedUpText.getSourceText().getText();
-        TextSection ts = this.getTextSection();
-        int start = ts.getOffset();
-        int end = start + ts.getLength();
-        return text.substring(start, end);
     }
 }

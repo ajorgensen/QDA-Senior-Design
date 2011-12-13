@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="applicationMenu">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="applicationMenu.add(Box.createHorizontalGlue());&#xa;applicationMenu.add(newSearch);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="applicationMenu.add(newSearch);"/>
       </AuxValues>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="projectMenu">

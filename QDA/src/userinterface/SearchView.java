@@ -5,6 +5,8 @@
 package userinterface;
 
 import checkboxtree.TreeCheckingModel;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +20,13 @@ import javax.swing.Box.Filler;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.CompoundBorder;
 import javax.swing.tree.TreePath;
 import model.MarkedUpText;
 import model.TagInstance;
 import model.TagType;
+import model.TextSection;
 
 /**
  *
@@ -29,6 +34,9 @@ import model.TagType;
  */
 public class SearchView extends View {
 
+    private JPanel north;
+    private JScrollPane center;
+    
     private MainFrame mainFrame;
     private TreeCheckingModel filesModel;
     private TreeCheckingModel tagsModel;
@@ -46,21 +54,22 @@ public class SearchView extends View {
     }
 
     private void initialize() {
-        //tools.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-        //tools.setLayout(new BoxLayout(tools, BoxLayout.Y_AXIS));
+        north = new JPanel();
+        
+        add(north, BorderLayout.PAGE_START);
+        north.setBackground(new Color(250, 250, 250));
+        north.setLayout(new BoxLayout(north, BoxLayout.X_AXIS));
+        north.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.DARK_GRAY),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        
+        center = new JScrollPane();
+        center.setBackground(Color.WHITE);
+        center.setBorder(BorderFactory.createEmptyBorder());    
+        add(center, BorderLayout.CENTER);
 
-        //JLabel searchBox = new JLabel();
-        //searchBox.setPreferredSize(new Dimension(245, 1));
-        //searchBox.setMinimumSize(new Dimension(245, 1));
-        //searchBox.setMaximumSize(new Dimension(245, 1));
-        //searchBox.setAlignmentX((float) 1.0);
-        //tools.add(searchBox);
-
-        left.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         search = new JButton("Search");
-        search.setAlignmentX((float) 1.0);
-        left.add(search);
+        search.setAlignmentY((float) 0.0);
+        north.add(search);
 
         search.addActionListener(new ActionListener() {
             @Override
@@ -71,7 +80,7 @@ public class SearchView extends View {
 
         results = new JPanel();
         results.setLayout(new BoxLayout(results, BoxLayout.Y_AXIS));
-        results.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        results.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         
         center.setViewportView(results);
     }
@@ -108,16 +117,50 @@ public class SearchView extends View {
         
         for (int i = 0; i < searchResults.size(); i++) {
             Entry<MarkedUpText, TagInstance> emt = searchResults.get(i);
+            MarkedUpText mut = emt.getKey();
             TagInstance ti = emt.getValue();
+            
             String tagName = ti.getTagType().getPathString();
-            String taggedText = ti.getTaggedText();
-            String filename = ti.getSourcePath();
-            results.add(new SearchResultPanel(mainFrame, emt.getKey(), tagName, taggedText, filename));
+            String taggedText = getTaggedText(mut, ti.getTextSection());
+            String filename = mut.getName();
+            
+            results.add(new SearchResultPanel(mainFrame, mut, tagName, taggedText, filename));
             filler = new Box.Filler(new Dimension(10, 10), new Dimension(10, 10), new Dimension(10, 10));
             filler.setAlignmentX((float)0.0);
             results.add(filler);
         }
         center.setViewportView(results);
+    }
+    
+    private String getTaggedText(MarkedUpText markedUpText, TextSection textSection) {
+        int offset = textSection.getOffset();
+        int length = textSection.getLength();
+        int start = offset;
+        int end = offset + length; 
+        
+        String text = markedUpText.getSourceText().getText();
+        int lastNewLine = text.indexOf('\n', 0);
+        
+        while (lastNewLine > -1 && lastNewLine < end) {
+            if (lastNewLine < start) {
+                start++;
+                offset++;
+                end++;
+            }
+            else if (lastNewLine == start) {
+                start++;
+                offset += 2;
+                length += 2;
+                end++;
+            }
+            else {
+                length++;
+                end++;
+            }
+            lastNewLine = text.indexOf('\n', lastNewLine+1);
+        }
+
+        return text.substring(offset, offset+length);
     }
 
     public TreeCheckingModel getFilesModel() {
