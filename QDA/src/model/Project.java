@@ -1,9 +1,9 @@
 package model;
 
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
-import model.RootTag;
 import java.util.Enumeration;
 /**
  * Project 
@@ -25,6 +25,7 @@ public class Project implements Nameable {
         private String name;
 	private Folder mainFolder;
 	private List<User> users;
+        private List<Folder> folders;
         private User currUser;
 	private RootTag rootTag;
         private List<TagType> tags;
@@ -41,6 +42,7 @@ public class Project implements Nameable {
                 this.name = name;
                 this.mainFolder = new Folder(localPath);
 		this.users = new LinkedList<User>();
+                this.folders = new LinkedList<Folder>();
                 addUser(admin);
                 this.currUser = null;
                 this.rootTag = new RootTag();
@@ -50,6 +52,8 @@ public class Project implements Nameable {
                 
                 this.initialize_cgit();
 	}
+        
+        
         
         private void initialize_cgit(){
             cgit.setup.setup_qda_directory(localPath);
@@ -236,9 +240,31 @@ public class Project implements Nameable {
         public Folder createFolder(Folder parent, String name){
             Folder createdFolder = new Folder(name);
             parent.add(createdFolder);
+            folders.add(createdFolder);
             return createdFolder;
         }
+        
+        public String[] getFolders() {
+            int num = folders.size();
+            String[] alpha = new String[num];            
+            for(int i = 0; i < num; i++) {
+                alpha[i] = folders.get(i).getName();
+            }
+            return alpha;
+        }
 
+        public Folder findFolder(String name) {
+            String n = name;
+            for(int i = 0; i < folders.size(); i++) {
+                if(folders.get(i).getName().equals(n)) {
+                    return folders.get(i);
+                } else {
+                    
+                }
+            }
+            return null;
+            
+        }
 	@Override
 	public String getName() {
 		return name;
