@@ -789,7 +789,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         // TODO add your handling code here:
         NewTagDialog nd = new NewTagDialog(this, project);
         nd.setVisible(true);
-        if (nd.hasFocus()) {
+        if (nd.hasResults()) {
 
 
             TagType t2 = project.addTagType(project.getRootTag(), nd.getTagName());
