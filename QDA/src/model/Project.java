@@ -340,5 +340,11 @@ public class Project implements Nameable {
         public String getCurrSourceText(){
             return curText.getSourceText().getText();
         }
+        
+        public void saveProject()
+        {
+            if(this.curText != null)
+                curText.saveCurrentState();
+        }
 }
 

@@ -93,6 +93,8 @@ public class MainFrame extends JFrame {
         signInUser(user, p);
         Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
         MarkedUpText mut = p.importSourceText(sourceTextPath, folder1);
+        
+        this.project = p;
 
     }
     
@@ -529,7 +531,6 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         Project p = new Project(name, path, userAdmin);
         String dialog = "Opening " + name + " Project";
         setUp(dialog, userAdmin, p, sourcePath);
-
     }
 }//GEN-LAST:event_newProjectActionPerformed
 
@@ -740,6 +741,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
     private void saveProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectActionPerformed
         // TODO add your handling code here:
+        this.project.saveProject();
     }//GEN-LAST:event_saveProjectActionPerformed
 
     private void createFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderActionPerformed
