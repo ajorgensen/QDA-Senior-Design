@@ -60,7 +60,7 @@ public class MainFrame extends JFrame {
         User u = new User ("default", "default");
         openProject(new Project("defaultProject","defaultPath", u));
         signInUser(u, project);
-        Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
+        Folder folder1 = project.createFolder(project.getMainFolder(), "alpha");
         MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
         mut.addTag(tt, new TextSection(100,10));
@@ -70,7 +70,7 @@ public class MainFrame extends JFrame {
     }
     /**
      * setUp is used to start new project that are not the default one.
-     * Still needs to correctly importSourceText
+     *
      * 
      * @param dialog
      * dialog is what the message box says when it first pops up
@@ -89,10 +89,8 @@ public class MainFrame extends JFrame {
         sid.setVisible(true);
         openProject(p);
         signInUser(user, p);
-        Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
-//        This is how it should be once importSourceText is changed to take input like C:\Users\dumnzzz-sager\QDA-Senior-Design\QDA\ipsum.txt        
-//        MarkedUpText mut = p.importSourceText(sourceTextPath, folder1);
-        MarkedUpText mut = p.importSourceText("./QDA/ipsum.txt", folder1);
+        Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());       
+        MarkedUpText mut = p.importSourceText(sourceTextPath, folder1);
 
     }
     
@@ -230,6 +228,11 @@ public class MainFrame extends JFrame {
         newFolder.setFocusable(false);
         newFolder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        newFolder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createFolderActionPerformed(evt);
+            }
+        });
         repositoryTools.add(newFolder);
 
         cutElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Cut.png"))); // NOI18N
@@ -421,6 +424,11 @@ public class MainFrame extends JFrame {
 
             saveProject.setText("Save");
             saveProject.setEnabled(false);
+            saveProject.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    saveProjectActionPerformed(evt);
+                }
+            });
             projectMenu.add(saveProject);
 
             commitProject.setText("Commit");
@@ -714,7 +722,14 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     }
     
     private void importFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFileActionPerformed
-        
+        ImportFileDialog ifd = new ImportFileDialog(this, project);
+        ifd.setVisible(true);
+        if(ifd.hasResults()) {
+            Folder fold = project.findFolder(ifd.getComboBox());
+            project.importSourceText(ifd.getFilePath(), fold);
+           // MarkedUpText mut = project.importSourceText("./QDA/long.txt", fold);
+            
+        }
     }//GEN-LAST:event_importFileActionPerformed
 
     private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
@@ -729,11 +744,28 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         mpd.setVisible(true);
     }//GEN-LAST:event_mergeProjectActionPerformed
 
+
     private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
         TreeCheckingModel rep = new DefaultTreeCheckingModel(repository);
         TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
         addView(new SearchView(this, "Search", rep, tag));
     }//GEN-LAST:event_newSearchActionPerformed
+
+    private void saveProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveProjectActionPerformed
+
+    private void createFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderActionPerformed
+        // TODO add your handling code here:
+        CreateFolderDialog cfd = new CreateFolderDialog(this);
+        cfd.setVisible(true);
+        if(cfd.hasResults()) {
+            project.createFolder(project.getMainFolder(), cfd.getFolderName());
+            
+        }
+        
+    }//GEN-LAST:event_createFolderActionPerformed
+
 
     private void signOutUser() {
         project.setCurrentUser(null);

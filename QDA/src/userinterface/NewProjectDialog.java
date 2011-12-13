@@ -14,8 +14,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import model.Project;
-import model.User;
 /**
 import java.awt.Color;
 import java.awt.Dimension;

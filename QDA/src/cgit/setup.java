@@ -45,6 +45,8 @@ public class setup {
             }
         }
         
+        Branch.newBranch(working_dir, "master");
+        
         /*
         try {
             //generate new master branch.

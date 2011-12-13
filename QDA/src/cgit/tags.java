@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import model.MarkedUpText;
 import model.Project;
 import model.SourceText;
@@ -26,15 +28,12 @@ public class tags {
      * @param working_dir is the directory that contains the project we are working on.
      * @param tagHolder the list of tags we want to save
      */
-    public static void saveTags(String working_dir, ArrayList<TagInstance> tagHolder) {
+    public static void saveTags(String working_dir, List<TagInstance> tagHolder, SourceText text) {
         String tag_path = working_dir + cgitDirectory.TAGS_PATH.getPath();
-
-        //clear the tag file out
-        FileUtil.writeFile(false, tag_path, "");
 
         //write all the tags to refs/tags
         for (TagInstance currTag : tagHolder) {
-            FileUtil.writeFile(true, tag_path, tags.tagToString(currTag) + "\n");
+            FileUtil.writeFile(true, tag_path, tags.tagToString(currTag, text) + "\n");
         }
     }
 
@@ -47,7 +46,7 @@ public class tags {
      * @return a TagInstance from the parsed text
      * @throws ParseException 
      */
-    public static TagInstance parseTag(String data, MarkedUpText markedUp) throws ParseException {
+    public static TagInstance parseTag(String data) throws ParseException {
         //TODO error checking
 
         //format is user|data added|date modified|offset|length|tag type|tag path|source path
@@ -96,14 +95,8 @@ public class tags {
         } else {
             return null;
         }
-        
-        if(tag_parameters[7] != null && !markedUp.getName().equals(tag_parameters[7]))
-        {
-          return null;
-        }
-        
 
-        return new TagInstance(user, dateAdded, dateModified, selection, markedUp, tagType);
+        return new TagInstance(user, dateAdded, dateModified, selection, tagType);
     }
 
     /**
@@ -112,19 +105,26 @@ public class tags {
      * @param project is a reference to the project we want to load the tags from
      * @return an ArrayList of TagInstances
      */
-    public static ArrayList<TagInstance> loadTagsForProject(MarkedUpText markedup) {
-        String tagPath = markedup.getProject().getLocalPath() + cgitDirectory.TAGS_PATH.getPath();
-        ArrayList<TagInstance> tagHolder = new ArrayList<TagInstance>();
+    public static List<TagInstance> loadTagsForSourceText(String working_dir, SourceText text) {
+        String tagPath = working_dir + cgitDirectory.TAGS_PATH.getPath();
+        List<TagInstance> tagHolder = new LinkedList<TagInstance>();
 
         try {
             String tag_data = FileUtil.readFile(tagPath);
 
+            String sourceTextHash = text.getContentHash();
+
             for (String tag_line : tag_data.split("\n")) {
-                TagInstance currTag = tags.parseTag(tag_line, markedup);
+                String[] params = tag_line.split(cgitDirectory.DELIMETER);
+                String commentTextHash = params[params.length - 1];
                 
-                if(currTag != null)
+                
+                TagInstance currTag = tags.parseTag(tag_line);
+
+                if (currTag != null && commentTextHash.equals(sourceTextHash)) {
                     tagHolder.add(currTag);
-                
+                }
+
             }
         } catch (Exception e) {
 
@@ -140,7 +140,7 @@ public class tags {
      * @param tag the instance for the tag we wont to turn into a string
      * @return the string version of the TagInstance
      */
-    public static String tagToString(TagInstance tag) {
+    public static String tagToString(TagInstance tag, SourceText text) {
         String tagString = "";
         SimpleDateFormat formatter = new SimpleDateFormat(tag.DATE_FORMAT);
 
@@ -151,7 +151,7 @@ public class tags {
         tagString += Integer.toString(tag.getTextSection().getLength()) + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getName() + cgitDirectory.DELIMETER;
         tagString += tag.getTagType().getPathString() + cgitDirectory.DELIMETER;
-        tagString += tag.getMarkedUpText().getName();
+        tagString += text.getContentHash();
 
         return tagString;
     }
