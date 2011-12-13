@@ -13,13 +13,15 @@ public class Comment extends MarkUp {
     private String sourceFileName;
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment, MarkedUpText markedUp) {
+    public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment) {
         super(user, dateAdded, dateModified, selection);
         this.comment = comment;
-        this.sourceFileName = markedUp.getName();
     }
 
+    
     public String getComment() {
+        
+        
         return this.comment;
     }
 
@@ -39,7 +41,7 @@ public class Comment extends MarkUp {
 
     public static Comment generateNewComment(String user, TextSection selected, String comment, MarkedUpText markedUp) {
         Date now = new Date();
-        return new Comment(user, now, now, selected, comment, markedUp);
+        return new Comment(user, now, now, selected, comment);
     }
 
     public boolean isEqualTo(Comment obj) {

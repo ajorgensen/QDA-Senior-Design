@@ -51,6 +51,12 @@ public class SourceText {
 	public String getText(){
             return text;
 	}
+        
+        
+        public String hashText()
+        {
+            return cgit.HashObject.hashString(text);
+        }
 
 	/* Used to test 
 	public static void main(String args[]){
