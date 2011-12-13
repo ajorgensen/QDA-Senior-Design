@@ -39,7 +39,7 @@ public class Comment extends MarkUp {
         //TODO
     }
 
-    public static Comment generateNewComment(String user, TextSection selected, String comment, MarkedUpText markedUp) {
+    public static Comment generateNewComment(String user, TextSection selected, String comment) {
         Date now = new Date();
         return new Comment(user, now, now, selected, comment);
     }

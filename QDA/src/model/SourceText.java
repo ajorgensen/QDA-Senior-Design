@@ -53,7 +53,7 @@ public class SourceText {
 	}
         
         
-        public String hashText()
+        public String getContentHash()
         {
             return cgit.HashObject.hashString(text);
         }
