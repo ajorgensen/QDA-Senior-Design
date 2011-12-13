@@ -116,7 +116,7 @@ public class SourceTextView extends View {
         boldDot= -1;
         caretFlag = true;
         
-        emptyLeft = new JTextArea("     Click on a tag and/or comment\n                to see details here.");
+        emptyLeft = new JTextArea("Click on a tag and/or comment to see details here.");
         emptyLeft.setAlignmentX(Component.CENTER_ALIGNMENT);
         emptyLeft.setBackground(new Color(250, 250, 250));
         emptyLeft.setBorder(BorderFactory.createEmptyBorder());
