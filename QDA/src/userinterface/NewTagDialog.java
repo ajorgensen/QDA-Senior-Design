@@ -70,24 +70,25 @@ public class NewTagDialog extends AppDialog {
 //        for(int i = 0; i < beta.length; i++) {
 //            System.out.println("Folder" + i + " = " + beta[i]);
 //        }
-//        box = new JComboBox(beta);
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.gridwidth = 4;
-//        c.gridx = 0;
-//        c.gridy = 2;
-//        panel.add(box, c);
+        String[] beta = {"Tags"};
+        box = new JComboBox(beta);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 4;
+        c.gridx = 0;
+        c.gridy = 2;
+        panel.add(box, c);
 
         spacer = new JLabel("                                                           ");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         panel.add(spacer, c);
         
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 3;
         panel.add(spacer, c);
         
         add = new JButton("Add Tag");
@@ -100,7 +101,7 @@ public class NewTagDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 2;
-        c.gridy = 2;
+        c.gridy = 3;
         panel.add(add, c);
         
         cancel = new JButton("Cancel");
@@ -113,7 +114,7 @@ public class NewTagDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 3;
-        c.gridy = 2;
+        c.gridy = 3;
         panel.add(cancel, c);
         
         error = new JLabel(" ");
@@ -121,7 +122,7 @@ public class NewTagDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 4;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
         panel.add(error, c);
         
         
@@ -145,6 +146,9 @@ public class NewTagDialog extends AppDialog {
     
     public String getTagName() {
         return tag.getText();
+    }
+    public String getComboTag() {
+        return box.getSelectedItem().toString();
     }
     private boolean validateInput() {
         String l = tag.getText();

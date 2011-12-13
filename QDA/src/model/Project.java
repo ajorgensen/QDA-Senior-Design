@@ -194,6 +194,9 @@ public class Project implements Nameable {
 	public List<User> getUsers(){
 		return users;
 	}
+        public List<Folder> getFolders2() {
+            return folders;
+        }
         
         public User getCurrentUser(){
             return currUser;

@@ -9,11 +9,13 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import model.Folder;
 import model.Project;
 
 /**
@@ -80,13 +82,16 @@ public class ImportFileDialog extends AppDialog {
         c.gridy = 0;
         panel.add(browse, c);
         
-//       String[] beta = p.getFolders();
+         //String[] beta = p.getFolders(p);
+//        List<Folder> alpha = p.getFolders2();
+//        String beta = alpha.toArray().toString();
+//        System.out.println("beta = " + beta);
        
         String[] beta = {"test1", "alpha", "test2", "beta"};
-        for(int i = 0; i < beta.length; i++) {
-            System.out.println("Folder" + i + " = ");
-            System.out.println(beta[i]);
-        }
+        //for(int i = 0; i < beta.length; i++) {
+        //    System.out.println("Folder" + i + " = ");
+        //    System.out.println(beta[i]);
+        //}
         box = new JComboBox(beta);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 4;

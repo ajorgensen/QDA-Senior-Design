@@ -34,6 +34,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         project = null;
         
+        
         helpViewIndex = -1;
         initializeRepository();
         initializeTags();
@@ -62,6 +63,8 @@ public class MainFrame extends JFrame {
         Folder folder1 = project.createFolder(project.getMainFolder(), "alpha");
         MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
         TagType tt = project.addTagType(project.getRootTag(),"child");
+        TagType t2 = project.addTagType(project.getRootTag(),"test");
+        TagType t3 = project.addTagType(project.getRootTag(),"important");
         mut.addTag(tt, new TextSection(100,10));
         mut.addTag(tt, new TextSection(1000,100));
         mut.addComment("hey hey hey this is my comment.", new TextSection(200,25));
@@ -157,7 +160,6 @@ public class MainFrame extends JFrame {
         copyElement = new javax.swing.JButton();
         pasteElement = new javax.swing.JButton();
         renameElement = new javax.swing.JButton();
-        deleteElement = new javax.swing.JButton();
         repositoryPane = new javax.swing.JScrollPane();
         tagsWindow = new javax.swing.JPanel();
         tagsLabel = new javax.swing.JLabel();
@@ -168,7 +170,6 @@ public class MainFrame extends JFrame {
         copyTag = new javax.swing.JButton();
         pasteTag = new javax.swing.JButton();
         renameTag = new javax.swing.JButton();
-        deleteTag = new javax.swing.JButton();
         tagsPane = new javax.swing.JScrollPane();
         views = TabbedPaneFactory.createCloseButtonTabbedPane();
         newSearch = new javax.swing.JButton();
@@ -275,14 +276,6 @@ public class MainFrame extends JFrame {
         });
         repositoryTools.add(renameElement);
 
-        deleteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
-        deleteElement.setToolTipText("Delete");
-        deleteElement.setEnabled(false);
-        deleteElement.setFocusable(false);
-        deleteElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        deleteElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        repositoryTools.add(deleteElement);
-
         repositoryWindow.add(repositoryTools);
 
         repositoryPane.setAlignmentX(0.03F);
@@ -364,14 +357,6 @@ public class MainFrame extends JFrame {
             }
         });
         tagsTools.add(renameTag);
-
-        deleteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
-        deleteTag.setToolTipText("Delete");
-        deleteTag.setEnabled(false);
-        deleteTag.setFocusable(false);
-        deleteTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        deleteTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tagsTools.add(deleteTag);
 
         tagsPane.setViewportView(tags);
 
@@ -730,7 +715,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         if(ifd.hasResults()) {
             Folder fold = project.findFolder(ifd.getComboBox());
             project.importSourceText(ifd.getFilePath(), fold);
-           // MarkedUpText mut = project.importSourceText("./QDA/long.txt", fold);
             
         }
     }//GEN-LAST:event_importFileActionPerformed
@@ -777,9 +761,14 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         nd.setVisible(true);
         if(nd.hasFocus()) {
             
-            project.addTagType(project.getRootTag(), nd.getTagName());
+            
+            TagType t2 = project.addTagType(project.getRootTag(),nd.getTagName());
+            
+            //TagType root = project.findTag(nd.getComboTag());
+            //project.addTagType(root, nd.getTagName());
             tags.updateUI();
         }
+        tags.updateUI();
     }//GEN-LAST:event_newTagActionPerformed
 
 
@@ -821,7 +810,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         copyElement.setEnabled(enabled);
         pasteElement.setEnabled(enabled);
         renameElement.setEnabled(enabled);
-        deleteElement.setEnabled(enabled);
+        //deleteElement.setEnabled(enabled);
     }
     
     private void setTagsToolsEnabled(boolean enabled) {
@@ -831,7 +820,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         copyTag.setEnabled(enabled);
         pasteTag.setEnabled(enabled);
         renameTag.setEnabled(enabled);
-        deleteTag.setEnabled(enabled);
+        //deleteTag.setEnabled(enabled);
     }
     
     /**
@@ -873,8 +862,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JButton copyTag;
     private javax.swing.JButton cutElement;
     private javax.swing.JButton cutTag;
-    private javax.swing.JButton deleteElement;
-    private javax.swing.JButton deleteTag;
     private javax.swing.JMenuItem helpContents;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton importFile;
