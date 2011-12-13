@@ -4,10 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import model.Blob;
 import model.BlobTree;
-import model.Comment;
 import model.cgitDirectory;
 import model.Commit;
-import model.TagInstance;
 
 public class Branch {
     
@@ -209,32 +207,6 @@ public class Branch {
 
         return new BlobTree(blobs);
     }
-    
-    public static boolean hadCommentInPast(String working_dir)
-    {
-        //get the current commit object
-        Commit current_commit = Commit.parseHash(Branch.getCurrentCommitHash(working_dir), working_dir);
-        
-        BlobTree current_blobtree = current_commit.getBlobTree();
-        ArrayList<Blob> blobs = current_blobtree.getBlobs();
-        
-        for(Blob blob : blobs)
-        {
-            if(blob.getFilename() == "comments")
-            {
-                
-            }
-        }
-        
-        
-        return false;
-    }
-    
-    public static boolean hadTagInPast(String working_dir, TagInstance tag)
-    {
-        
-        return false;
-    }
 
     /* debug purposed only */
     public static void main(String[] args) throws Exception {
@@ -242,7 +214,5 @@ public class Branch {
         String working_dir = "/Volumes/DATA/Users/andrewjorgensen/temp/qda_project";
         //Branch.commitWalker(working_dir, Commit.parseHash(Branch.getCurrentCommitHash(working_dir), working_dir));
         //Branch.getAllBranchNames(working_dir);
-        
-        Branch.hadCommentInPast(working_dir);
     }
 }

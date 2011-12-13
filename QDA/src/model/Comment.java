@@ -12,18 +12,11 @@ public class Comment extends MarkUp {
     private String comment;
     private String sourceFileName;
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private MarkedUpText markedUp;
 
     public Comment(String user, Date dateAdded, Date dateModified, TextSection selection, String comment, MarkedUpText markedUp) {
         super(user, dateAdded, dateModified, selection);
         this.comment = comment;
         this.sourceFileName = markedUp.getName();
-        this.markedUp = markedUp;
-    }
-    
-    public MarkedUpText getMarkedUp()
-    {
-        return this.markedUp;
     }
 
     public String getComment() {

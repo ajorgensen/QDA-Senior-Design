@@ -58,7 +58,7 @@ public class MainFrame extends JFrame {
         SignInDialog sid = new SignInDialog(this, project);
         sid.setVisible(true);
         User u = new User ("default", "default");
-        openProject(new Project("defaultProject","defaultPath", new User("admin", "gaf")));
+        openProject(new Project("defaultProject","defaultPath", u));
         signInUser(u, project);
         Folder folder1 = project.createFolder(project.getMainFolder(), "TestFolder1");
         MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
