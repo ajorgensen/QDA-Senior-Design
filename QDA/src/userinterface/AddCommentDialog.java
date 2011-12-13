@@ -4,6 +4,7 @@
  */
 package userinterface;
 
+import java.awt.Dimension;
 import javax.swing.JTextArea;
 
 /**
@@ -15,7 +16,7 @@ public class AddCommentDialog extends AddMarkUpDialog{
     JTextArea comment;
     
     public AddCommentDialog(MainFrame mf, String textToMarkUp) {
-        super(mf, "Add Comment", "Please write a coment for the following text:", textToMarkUp, "The comment cannot be empty.", null);
+        super(mf, "Add Comment", "Please write a coment for the following text:", textToMarkUp, "Your comment cannot be empty.", null);
     }
     
     @Override
@@ -24,6 +25,9 @@ public class AddCommentDialog extends AddMarkUpDialog{
         
         comment = new JTextArea();
         comment.setEditable(true);
+        comment.setMinimumSize(new Dimension(305, 75));
+        comment.setMaximumSize(new Dimension(305, 1000));
+        comment.setLineWrap(true);
         
         markUpPane.setViewportView(comment);
     }

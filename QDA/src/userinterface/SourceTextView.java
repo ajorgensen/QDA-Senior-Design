@@ -163,13 +163,13 @@ public class SourceTextView extends View {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (tag != e.getOppositeComponent())
+                Object o = e.getOppositeComponent();
+                if (tag != o && comment != o) {
                     tag.setEnabled(false);
-                else
-                    addTag();
-                
-                if (comment != e.getOppositeComponent())
                     comment.setEnabled(false);
+                }
+                else if (tag == o)
+                    addTag();
                 else
                     addComment();
             }

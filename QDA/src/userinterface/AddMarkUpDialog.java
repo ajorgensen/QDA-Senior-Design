@@ -6,6 +6,7 @@ package userinterface;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTree;
 
 /**
@@ -37,31 +39,45 @@ public class AddMarkUpDialog extends AppDialog{
         
         JLabel instructions = new JLabel((String) args[0]);
         instructions.setAlignmentX((float)0.0);
+        instructions.setPreferredSize(new Dimension(305, 25));
+        instructions.setMinimumSize(new Dimension(305, 25));
+        instructions.setMaximumSize(new Dimension(305, 25));
         panel.add(instructions);
         
-        JLabel textToMarkUp = new JLabel((String) args[1]);
-        textToMarkUp.setAlignmentX((float)0.5);
+        JTextArea textToMarkUp = new JTextArea((String) args[1]);
+        textToMarkUp.setLineWrap(true);
+        textToMarkUp.setMinimumSize(new Dimension(305, 75));
+        textToMarkUp.setMaximumSize(new Dimension(305, 1000));
+        textToMarkUp.setEditable(false);
+        textToMarkUp.setBackground(new Color(240, 240, 240));
         
         JScrollPane textToMarkUpPane = new JScrollPane();
         textToMarkUpPane.setViewportView(textToMarkUp);
-        
+        textToMarkUpPane.setAlignmentX((float)0.0);
+        textToMarkUpPane.setPreferredSize(new Dimension(305, 100));
+        textToMarkUpPane.setMinimumSize(new Dimension(305, 100));
+        textToMarkUpPane.setMaximumSize(new Dimension(305, 100));
         panel.add(textToMarkUpPane);
         
         markUpPane = new JScrollPane();
         markUpPane.setBackground(Color.WHITE);
-        markUpPane.setAlignmentX((float)0.5);
+        markUpPane.setAlignmentX((float)0.0);
+        markUpPane.setPreferredSize(new Dimension(305, 100));
+        markUpPane.setMinimumSize(new Dimension(305, 100));
+        markUpPane.setMaximumSize(new Dimension(305, 100));
         panel.add(markUpPane);
         
-        errorLabel = new JLabel();
-        errorLabel.setAlignmentX((float)0.5);
-        panel.add(errorLabel);
-        
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        
+        errorLabel = new JLabel();
+        errorLabel.setAlignmentX((float)0.0);
+        errorLabel.setPreferredSize(new Dimension(180, 25));
+        errorLabel.setMinimumSize(new Dimension(180, 25));
+        errorLabel.setMaximumSize(new Dimension(180, 25));
+        buttonPanel.add(errorLabel);
         
         JButton okButton = new JButton("OK");
-        okButton.setPreferredSize(new Dimension(75, 25));
-        okButton.setAlignmentY((float)0.0);
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,8 +92,6 @@ public class AddMarkUpDialog extends AppDialog{
         buttonPanel.add(okButton);
         
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.setPreferredSize(new Dimension(75, 25));
-        cancelButton.setAlignmentY((float)0.0);
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,7 +100,7 @@ public class AddMarkUpDialog extends AppDialog{
         });
         buttonPanel.add(cancelButton);
         
-        buttonPanel.setAlignmentX((float)1.0);
+        buttonPanel.setAlignmentX((float)0.0);
         panel.add(buttonPanel);
     }
 

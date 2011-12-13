@@ -231,6 +231,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="cutElement.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="copyElement">
                       <Properties>
@@ -243,6 +246,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="copyElement.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="pasteElement">
                       <Properties>
@@ -255,6 +261,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="pasteElement.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="renameElement">
                       <Properties>
@@ -270,6 +279,9 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="renameElementActionPerformed"/>
                       </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="renameElement.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="deleteElement">
                       <Properties>
@@ -348,6 +360,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="newTagSet.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="cutTag">
                       <Properties>
@@ -360,6 +375,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="cutTag.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="copyTag">
                       <Properties>
@@ -372,6 +390,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="copyTag.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="pasteTag">
                       <Properties>
@@ -384,6 +405,9 @@
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="pasteTag.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="renameTag">
                       <Properties>
@@ -399,6 +423,9 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="renameTagActionPerformed"/>
                       </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="renameTag.setVisible(false);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="deleteTag">
                       <Properties>

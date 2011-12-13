@@ -110,7 +110,7 @@ public class MainFrame extends JFrame {
         repository = new CheckboxTree();
         repository.setVisible(false);
         repository.setCellRenderer(uncheckedRep);
-        repository.setEditable(true);
+        repository.setEditable(false);
         repository.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         repository.setSelectionInterval(0, 0);
         repository.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -123,19 +123,19 @@ public class MainFrame extends JFrame {
     
     private void initializeTags() {
         uncheckedTags = new BlankCheckboxTreeCellRenderer();
-        uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
-        uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tags.png")));
+        uncheckedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tags.png")));
         uncheckedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
         
         checkedTags = new DefaultCheckboxTreeCellRenderer();
-        checkedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Tag Set.png")));
-        checkedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Closed Tag Set.png")));
+        checkedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tags.png")));
+        checkedTags.setClosedIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tags.png")));
         checkedTags.setLeafIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tag.png")));
         
         tags = new CheckboxTree();
         tags.setVisible(false);
         tags.setCellRenderer(uncheckedTags);
-        tags.setEditable(true);
+        tags.setEditable(false);
         tags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tags.setSelectionInterval(0, 0);
     }
@@ -238,6 +238,7 @@ public class MainFrame extends JFrame {
         cutElement.setFocusable(false);
         cutElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cutElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        cutElement.setVisible(false);
         repositoryTools.add(cutElement);
 
         copyElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Copy.png"))); // NOI18N
@@ -246,6 +247,7 @@ public class MainFrame extends JFrame {
         copyElement.setFocusable(false);
         copyElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         copyElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        copyElement.setVisible(false);
         repositoryTools.add(copyElement);
 
         pasteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Paste.png"))); // NOI18N
@@ -254,6 +256,7 @@ public class MainFrame extends JFrame {
         pasteElement.setFocusable(false);
         pasteElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         pasteElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pasteElement.setVisible(false);
         repositoryTools.add(pasteElement);
 
         renameElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
@@ -262,6 +265,7 @@ public class MainFrame extends JFrame {
         renameElement.setFocusable(false);
         renameElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         renameElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        renameElement.setVisible(false);
         renameElement.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 renameElementActionPerformed(evt);
@@ -310,6 +314,7 @@ public class MainFrame extends JFrame {
         newTagSet.setFocusable(false);
         newTagSet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newTagSet.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        newTagSet.setVisible(false);
         tagsTools.add(newTagSet);
 
         cutTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Cut.png"))); // NOI18N
@@ -318,6 +323,7 @@ public class MainFrame extends JFrame {
         cutTag.setFocusable(false);
         cutTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cutTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        cutTag.setVisible(false);
         tagsTools.add(cutTag);
 
         copyTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Copy.png"))); // NOI18N
@@ -326,6 +332,7 @@ public class MainFrame extends JFrame {
         copyTag.setFocusable(false);
         copyTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         copyTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        copyTag.setVisible(false);
         tagsTools.add(copyTag);
 
         pasteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Paste.png"))); // NOI18N
@@ -334,6 +341,7 @@ public class MainFrame extends JFrame {
         pasteTag.setFocusable(false);
         pasteTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         pasteTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pasteTag.setVisible(false);
         tagsTools.add(pasteTag);
 
         renameTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Rename.png"))); // NOI18N
@@ -342,6 +350,7 @@ public class MainFrame extends JFrame {
         renameTag.setFocusable(false);
         renameTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         renameTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        renameTag.setVisible(false);
         renameTag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 renameTagActionPerformed(evt);
@@ -644,12 +653,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         views.removeTabAt(indexToDelete);
     }   
     
-    private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
-        TreeCheckingModel rep = new DefaultTreeCheckingModel(repository);
-        TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
-        addView(new SearchView("New Search", rep, tag));
-    }//GEN-LAST:event_newSearchActionPerformed
-
     private void renameElementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameElementActionPerformed
         JTree rep = (JTree) repositoryPane.getViewport().getView();
         TreePath path = rep.getSelectionPath();
@@ -673,6 +676,21 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }//GEN-LAST:event_renameTagActionPerformed
 
+    public void openSourceTextView(MarkedUpText mut) {
+        Component[] v = views.getComponents();
+        for (int i = 0; i < v.length; i++) {
+            if (v[i] instanceof SourceTextView) {
+                if (((SourceTextView) v[i]).getMarkedUpText() == mut) {
+                    views.setSelectedComponent(v[i]);
+                    return;
+                }
+            }
+        }
+        TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
+        tag.addCheckingPath(tags.getPathForRow(0));
+        addView(new SourceTextView(this, mut, tag));
+    }
+    
     private void repositoryMousePressed(java.awt.event.MouseEvent evt) {
         JTree rep = (JTree) repositoryPane.getViewport().getView();
         int selRow = rep.getRowForLocation(evt.getX(), evt.getY());
@@ -685,18 +703,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
                 if (gamma.contains(".")) { //it is a node
                     if (selRow != -1) {
                         if (evt.getClickCount() == 2) {
-                            Component[] v = views.getComponents();
-                            for (int i = 0; i < v.length; i++) {
-                                if (v[i] instanceof SourceTextView) {
-                                    if (((SourceTextView)v[i]).getMarkedUpText() == beta) {
-                                        views.setSelectedComponent(v[i]);
-                                        return;
-                                    }
-                                }
-                            }
-                            TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
-                            tag.addCheckingPath(tags.getPathForRow(0));
-                            addView(new SourceTextView(this, (MarkedUpText) beta, tag));
+                            openSourceTextView((MarkedUpText) beta);
                         }
                     } else {
                         // Do nothing since a node wasn't selected
@@ -721,6 +728,12 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         MergeProjectDialog mpd = new MergeProjectDialog(this);
         mpd.setVisible(true);
     }//GEN-LAST:event_mergeProjectActionPerformed
+
+    private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
+        TreeCheckingModel rep = new DefaultTreeCheckingModel(repository);
+        TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
+        addView(new SearchView(this, "Search", rep, tag));
+    }//GEN-LAST:event_newSearchActionPerformed
 
     private void signOutUser() {
         project.setCurrentUser(null);
