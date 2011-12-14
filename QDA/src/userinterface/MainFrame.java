@@ -776,13 +776,37 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     }
 
     private void importFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFileActionPerformed
-        ImportFileDialog ifd = new ImportFileDialog(this, project);
-        ifd.setVisible(true);
-        if (ifd.hasResults()) {
-            Folder fold = project.findFolder(ifd.getComboBox());
-            project.importSourceText(ifd.getFilePath(), fold);
-
+        JTree rep = (JTree) repositoryPane.getViewport().getView();
+        TreePath alpha = rep.getSelectionPath();
+        //Alpha is the selected folder from the repository pane
+        // Checks to make sure that something was selected and it wasn't a text file
+        if(alpha != null && !alpha.toString().contains(".")) {
+            //Create a string that is the name of the selected folder
+            String parentName = alpha.getLastPathComponent().toString();
+            //Find the folder that corresponds to that parentName
+            Folder parent = project.findFolder(parentName);
+            //Open the import file dialog box
+            ImportFileDialog ifd = new ImportFileDialog(this, project);
+            ifd.setVisible(true);
+            //If the root folder is the selected folder than have to use project.getMainFolder()
+            if(project.getMainFolder().getName().equals(parentName)) {
+                if(ifd.hasResults()) {
+                    project.importSourceText(ifd.getFilePath(), project.getMainFolder());
+                    //Update to show the imported source text
+                    repository.updateUI();
+                }
+            }
+            //The root folder is not the selected folder so can use Folder parent
+            else {
+                if(ifd.hasResults()) {
+                    project.importSourceText(ifd.getFilePath(), parent);
+                    //Update to show the imported source text
+                    repository.updateUI();
+                }
+            }
+            
         }
+
     }//GEN-LAST:event_importFileActionPerformed
 
     private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
@@ -813,29 +837,76 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
     private void createFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderActionPerformed
         // TODO add your handling code here:
-        CreateFolderDialog cfd = new CreateFolderDialog(this);
-        cfd.setVisible(true);
-        if (cfd.hasResults()) {
-            project.createFolder(project.getMainFolder(), cfd.getFolderName());
-            repository.updateUI();
+        JTree rep = (JTree) repositoryPane.getViewport().getView();
+        TreePath alpha = rep.getSelectionPath();
+        //Alpha is the selected folder and if nothing is selected then alpha is null
+        //Alpha also can not be a source text file so it checks if it has a "." for an extension
+        
+        if(alpha != null && !alpha.toString().contains(".")) {
+            //Set the parentName from the last component of the selected folder
+            String parentName = alpha.getLastPathComponent().toString();
+            //Find the folder with that has name parentName
+            Folder parent = project.findFolder(parentName);
+            //Open dialog box asking for new folder name
+            CreateFolderDialog cfd = new CreateFolderDialog(this);
+            cfd.setVisible(true);
+            //If parentName is the same as the root folder have to use project.getMainFolder()
+            if(project.getMainFolder().getName().equals(parentName)) {
+                if(cfd.hasResults()) {
+                    project.createFolder(project.getMainFolder(), cfd.getFolderName());
+                    //Update UI with new folder
+                    repository.updateUI();
+                }
+                
+            } 
+            //parentName doesn't have the same name as root folder so can pass the Folder parent instead
+            else {
+                if (cfd.hasResults()) {
+                    project.createFolder(parent, cfd.getFolderName());
+                    //Update UI with new folder
+                    repository.updateUI();
+                }
+            }
 
         }
     }//GEN-LAST:event_createFolderActionPerformed
-
+/**
+     * Creates a new tag with the name entered that is a child of the tag selected
+     * @param evt 
+     */
     private void newTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagActionPerformed
-        // TODO add your handling code here:
-        NewTagDialog nd = new NewTagDialog(this, project);
-        nd.setVisible(true);
-        if (nd.hasResults()) {
-
-
-            TagType t2 = project.addTagType(project.getRootTag(), nd.getTagName());
-
-            //TagType root = project.findTag(nd.getComboTag());
-            //project.addTagType(root, nd.getTagName());
-            tags.updateUI();
+        JTree rep = (JTree) tagsPane.getViewport().getView();
+        TreePath alpha = rep.getSelectionPath();
+        //Alpha is the selected tag and make sure something is actually selected
+        if(alpha != null) {
+            //parentName is the name of the selected component
+            String parentName = alpha.getLastPathComponent().toString();
+            //Find the tag with name parentName
+            TagType parent = project.findTag(parentName);
+            //Open the new tag dialog box
+            NewTagDialog nd = new NewTagDialog(this, project);
+            nd.setVisible(true);
+            //If the root tag was selected then use project.getRootTag()
+            if(project.getRootTag().getName().equals(parentName)) {
+                if(nd.hasResults()) {
+                    //Add the new tag
+                    project.addTagType(project.getRootTag(), nd.getTagName());
+                    //Update the view to show the new tag
+                    tags.updateUI();
+                }
+            }
+            //The root tag was not selected so use TagType parent
+            else {
+                if(nd.hasResults()) {
+                    //Add the new tag
+                    project.addTagType(parent, nd.getTagName());
+                    //Update the view to show the new tag
+                    tags.updateUI();
+                }
+            }
+            
         }
-        tags.updateUI();
+
     }//GEN-LAST:event_newTagActionPerformed
 
     private void signOutUser() {

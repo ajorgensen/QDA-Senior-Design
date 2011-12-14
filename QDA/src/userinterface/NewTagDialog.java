@@ -9,7 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -24,7 +23,6 @@ public class NewTagDialog extends AppDialog {
     private JLabel tagLabel;
     private JTextField tag;
     private JLabel spacer;
-    private JComboBox box;
     private JButton add;
     private JButton cancel;
     private JLabel error;
@@ -64,31 +62,19 @@ public class NewTagDialog extends AppDialog {
         c.gridx = 1;
         c.gridy = 0;
         panel.add(tag, c);
-        
-//       // String[] beta = p.getFolders();
-//        String[] beta = {"tag1", "tag2", "tag3", "tag4"};
-//        for(int i = 0; i < beta.length; i++) {
-//            System.out.println("Folder" + i + " = " + beta[i]);
-//        }
-        String[] beta = {"Tags"};
-        box = new JComboBox(beta);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 4;
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(box, c);
+
 
         spacer = new JLabel("                                                           ");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 1;
         panel.add(spacer, c);
         
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 1;
         panel.add(spacer, c);
         
         add = new JButton("Add Tag");
@@ -101,7 +87,7 @@ public class NewTagDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 2;
-        c.gridy = 3;
+        c.gridy = 1;
         panel.add(add, c);
         
         cancel = new JButton("Cancel");
@@ -114,7 +100,7 @@ public class NewTagDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 3;
-        c.gridy = 3;
+        c.gridy = 1;
         panel.add(cancel, c);
         
         error = new JLabel(" ");
@@ -122,7 +108,7 @@ public class NewTagDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 4;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 2;
         panel.add(error, c);
         
         
@@ -147,9 +133,7 @@ public class NewTagDialog extends AppDialog {
     public String getTagName() {
         return tag.getText();
     }
-    public String getComboTag() {
-        return box.getSelectedItem().toString();
-    }
+
     private boolean validateInput() {
         String l = tag.getText();
         if(l.equals("")) {
