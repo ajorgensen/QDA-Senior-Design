@@ -10,7 +10,7 @@ import java.awt.FlowLayout;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
+import userinterface.SpecialTreeCellRenderer;
 
 /**
  *
@@ -18,7 +18,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 public class BlankCheckboxTreeCellRenderer extends JPanel implements CheckboxTreeCellRenderer{
 
-    protected DefaultTreeCellRenderer label = new DefaultTreeCellRenderer();
+    protected SpecialTreeCellRenderer label = new SpecialTreeCellRenderer();
     
     public BlankCheckboxTreeCellRenderer() {
 	this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
