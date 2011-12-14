@@ -16,12 +16,14 @@ import java.awt.Toolkit;
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import javax.swing.event.TreeSelectionEvent;
 import org.openide.awt.TabbedPaneFactory;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import checkboxtree.*;
 import java.awt.Component;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import model.*;
 
@@ -118,7 +120,20 @@ public class MainFrame extends JFrame {
         repository.setCellRenderer(uncheckedRep);
         repository.setEditable(false);
         repository.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        repository.setSelectionInterval(0, 0);
+        repository.clearSelection();
+        repository.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                if (repository.getSelectionCount()==1 && ((repository.getSelectionPath().getLastPathComponent()) instanceof Folder)) {
+                    importFile.setEnabled(true);
+                    newFolder.setEnabled(true);
+                }
+                else {
+                    importFile.setEnabled(false);
+                    newFolder.setEnabled(false);
+                }
+            }        
+        });
         repository.addMouseListener(new java.awt.event.MouseAdapter() {
 
             @Override
@@ -144,7 +159,18 @@ public class MainFrame extends JFrame {
         tags.setCellRenderer(uncheckedTags);
         tags.setEditable(false);
         tags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tags.setSelectionInterval(0, 0);
+        tags.clearSelection();
+        tags.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                if (tags.getSelectionCount()==1) {
+                    newTag.setEnabled(true);
+                }
+                else {
+                    newTag.setEnabled(false);
+                }
+            }        
+        });
     }
 
     /** This method is called from within the constructor to
@@ -167,6 +193,7 @@ public class MainFrame extends JFrame {
         copyElement = new javax.swing.JButton();
         pasteElement = new javax.swing.JButton();
         renameElement = new javax.swing.JButton();
+        deleteElement = new javax.swing.JButton();
         repositoryPane = new javax.swing.JScrollPane();
         tagsWindow = new javax.swing.JPanel();
         tagsLabel = new javax.swing.JLabel();
@@ -177,6 +204,7 @@ public class MainFrame extends JFrame {
         copyTag = new javax.swing.JButton();
         pasteTag = new javax.swing.JButton();
         renameTag = new javax.swing.JButton();
+        deleteTag = new javax.swing.JButton();
         tagsPane = new javax.swing.JScrollPane();
         views = TabbedPaneFactory.createCloseButtonTabbedPane();
         newSearch = new javax.swing.JButton();
@@ -197,8 +225,9 @@ public class MainFrame extends JFrame {
         about = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("AppName");
+        setTitle("Parallel");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setIconImages(null);
         setMinimumSize(new java.awt.Dimension(500, 300));
         setName(""); // NOI18N
 
@@ -283,6 +312,15 @@ public class MainFrame extends JFrame {
         });
         repositoryTools.add(renameElement);
 
+        deleteElement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
+        deleteElement.setToolTipText("Delete");
+        deleteElement.setEnabled(false);
+        deleteElement.setFocusable(false);
+        deleteElement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deleteElement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        deleteElement.setVisible(false);
+        repositoryTools.add(deleteElement);
+
         repositoryWindow.add(repositoryTools);
 
         repositoryPane.setAlignmentX(0.03F);
@@ -364,6 +402,15 @@ public class MainFrame extends JFrame {
             }
         });
         tagsTools.add(renameTag);
+
+        deleteTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/icons/Delete.png"))); // NOI18N
+        deleteTag.setToolTipText("Delete");
+        deleteTag.setEnabled(false);
+        deleteTag.setFocusable(false);
+        deleteTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deleteTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        deleteTag.setVisible(false);
+        tagsTools.add(deleteTag);
 
         tagsPane.setViewportView(tags);
 
@@ -562,15 +609,12 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
         newSearch.setEnabled(true);
 
-
         //repository.setModel(new DefaultTreeModel(project.getMainFolder()));
         repository.setModel(new DefaultTreeModel(p.getMainFolder()));
         repository.setVisible(true);
-        setRepositoryToolsEnabled(true);
         //tags.setModel(new DefaultTreeModel(project.getRootTag()));
         tags.setModel(new DefaultTreeModel(p.getRootTag()));
         tags.setVisible(true);
-        setTagsToolsEnabled(true);
 
         this.repaint();
     }
@@ -720,16 +764,11 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         TreePath alpha = rep.getSelectionPath();
         if (alpha != null) {
             Object beta = alpha.getLastPathComponent();
-            if (beta != null) {
-                String gamma = beta.toString();
-                //check if node
-                if (gamma.contains(".")) { //it is a node
-                    if (selRow != -1) {
-                        if (evt.getClickCount() == 2) {
-                            openSourceTextView((MarkedUpText) beta);
-                        }
-                    } else {
-                        // Do nothing since a node wasn't selected
+            // check if node
+            if (beta != null && beta instanceof MarkedUpText) { // it is a node
+                if (selRow != -1) {
+                    if (evt.getClickCount() == 2) { // double clicked
+                        openSourceTextView((MarkedUpText) beta);
                     }
                 }
             }
@@ -816,11 +855,11 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
         newSearch.setEnabled(false);
 
+        repository.clearSelection();
         repository.setVisible(false);
-        setRepositoryToolsEnabled(false);
 
+        tags.clearSelection();
         tags.setVisible(false);
-        setTagsToolsEnabled(false);
 
         this.repaint();
     }
@@ -828,26 +867,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private void addView(View v) {
         views.addTab(v.getAbbrv(), null, v, v.getTitle());
         views.setSelectedIndex(views.indexOfComponent(v));
-    }
-
-    private void setRepositoryToolsEnabled(boolean enabled) {
-        importFile.setEnabled(enabled);
-        newFolder.setEnabled(enabled);
-        cutElement.setEnabled(enabled);
-        copyElement.setEnabled(enabled);
-        pasteElement.setEnabled(enabled);
-        renameElement.setEnabled(enabled);
-        //deleteElement.setEnabled(enabled);
-    }
-
-    private void setTagsToolsEnabled(boolean enabled) {
-        newTag.setEnabled(enabled);
-        newTagSet.setEnabled(enabled);
-        cutTag.setEnabled(enabled);
-        copyTag.setEnabled(enabled);
-        pasteTag.setEnabled(enabled);
-        renameTag.setEnabled(enabled);
-        //deleteTag.setEnabled(enabled);
     }
 
     /**
@@ -889,6 +908,8 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JButton copyTag;
     private javax.swing.JButton cutElement;
     private javax.swing.JButton cutTag;
+    private javax.swing.JButton deleteElement;
+    private javax.swing.JButton deleteTag;
     private javax.swing.JMenuItem helpContents;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton importFile;
