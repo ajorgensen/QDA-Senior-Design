@@ -9,13 +9,11 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import model.Folder;
 import model.Project;
 
 /**
@@ -28,7 +26,6 @@ public class ImportFileDialog extends AppDialog {
     private JTextField path;
     private JButton browse;
     private JLabel spacer;
-    private JComboBox box;
     private JButton add;
     private JButton cancel;
     private JLabel error;
@@ -82,37 +79,18 @@ public class ImportFileDialog extends AppDialog {
         c.gridy = 0;
         panel.add(browse, c);
         
-         //String[] beta = p.getFolders(p);
-//        List<Folder> alpha = p.getFolders2();
-//        String beta = alpha.toArray().toString();
-//        System.out.println("beta = " + beta);
-       
-        String[] beta = {"test1", "alpha", "test2", "beta"};
-        //for(int i = 0; i < beta.length; i++) {
-        //    System.out.println("Folder" + i + " = ");
-        //    System.out.println(beta[i]);
-        //}
-        box = new JComboBox(beta);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 4;
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(box, c);
-        
-        
-        
         
         spacer = new JLabel("                                                           ");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 2;
         panel.add(spacer, c);
         
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 2;
         panel.add(spacer, c);
         
         add = new JButton("Add File");
@@ -125,7 +103,7 @@ public class ImportFileDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 2;
-        c.gridy = 3;
+        c.gridy = 2;
         panel.add(add, c);
         
         cancel = new JButton("Cancel");
@@ -138,7 +116,7 @@ public class ImportFileDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 3;
-        c.gridy = 3;
+        c.gridy = 2;
         panel.add(cancel, c);
         
         error = new JLabel(" ");
@@ -146,11 +124,8 @@ public class ImportFileDialog extends AppDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 4;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 3;
         panel.add(error, c);
-        
-        
-
         
     }
     
@@ -193,13 +168,15 @@ public class ImportFileDialog extends AppDialog {
     public String getFilePath() {
         return path.getText();
     }
-    public String getComboBox() {
-        return box.getSelectedItem().toString();
-    }
+
     private boolean validateInput() {
         String l = path.getText();
         if(l.equals("")) {
             error.setText("File Path Required");
+            return false;
+        }
+        if(!l.contains(".")) {
+            error.setText("Invalid Source TexT");
             return false;
         }
         return true;
