@@ -305,8 +305,7 @@ public class SourceTextView extends View {
                 Style style;
                 if (boldDot >= offset && boldDot < offset+length) {
                     style = bcommentStyle;
-                    left.add(new MarkUpDetail(
-                            "COMMENT:\n"+c.getComment()+" ("+c.getOwner()+")"));
+                    left.add(new CommentDetail(c.getComment(), c.getOwner()));
                     left.add(new Box.Filler(new Dimension(10, 10), new Dimension(10, 10), new Dimension(10, 10)));
                 }
                 else
@@ -355,8 +354,7 @@ public class SourceTextView extends View {
                         style = doc.addStyle("b"+styleName, tagStyle);
                         StyleConstants.setBold(style, true);
                     }
-                    left.add(new MarkUpDetail(
-                                "TAG: "+ti.getTagType().getPathString()+" ("+ti.getOwner()+")"));
+                    left.add(new TagDetail(ti.getTagType().getPathString(), ti.getOwner(), tagColors[colorIndex]));
                     left.add(new Box.Filler(new Dimension(10, 10), new Dimension(10, 10), new Dimension(10, 10)));
                 }
                 else
