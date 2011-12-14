@@ -227,7 +227,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Parallel");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setIconImages(null);
+        setIconImage(new ImageIcon(getClass().getResource("/userinterface/icons/Parallel.png")).getImage());
         setMinimumSize(new java.awt.Dimension(500, 300));
         setName(""); // NOI18N
 
@@ -638,7 +638,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         String working_dir = opd.getWorkingDir();
 
         Project p = new Project("QDA", working_dir, this.project.getCurrentUser());
-
+        
         String[] files = FileUtil.listFilesInDirectory(working_dir);
 
         for (String file : files) {
