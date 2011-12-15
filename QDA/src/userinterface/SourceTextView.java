@@ -12,9 +12,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Point;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -27,7 +24,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -37,7 +33,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Caret;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -48,7 +43,6 @@ import model.MarkedUpText;
 import model.TagInstance;
 import model.TagType;
 import model.TextSection;
-import org.openide.util.Exceptions;
 
 /**
  *
@@ -93,7 +87,6 @@ public class SourceTextView extends View {
     private int selectionStart;
     private int selectionEnd;
     private int boldDot;
-    private boolean caretFlag;
     private JTextArea emptyLeft;
     
     public MarkedUpText getMarkedUpText() {
@@ -114,7 +107,6 @@ public class SourceTextView extends View {
         selectionStart = -1;
         selectionEnd = -1;
         boldDot= -1;
-        caretFlag = true;
         
         emptyLeft = new JTextArea("Click on a tag and/or comment to see details here.");
         emptyLeft.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -137,14 +129,17 @@ public class SourceTextView extends View {
         tagsModel.addTreeCheckingListener(new TreeCheckingListener() {
             @Override
             public void valueChanged(TreeCheckingEvent e) {
-                if (caretFlag)
-                    initializeCenter();
+                initializeCenter();
+                comment.setEnabled(false);
+                tag.setEnabled(false);
             } 
         });
         
         initializeTools();
         initializeCenter();
         center.getVerticalScrollBar().setValue(0);
+        comment.setEnabled(false);
+        tag.setEnabled(false);
         /*
         center.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
@@ -195,10 +190,8 @@ public class SourceTextView extends View {
         tools.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         
         tag = new JButton("Tag");
-        tag.setEnabled(false);
         
         comment = new JButton("Comment");
-        comment.setEnabled(false);
         
         viewComments = new JCheckBox("View Comments");
         viewComments.setSelected(true);
@@ -206,6 +199,8 @@ public class SourceTextView extends View {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 initializeCenter();
+                comment.setEnabled(false);
+                tag.setEnabled(false);
             }
         });
         
@@ -396,9 +391,7 @@ public class SourceTextView extends View {
                 initializeCenter(dot);
             }*/
             boldDot = dot;
-            caretFlag = false;
             initializeCenter();
-            caretFlag = true;
         }
         else {
             if (dot < mark) {
