@@ -159,6 +159,11 @@ public class SearchView extends View {
             }
             lastNewLine = text.indexOf('\n', lastNewLine+1);
         }
+        
+        if (text.charAt(start-1) == '\n') {
+            offset -= 1;
+            length -= 2;
+        }
 
         return text.substring(offset, offset+length);
     }
