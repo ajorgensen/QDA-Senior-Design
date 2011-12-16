@@ -822,6 +822,8 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             String working_dir = mpd.getWorkingDir();
             
             this.project.mergeProject(working_dir); 
+            this.repaint();
+            
         }
     }//GEN-LAST:event_mergeProjectActionPerformed
 

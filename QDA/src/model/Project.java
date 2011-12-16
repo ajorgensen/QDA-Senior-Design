@@ -344,6 +344,12 @@ public class Project implements Nameable {
        public void mergeProject(String ProjectA_Dir)
        {
            Branch.mergeProject(ProjectA_Dir, this.getLocalPath(), this.curText.getSourceText());
+           
+           List<Comment> newComments = Branch.mergeProjectsComments(ProjectA_Dir, this.getLocalPath(), this.curText.getSourceText());
+           List<TagInstance> newTags = Branch.mergeProjectTags(ProjectA_Dir, this.getLocalPath(), this.curText.getSourceText());
+           
+           this.curText.setComments(newComments);
+           this.curText.setTags(newTags);
        }
 }
 
