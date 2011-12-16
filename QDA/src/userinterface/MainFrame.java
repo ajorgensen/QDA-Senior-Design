@@ -34,6 +34,7 @@ import model.*;
 public class MainFrame extends JFrame {
 
     private Project project;
+    private User session_user = new User("default");
 
     /** Creates new from ApplicationStart */
     public MainFrame() {
@@ -51,8 +52,13 @@ public class MainFrame extends JFrame {
         int h = (int) screenSize.getHeight();
         setBounds(w / 10, h / 10, w * 4 / 5, h * 3 / 4);
         projectData.requestFocusInWindow();
+        
+        SignInDialog sid = new SignInDialog(this);
+        sid.setVisible(true);
+        User current_user = new User(sid.getUserName());
+        this.session_user = current_user;
 
-        defaultSetUp();
+        //defaultSetUp();
     }
 
     /**
@@ -61,9 +67,9 @@ public class MainFrame extends JFrame {
     private void defaultSetUp() {
         MessageDialog md = new MessageDialog(this, "Opening Default Project.");
         md.setVisible(true);
-        SignInDialog sid = new SignInDialog(this, project);
+        SignInDialog sid = new SignInDialog(this);
         sid.setVisible(true);
-        User u = new User("default", "default");
+        User u = new User("default");
         openProject(new Project("defaultProject", "defaultPath", u));
         signInUser(u, project);
         Folder folder1 = project.createFolder(project.getMainFolder(), "Default");
@@ -94,10 +100,7 @@ public class MainFrame extends JFrame {
     private void setUp(String dialog, User user, Project p, String sourceTextPath) {
         MessageDialog md = new MessageDialog(this, dialog);
         md.setVisible(true);
-        SignInDialog sid = new SignInDialog(this, p);
-        sid.setVisible(true);
         openProject(p);
-        signInUser(user, p);
         Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
         MarkedUpText mut = p.importSourceText(sourceTextPath, folder1);
 
@@ -574,14 +577,11 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     if (npd.hasResults()) {
         String name = npd.getProjectName();
         String path = npd.getProjectPath();
-        String admin = npd.getAdministrator();
-        String password = npd.getPassword().toString();
-        User userAdmin = new User(admin, password);
         String sourcePath = npd.getSourcePath();
         this.closeProject();
-        Project p = new Project(name, path, userAdmin);
+        Project p = new Project(name, path, this.session_user);
         String dialog = "Opening " + name + " Project";
-        setUp(dialog, userAdmin, p, sourcePath);
+        setUp(dialog, this.session_user, p, sourcePath);
     }
 }//GEN-LAST:event_newProjectActionPerformed
 
@@ -684,7 +684,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      * This causes certain menu items to become grayed out
      */
     private void closeProject() {
-        signOutUser();
+        //signOutUser();
         this.repaint();
     }
     /*

@@ -136,50 +136,50 @@ public class NewProjectDialog extends AppDialog{
         c.gridy = 2;
         panel.add(browse2, c);
         
-        adminLabel = new JLabel("Administrator:  ");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        adminLabel.setHorizontalAlignment(JLabel.RIGHT);
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 3;
-        panel.add(adminLabel, c);
-        
-        admin = new JTextField(20);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 4;
-        c.gridx = 1;
-        c.gridy = 3;
-        panel.add(admin, c);
-        
-        passwordLabel = new JLabel("Password:  ");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        passwordLabel.setHorizontalAlignment(JLabel.RIGHT);
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 4;
-        panel.add(passwordLabel, c);
-        
-        password = new JPasswordField(20);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 4;
-        c.gridx = 1;
-        c.gridy = 4;
-        panel.add(password, c);
-        
-        repeatLabel = new JLabel("Repeat Password:  ");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        repeatLabel.setHorizontalAlignment(JLabel.RIGHT);
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 5;
-        panel.add(repeatLabel, c);
-        
-        repeat = new JPasswordField(20);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 4;
-        c.gridx = 1;
-        c.gridy = 5;
-        panel.add(repeat, c);
+//        adminLabel = new JLabel("Administrator:  ");
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        adminLabel.setHorizontalAlignment(JLabel.RIGHT);
+//        c.gridwidth = 1;
+//        c.gridx = 0;
+//        c.gridy = 3;
+//        panel.add(adminLabel, c);
+//        
+//        admin = new JTextField(20);
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        c.gridwidth = 4;
+//        c.gridx = 1;
+//        c.gridy = 3;
+//        panel.add(admin, c);
+//        
+//        passwordLabel = new JLabel("Password:  ");
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        passwordLabel.setHorizontalAlignment(JLabel.RIGHT);
+//        c.gridwidth = 1;
+//        c.gridx = 0;
+//        c.gridy = 4;
+//        panel.add(passwordLabel, c);
+//        
+//        password = new JPasswordField(20);
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        c.gridwidth = 4;
+//        c.gridx = 1;
+//        c.gridy = 4;
+//        panel.add(password, c);
+//        
+//        repeatLabel = new JLabel("Repeat Password:  ");
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        repeatLabel.setHorizontalAlignment(JLabel.RIGHT);
+//        c.gridwidth = 1;
+//        c.gridx = 0;
+//        c.gridy = 5;
+//        panel.add(repeatLabel, c);
+//        
+//        repeat = new JPasswordField(20);
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        c.gridwidth = 4;
+//        c.gridx = 1;
+//        c.gridy = 5;
+//        panel.add(repeat, c);
         
         spacer = new JLabel("                                                   ");
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -302,34 +302,34 @@ public class NewProjectDialog extends AppDialog{
        
         
         // check admin
-        String a = admin.getText();
-        if (a.equals("")) {
-            admin.setText("Please enter an Administrator.");
-        }
-        if(n.equals("") || l.equals("") || a.equals("")) {
-            return false;
-        }
-        
-        // check passwords
-        char[] p = password.getPassword();
-        char[] r = repeat.getPassword();
-        if (p.length == 0) {
-            error.setText("Please enter a Password.");
-            return false;
-        }
-        if (p.length != r.length) {
-            error.setText("Passwords don't match.");
-            return false;
-        }
-        for (int i = 0; i < p.length; i++) {
-            if (p[i] != r[i]) {
-                error.setText("Passwords don't match.");
-                return false;
-            }
-            p[i] = 0;
-            r[i] = 0;
-        }
-        
+//        String a = admin.getText();
+//        if (a.equals("")) {
+//            admin.setText("Please enter an Administrator.");
+//        }
+//        if(n.equals("") || l.equals("") || a.equals("")) {
+//            return false;
+//        }
+//        
+//        // check passwords
+//        char[] p = password.getPassword();
+//        char[] r = repeat.getPassword();
+//        if (p.length == 0) {
+//            error.setText("Please enter a Password.");
+//            return false;
+//        }
+//        if (p.length != r.length) {
+//            error.setText("Passwords don't match.");
+//            return false;
+//        }
+//        for (int i = 0; i < p.length; i++) {
+//            if (p[i] != r[i]) {
+//                error.setText("Passwords don't match.");
+//                return false;
+//            }
+//            p[i] = 0;
+//            r[i] = 0;
+//        }
+//        
         return true;
     }
     

@@ -25,8 +25,8 @@ public class SignInDialog extends AppDialog{
     private JButton Cancel;
     private JLabel error;
     
-    public SignInDialog(MainFrame mf, Project p) {
-        super(mf, "Sign In", new Object[]{p});
+    public SignInDialog(MainFrame mf) {
+        super(mf, "Sign In");
     }
     
     @Override
