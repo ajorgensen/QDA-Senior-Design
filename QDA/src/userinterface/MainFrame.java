@@ -643,7 +643,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     if (opd.hasResults()) {
         String working_dir = opd.getWorkingDir();
 
-        Project p = new Project("QDA", working_dir, this.project.getCurrentUser());
+        Project p = new Project("QDA", working_dir, this.session_user);
         
         String[] files = FileUtil.listFilesInDirectory(working_dir);
 
