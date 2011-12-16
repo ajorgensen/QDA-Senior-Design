@@ -104,9 +104,8 @@ public class MainFrame extends JFrame {
         md.setVisible(true);
         openProject(p);
         
-        
-        Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
-        MarkedUpText mut = p.importSourceText(p.getCurrSourceText(), folder1);
+        Folder f1 = p.createFolder(p.getMainFolder(), p.getName());
+        p.importSourceText(sourceTextPath, f1);
 
         this.project = p;
         signInUser(this.session_user, p);
@@ -586,9 +585,6 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         this.closeProject();
         
         Project p = new Project(name, path, this.session_user);
-        MarkedUpText text = new MarkedUpText(new SourceText(sourcePath), p);
-        
-        p.setCurrentText(text);
         
         String dialog = "Opening " + name + " Project";
         setUp(dialog, this.session_user, p, sourcePath);
