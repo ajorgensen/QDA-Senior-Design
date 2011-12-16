@@ -1,6 +1,7 @@
 package model;
 
 
+import cgit.Branch;
 import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
@@ -338,6 +339,11 @@ public class Project implements Nameable {
        {
            if(curText != null)
                curText.commitChanges(commiter, message);
+       }
+       
+       public void mergeProject(String ProjectA_Dir)
+       {
+           Branch.mergeProject(ProjectA_Dir, this.getLocalPath(), this.curText.getSourceText());
        }
 }
 
