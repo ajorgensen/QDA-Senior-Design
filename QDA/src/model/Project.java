@@ -142,20 +142,7 @@ public class Project implements Nameable {
             
             return parent;
         }
-        /**
-         * Use for logging in.
-         * @param userName
-         * @param pass
-         * @return 
-         */
-	public boolean verifyUser(String userName, String pass){
-		for(User u: users){
-                    if((u.getName()).equals(name)){
-                        return u.comparePassword(pass);
-                    }
-                }
-                return false;
-	}
+
 	
 	public void refreshRepository(){
 		

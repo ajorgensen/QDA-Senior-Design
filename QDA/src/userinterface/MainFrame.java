@@ -67,8 +67,10 @@ public class MainFrame extends JFrame {
     private void defaultSetUp() {
         MessageDialog md = new MessageDialog(this, "Opening Default Project.");
         md.setVisible(true);
+        
         SignInDialog sid = new SignInDialog(this);
         sid.setVisible(true);
+        
         User u = new User("default");
         openProject(new Project("defaultProject", "defaultPath", u));
         signInUser(u, project);
@@ -101,10 +103,13 @@ public class MainFrame extends JFrame {
         MessageDialog md = new MessageDialog(this, dialog);
         md.setVisible(true);
         openProject(p);
+        
+        
         Folder folder1 = p.createFolder(p.getMainFolder(), p.getName());
-        MarkedUpText mut = p.importSourceText(sourceTextPath, folder1);
+        MarkedUpText mut = p.importSourceText(p.getCurrSourceText(), folder1);
 
         this.project = p;
+        signInUser(this.session_user, p);
     }
 
     private void initializeRepository() {
@@ -579,7 +584,12 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String path = npd.getProjectPath();
         String sourcePath = npd.getSourcePath();
         this.closeProject();
+        
         Project p = new Project(name, path, this.session_user);
+        MarkedUpText text = new MarkedUpText(new SourceText(sourcePath), p);
+        
+        p.setCurrentText(text);
+        
         String dialog = "Opening " + name + " Project";
         setUp(dialog, this.session_user, p, sourcePath);
     }

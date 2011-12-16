@@ -24,28 +24,7 @@ public class SourceText {
 	//TODO: figure out the best way to store the source text (one long string?)
 	//Stores line by line in "lines" and as a single string in "text"
 	private void readFile() {
-
-		StringBuilder content = new StringBuilder();
-
-		try {
-			
-			BufferedReader in = new BufferedReader(new FileReader(filePath));
-			try {
-				String line = null; // not declared within while loop
-				
-				while ((line = in.readLine()) != null) {
-					lines.add(line);
-					content.append(line);
-					content.append(System.getProperty("line.separator"));
-				}
-			} finally {
-				in.close();
-			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		
-		text = content.toString();
+		text = cgit.FileUtil.readFile(this.filePath);
 	}
 	
 	public String getText(){
