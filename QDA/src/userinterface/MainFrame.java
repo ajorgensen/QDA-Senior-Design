@@ -617,6 +617,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         // Removed User Menu Option (Future Implementatin?)
         // signInUser.setEnabled(true);
         // signOutUser.setEnabled(false);
+        closeProject.setEnabled(false);
 
         newSearch.setEnabled(false);
 
@@ -770,7 +771,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     }//GEN-LAST:event_newSearchActionPerformed
 
     private void saveProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectActionPerformed
-        // TODO add your handling code here:
         this.project.saveProject();
     }//GEN-LAST:event_saveProjectActionPerformed
 
