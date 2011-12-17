@@ -10,6 +10,7 @@
  */
 package userinterface;
 
+import cgit.FileUtil;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
@@ -534,6 +535,8 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         
         Project p = new Project("", path+java.io.File.separator+name, this.session_user);
         p.setCurrentUser(this.session_user);
+        p.importSourceText(sourcePath, p.getMainFolder());
+        cgit.setup.setup_qda_directory(path+java.io.File.separator+name);
         openProject(p);
     }
 }//GEN-LAST:event_newProjectActionPerformed
@@ -557,6 +560,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
         Project p = new Project("", working_dir, this.session_user);
         p.setCurrentUser(session_user);
+        cgit.setup.setup_qda_directory(working_dir);        
         openProject(p);
     }
 
