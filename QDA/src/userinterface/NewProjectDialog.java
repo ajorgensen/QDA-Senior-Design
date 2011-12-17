@@ -14,16 +14,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 /**
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import javax.swing.*;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import org.openide.awt.TabbedPaneFactory;
-/**
- *
+ * This dialog allows the user to create a new project.
  * @author Brittany Nkounkou
  */
 public class NewProjectDialog extends AppDialog{
@@ -50,10 +43,18 @@ public class NewProjectDialog extends AppDialog{
     private JLabel sourceLabel;
     private JTextField source;
     
+    /**
+     * Create a NewProjectDialog.
+     * @param mf owning window
+     */
     public NewProjectDialog(MainFrame mf) {
         super(mf, "New Project");
     }
     
+    /**
+     * Initializes th components of a NewProjectDialog.
+     * @param args forwarded to super
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -219,6 +220,10 @@ public class NewProjectDialog extends AppDialog{
         //TODO
     }
     
+    /**
+     * Allows the user to browse for a folder location for the new project.
+     * @param evt unused
+     */
     private void browseActionPerformed(ActionEvent evt) {
         chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
@@ -243,6 +248,10 @@ public class NewProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * Allows the user to bows for an intial SourceText to import into the new project.
+     * @param evt unused
+     */
     private void browse2ActionPerformed(ActionEvent evt) {
         chooser2 = new JFileChooser();
         chooser2.setCurrentDirectory(new java.io.File("."));
@@ -267,6 +276,10 @@ public class NewProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * Validates the input and closes the dialog.
+     * @param evt unused
+     */
     private void createActionPerformed(ActionEvent evt) {
         if (validateInput()) {
           //  User userAdmin = new User(admin.getText(), password.getPassword().toString());
@@ -276,10 +289,18 @@ public class NewProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * Closes the dialog.
+     * @param evt unused
+     */
     private void cancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
+    /**
+     * Validates the input parameters in creating a new project.
+     * @return whether or not he input is valid
+     */
     private boolean validateInput() {
         // check project name
         String n = pName.getText();
@@ -333,6 +354,10 @@ public class NewProjectDialog extends AppDialog{
         return true;
     }
     
+    /**
+     * Gets the inputted project name
+     * @return the inputted project name
+     */
     public String getProjectName() {
         if (hasResults) {
             return pName.getText();
@@ -342,6 +367,10 @@ public class NewProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * Gets the inputed project path
+     * @return the inputted project path 
+     */
     public String getProjectPath() {
         if (hasResults) {
             return location.getText();
@@ -351,6 +380,10 @@ public class NewProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * Gets the inputed SurceText filepath.
+     * @return the inputted SourceText filepath
+     */
     public String getSourcePath() {
         if (hasResults) {
             return source.getText();
@@ -360,6 +393,10 @@ public class NewProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * For future implementation, an admin will be created with a new project.
+     * @return the inputted admin username
+     */
     public String getAdministrator() {
         if (hasResults) {
             return admin.getText();
@@ -369,6 +406,10 @@ public class NewProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * FOr future implementation, a password will be created for the project admin.
+     * @return the inputted password
+     */
     public char[] getPassword() {
         if (hasResults) {
             return password.getPassword();

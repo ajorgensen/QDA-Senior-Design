@@ -15,11 +15,20 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 /**
- *
+ * This class is virtually abstract by its protected constructor.
+ * It provides a template for TagDetail and CommentDetail to display a markUp.
  * @author Brittany Nkounkou
  */
 public class MarkUpDetail extends JScrollPane {
 
+    /**
+     * Creates a new MarkUpDetail.
+     * @param text the tagpath or comment text
+     * @param owner the creator of th markUp
+     * @param height the desired height of the detail
+     * @param color the desired color of the text, null for default
+     * @param underline whether or not the text should be underlined
+     */
     protected MarkUpDetail(String text, String owner, int height, Color color, boolean underline) {
         JTextPane tp = new JTextPane();
         tp.setAlignmentX(Component.CENTER_ALIGNMENT);

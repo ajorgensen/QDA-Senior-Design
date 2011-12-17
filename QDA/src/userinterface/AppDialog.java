@@ -10,16 +10,36 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /**
- *
+ * This class is virtually abstract by its protected constructor.
+ * It provides a template for all 'pop-up' dialogs in the application.
  * @author Brittany Nkounkou
  */
 public class AppDialog extends javax.swing.JDialog{
+    /**
+     * The main panel in which content is displayed.
+     */
     protected JPanel panel;
+    
+    /**
+     * Stores whether or not valid inputs are available.
+     */
     protected boolean hasResults;
     
+    /**
+     * Creates a new AppDialog template for all dialogs in the application, with null Object[] args.
+     * @param mf owning window
+     * @param title frame title
+     */
     protected AppDialog(MainFrame mf, String title) {
         this(mf, title, null);
     }
+    
+    /**
+     * Creates a new AppDialog template for all dialogs in the application, with null Object[] args.
+     * @param mf owning window
+     * @param title frame title
+     * @param args arguments for initComponents()
+     */
     protected AppDialog(MainFrame mf, String title, Object[] args) {
         super(mf, title, true);
         hasResults = false;
@@ -39,6 +59,10 @@ public class AppDialog extends javax.swing.JDialog{
         this.setLocation(x, y);
     }
     
+    /**
+     * Initializes the components of an AppDialog.
+     * @param args unused
+     */
     protected void initComponents(Object[] args) {
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -46,6 +70,10 @@ public class AppDialog extends javax.swing.JDialog{
         this.setResizable(false);
     }
     
+    /**
+     * Gets whether not this dialog has valid results to return after it has been closed.
+     * @return whether or not this dialog has valid results
+     */
     public boolean hasResults() {
         return hasResults;
     }

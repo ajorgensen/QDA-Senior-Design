@@ -16,7 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
+ * This dialog allows the user to open a folder as a project.
  * @author dumnzzz-sager
  */
 public class OpenProjectDialog extends AppDialog{
@@ -33,10 +33,19 @@ public class OpenProjectDialog extends AppDialog{
     private JFileChooser chooser;
     private String choosertitle;
     
+    /**
+     * Creatse a new OpenProjeDialog
+     * @param mf owning window
+     */
     public OpenProjectDialog(MainFrame mf) {
         super(mf, "Open Project");
         
     }
+    
+    /**
+     * Initializes the components of an OpenProjectDialog.
+     * @param args forwarded to super
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -136,6 +145,10 @@ public class OpenProjectDialog extends AppDialog{
         panel.add(Cancel, c);
     }
     
+    /**
+     * Gets the inputted folder path
+     * @return the inputted folder path
+     */
     public String getWorkingDir()
     {
         if(chooser != null)
@@ -144,8 +157,10 @@ public class OpenProjectDialog extends AppDialog{
             return "";
     }
     
-    
-    
+    /**
+     * Provides the user with a JFileChooser to select a folder to be opened as a project.
+     * @param evt unused
+     */
     private void browseActionPerformed(ActionEvent evt){
         //Need to make it open folder browser
         chooser = new JFileChooser();
@@ -171,10 +186,18 @@ public class OpenProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * Closes the dialog.
+     * @param evt 
+     */
     private void CancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
+    /**
+     * Validates the input then closes the dialog.
+     * @param evt unused
+     */
     private void OpenActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
@@ -182,6 +205,10 @@ public class OpenProjectDialog extends AppDialog{
         }
     }
 
+    /**
+     * Ensures that the inputted folder path is valid
+     * @return whether or not he inputted folder path is valid
+     */
     private boolean validateInput() {
 // No longer asks for username and password when opening a project
 //        String n = pUser.getText();

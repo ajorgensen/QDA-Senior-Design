@@ -11,9 +11,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import model.Project;
 /**
- *
+ * This dialog obtains a username from the user upon opening the application.
  * @author Brittany Nkounkou
  */
 public class SignInDialog extends AppDialog{
@@ -25,10 +24,18 @@ public class SignInDialog extends AppDialog{
     private JButton Cancel;
     private JLabel error;
     
+    /**
+     * Creates a new SignInDialog
+     * @param mf owning window
+     */
     public SignInDialog(MainFrame mf) {
         super(mf, "Sign In");
     }
     
+    /**
+     * Initializes the components of a SignInDialog.
+     * @param args forwarded to super
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -90,10 +97,18 @@ public class SignInDialog extends AppDialog{
 
     }
     
+    /**
+     * Closes the dialog.
+     * @param evt unused
+     */
     private void CancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
+    /**
+     * Validates the inputs then closes the dialog.
+     * @param evt unused
+     */
     private void SignInActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
@@ -101,6 +116,10 @@ public class SignInDialog extends AppDialog{
         }
     }
 
+    /**
+     * Validates the inputted username
+     * @return whether or not the inputted username is valid
+     */
     private boolean validateInput() {
         String n = pUser.getText();
         if(n.equals("")) {
@@ -110,6 +129,10 @@ public class SignInDialog extends AppDialog{
         return true;
     }
     
+    /**
+     * Gets the inputted username
+     * @return the inputed username
+     */
     public String getUserName() {
         if(hasResults) {
             return pUser.getText();
@@ -118,5 +141,4 @@ public class SignInDialog extends AppDialog{
             return null;
         }
     }
-
 }

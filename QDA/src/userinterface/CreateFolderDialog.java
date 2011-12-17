@@ -11,9 +11,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import model.Project;
 /**
- *
+ * This Dialog is used to create a new folder in the repository.
  * @author dumnzzz-sager
  */
 public class CreateFolderDialog extends AppDialog {
@@ -25,10 +24,18 @@ public class CreateFolderDialog extends AppDialog {
     private JLabel spacer;
     private JLabel error;
     
+    /**
+     * Creates a new CreateFolderDialog.
+     * @param mf owning window
+     */
      public CreateFolderDialog(MainFrame mf) {
         super(mf, "Create Folder");
     }
     
+     /**
+      * Initializes the components o a CreateFolerDialog.
+      * @param args forwards to super
+      */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -98,10 +105,12 @@ public class CreateFolderDialog extends AppDialog {
         c.gridx = 0;
         c.gridy = 2;
         panel.add(error, c);
-        
-
-
     }
+    
+    /**
+     * Validates the input then closes the dialog.
+     * @param evt unused
+     */
     private void createActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
@@ -109,10 +118,18 @@ public class CreateFolderDialog extends AppDialog {
         }
     }
     
+    /**
+     * Closes the dialog.
+     * @param evt unused
+     */
     private void cancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
+    /**
+     * Ensures that the input text is not empty.
+     * @return whether or note input text is empty
+     */
     private boolean validateInput() {
         String l = folder.getText();
         if(l.equals("")) {
@@ -122,6 +139,11 @@ public class CreateFolderDialog extends AppDialog {
             return true;
         }
     }
+    
+    /**
+     * Gets the inputted folder name
+     * @return the inputted folder name
+     */
     public String getFolderName() {
         return folder.getText();
     }

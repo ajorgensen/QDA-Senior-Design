@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
- *
+ * This dialog allows the user to commit with a message.
  * @author dumnzzz-sager
  */
 public class CommitProjectDialog extends AppDialog {
@@ -25,10 +25,18 @@ public class CommitProjectDialog extends AppDialog {
     private JButton cancel;
     private JLabel error;
     
+    /**
+     * Creates a new CommitProjectDialog.
+     * @param mf owning window
+     */
     public CommitProjectDialog(MainFrame mf) {
         super(mf, "Commit");
     }
     
+    /**
+     * Initializes the components of a CommitProjectDialog.
+     * @param args forwarded to super
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -99,11 +107,19 @@ public class CommitProjectDialog extends AppDialog {
         
     }
     
+    /**
+     * Gets the inputted string of the commit.
+     * @return the inputted string of the commit
+     */
     public String getCommit()
     {
         return this.commit.getText();
     }
     
+    /**
+     * Validates then processes the commit.
+     * @param evt unused
+     */
     private void enterActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
@@ -111,10 +127,18 @@ public class CommitProjectDialog extends AppDialog {
         }
     }
     
+    /**
+     * Closes the dialog.
+     * @param evt unused
+     */
     private void cancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
+    /**
+     * Ensures that the inputted text for the commit is not empty.
+     * @return whether or not the commit text is empty
+     */
     private boolean validateInput() {
         String l = commit.getText();
         if(l.equals("")) {
@@ -123,5 +147,4 @@ public class CommitProjectDialog extends AppDialog {
         }
         return true;
     }
-    
 }

@@ -14,18 +14,24 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
- *
+ * This dialog is to be used by any part of the application that needs to display a message to the user.
  * @author Brittany Nkounkou
  */
 public class MessageDialog extends AppDialog{
-    private JLabel userName;
-    private JTextField user;
-    private JLabel error;
     
-    public MessageDialog(MainFrame mf, String errorMessage) {
-        super(mf, "Message", new Object[]{errorMessage});
+    /**
+     * Creates a MessageDialog.
+     * @param mf owning window
+     * @param message message to be displayed
+     */
+    public MessageDialog(MainFrame mf, String message) {
+        super(mf, "Message", new Object[]{message});
     }
     
+    /**
+     * Initializes the components of a MesageDialog
+     * @param args first object is the message to be displayed
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -47,6 +53,4 @@ public class MessageDialog extends AppDialog{
         });
         panel.add(ok);
     }
-    
-
 }

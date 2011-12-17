@@ -7,13 +7,9 @@ package userinterface;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.Box.Filler;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,14 +19,29 @@ import javax.swing.border.CompoundBorder;
 import model.MarkedUpText;
 
 /**
- *
+ * This class displays h content of a search result.
  * @author Brittany Nkounkou
  */
 public class SearchResultPanel extends JPanel{
     
+    /**
+     * The mainFrame of which this SearchResultPanel is a part.
+     */
     MainFrame mainFrame;
+    
+    /**
+     * The markedUpText that this SearchResultPanel references.
+     */
     MarkedUpText markedUpText;
     
+    /**
+     * Creates a new SearchResultPanel.
+     * @param mf owning window
+     * @param mut referenced markedUpText
+     * @param tagName name of the mark up tag
+     * @param taggedText text that has bee tagged
+     * @param filepath the filepath of the markedUpText
+     */
     public SearchResultPanel(MainFrame mf, MarkedUpText mut, String tagName, String taggedText, String filepath) {
         mainFrame = mf;
         markedUpText = mut;

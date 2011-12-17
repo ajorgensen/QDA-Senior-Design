@@ -29,12 +29,19 @@ import model.TagType;
 import model.TextSection;
 
 /**
- *
+ * This class displays to the user a 'Search' tab in the views area.
  * @author Brittany Nkounkou
  */
 public class SearchView extends View {
 
+    /**
+     * The upper panel, holding the search button.
+     */
     private JPanel north;
+    
+    /**
+     * The center area, holding the search results.
+     */
     private JScrollPane center;
     
     private MainFrame mainFrame;
@@ -44,6 +51,13 @@ public class SearchView extends View {
     private List<Entry<MarkedUpText, TagInstance>> searchResults;
     private JPanel results;
 
+    /**
+     * Creates a new SearchView.
+     * @param mf owning window
+     * @param t tab title
+     * @param fm the tree of files to be checked
+     * @param tm the tree of tags to be checked
+     */
     public SearchView(MainFrame mf, String t, TreeCheckingModel fm, TreeCheckingModel tm) {
         super(t);
         mainFrame = mf;
@@ -53,6 +67,9 @@ public class SearchView extends View {
         initialize();
     }
 
+    /**
+     * Initializes the contents of a SearchView.
+     */
     private void initialize() {
         north = new JPanel();
         
@@ -85,6 +102,9 @@ public class SearchView extends View {
         center.setViewportView(results);
     }
 
+    /**
+     * Performs the search according to the checks made in the two trees.
+     */
     private void performSearch() {
         searchResults.retainAll(new ArrayList<TagType>());
 
@@ -109,6 +129,9 @@ public class SearchView extends View {
         showResults();
     }
 
+    /**
+     * Shows the results of the search in 'center'.
+     */
     private void showResults() {
         results.removeAll();
         Filler filler = new Box.Filler(new Dimension(10, 10), new Dimension(10, 10), new Dimension(10, 10));
@@ -132,7 +155,15 @@ public class SearchView extends View {
         center.setViewportView(results);
     }
     
+    /**
+     * Gets the text that the tag has been applied to.
+     * @param markedUpText the text file from which the text comes from
+     * @param textSection the offset and length of the tagged text
+     * @return 
+     */
     private String getTaggedText(MarkedUpText markedUpText, TextSection textSection) {
+        // This method is tricky because JTextPanes seem to consider newline characters as having a length of 2..
+        
         int offset = textSection.getOffset();
         int length = textSection.getLength();
         int start = offset;
@@ -168,10 +199,18 @@ public class SearchView extends View {
         return text.substring(offset, offset+length);
     }
 
+    /**
+     * Gets the treeModel of the files to be searched
+     * @return the files to be searched
+     */
     public TreeCheckingModel getFilesModel() {
         return filesModel;
     }
 
+    /**
+     * Gets the treeMoel of the tags to b searched
+     * @return the tags o be searched
+     */
     public TreeCheckingModel getTagsModel() {
         return tagsModel;
     }

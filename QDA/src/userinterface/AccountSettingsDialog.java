@@ -12,9 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import model.User;
 /**
- *
+ * For future implementation, this class would be used to change the account setting of a user.
+ * Our current project does not utilize this class.
  * @author Brittany Nkounkou
  */
 public class AccountSettingsDialog extends AppDialog{

@@ -45,7 +45,7 @@ import model.TagType;
 import model.TextSection;
 
 /**
- *
+ * This class displays the content of a source text to the user.
  * @author Brittany Nkounkou
  */
 public class SourceTextView extends View {
@@ -89,14 +89,28 @@ public class SourceTextView extends View {
     private int boldDot;
     private JTextArea emptyLeft;
     
+    /**
+     * Gets the markedUpText of this view.
+     * @return the markedUpText
+     */
     public MarkedUpText getMarkedUpText() {
         return markedUpText;
     }
     
+    /**
+     * Gets the tags to be checked for viewability in this view.
+     * @return the tags to be viewed
+     */
     public TreeCheckingModel getTagsModel() {
         return tagsModel;
     }
     
+    /**
+     * Creates a new SourceTextView
+     * @param mf owning window
+     * @param mut markedUpText
+     * @param tm tags to be checked or viewability
+     */
     public SourceTextView(MainFrame mf, MarkedUpText mut, TreeCheckingModel tm) {
         super(mut.toString());
         mainFrame = mf;
@@ -151,6 +165,9 @@ public class SourceTextView extends View {
         });*/
     }
     
+    /**
+     * Initializes the content of a SourceTextView.
+     */
     private void initialize() {
         west = new JPanel();
         west.setMinimumSize(new Dimension(200, 200));
@@ -185,6 +202,9 @@ public class SourceTextView extends View {
         add(center, BorderLayout.CENTER);
     }
     
+    /**
+     * Initializes the buttons and checkbox of a SourceTextView.
+     */
     private void initializeTools() {
         tools.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         tools.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -209,6 +229,9 @@ public class SourceTextView extends View {
         tools.add(viewComments);
     }
     
+    /**
+     * Refreshes the text content and/or formatting of a SourceTextView.
+     */
     public void initializeCenter() {
         vertScrollPos = center.getVerticalScrollBar().getValue();
         text = new JTextPane();
@@ -243,10 +266,12 @@ public class SourceTextView extends View {
         
         center.setViewportView(text);
         
-        refreshLeft();
         boldDot = -1;
     }
     
+    /**
+     * Initializes the colorIndices for distinct tag colors.
+     */
     private void initializeColorIndices() {
         tagToColorIndex = new HashMap<String, Integer>();
         List<TagInstance> tags = markedUpText.getTags();
@@ -259,6 +284,9 @@ public class SourceTextView extends View {
         }
     }
     
+    /**
+     * Initializes the JTextPane of a SourceTextView.
+     */
     private void refreshTextContent() {
         left.removeAll();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
@@ -366,6 +394,10 @@ public class SourceTextView extends View {
         left.repaint();
     }
     
+    /**
+     * Gets the next color index for tags
+     * @return the next color index for tags
+     */
     private int nextColorIndex() {
         prevColorIndex += 1;
         if (prevColorIndex == tagColors.length) {
@@ -374,6 +406,10 @@ public class SourceTextView extends View {
         return prevColorIndex;
     }
     
+    /**
+     * Handles clicking on the text.
+     * @param evt the CaretEvent where a new selection is made or a point in th text is clicked
+     */
     private void textSelected(CaretEvent evt) {
         //Get the location in the text
         int dot = evt.getDot();
@@ -406,6 +442,9 @@ public class SourceTextView extends View {
         }
     }
     
+    /**
+     * Displays the AddTagDialog to the user.
+     */
     private void addTag() {
         int offset = selectionStart;
         int length = selectionEnd-selectionStart;
@@ -427,6 +466,9 @@ public class SourceTextView extends View {
         }
     }
     
+    /**
+     * Displays the AddCommentDialo to the user
+     */
     private void addComment() {
         int offset = selectionStart;
         int length = selectionEnd-selectionStart;
@@ -445,58 +487,5 @@ public class SourceTextView extends View {
         } finally {
             initializeCenter();
         }
-    }
-    
-    private void refreshLeft() {
-        /*
-        center.getViewport().getViewRect();
-        text.getCaret().getMagicCaretPosition();
-        
-        // comments
-        if (viewComments.isSelected()) {
-            List<Comment> comments = markedUpText.getComments();
-            for (int i = 0; i < comments.size(); i++) {
-                Comment com = comments.get(i);
-                TextSection ts = com.getTextSection();
-                int offset = ts.getOffset();
-                int length = ts.getLength();
-                Caret car = text.getCaret();
-                car.setVisible(true);
-                car.setDot(offset);
-                Point p = car.getMagicCaretPosition();
-                car.setVisible(false);
-                if (p != null) {
-                    System.out.println(p.x + " " + p.y);
-                    try {
-                        left.add(new JLabel(text.getText(offset, length)));
-                    } catch (BadLocationException ex) {
-                        Exceptions.printStackTrace(ex);
-                    }
-                }
-            }
-        }
-        
-        // tags
-        
-        TreePath[] tp = tagsModel.getCheckingPaths();
-        
-        List<TagInstance> tags = markedUpText.getTags();
-        for (int i = 0; i < tags.size(); i++) {
-            TagInstance ti = tags.get(i);
-            TextSection ts = ti.getTextSection();
-            int offset = ts.getOffset();
-            int length = ts.getLength();
-            Caret car = text.getCaret();
-            car.setDot(offset);
-            Point p = car.getMagicCaretPosition();
-            if (p != null) {
-                System.out.println(p.x + " " + p.y);
-                try {
-                    left.add(new JLabel(text.getText(offset, length)));
-                } catch (BadLocationException ex) {
-                    Exceptions.printStackTrace(ex);
-                }
-            }
-        }*/
     }
 }

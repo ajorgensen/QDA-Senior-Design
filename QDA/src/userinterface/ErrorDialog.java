@@ -13,15 +13,24 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
- *
+ * This dialog is to be used by any part of the application that needs to display an error to the user.
  * @author Brittany Nkounkou
  */
 public class ErrorDialog extends AppDialog{
     
+    /**
+     * Creates a new ErrorDialog.
+     * @param mf owning winow
+     * @param errorMessage error message to be displayed
+     */
     public ErrorDialog(MainFrame mf, String errorMessage) {
         super(mf, "Error", new Object[]{errorMessage});
     }
     
+    /**
+     * Initializes the components of an ErrorDialog
+     * @param args first object is the error message to be displayed
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);

@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import model.Project;
 
 /**
- *
+ * This dialog allows the user to add a new tag to the tag hierarchy.
  * @author dumnzzz-sager
  */
 public class NewTagDialog extends AppDialog {
@@ -30,13 +30,21 @@ public class NewTagDialog extends AppDialog {
     private String choosertitle;
     private Project p;
     
+    /**
+     * Creates a NewTagDialog.
+     * @param mf owning window
+     * @param p project to which the tag should be added
+     */
     public NewTagDialog(MainFrame mf, Project p) {
         super(mf, "New Tag");
         this.p = p;
-        
     }
     
- @Override
+    /**
+     * Initializes the components of a NewTagDialog.
+     * @param args forwarded to super
+     */
+    @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
         
@@ -110,15 +118,13 @@ public class NewTagDialog extends AppDialog {
         c.gridx = 0;
         c.gridy = 2;
         panel.add(error, c);
-        
-        
-
-        
     }
     
-
-
     
+    /**
+     * Validates the input then closes the dialog.
+     * @param evt unused
+     */
     private void addActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
@@ -126,14 +132,26 @@ public class NewTagDialog extends AppDialog {
         }
     }
     
+    /**
+     * Closes the dialog.
+     * @param evt unused
+     */
     private void cancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
+    /**
+     * Gets the name of the new tag
+     * @return the name of the new tag
+     */
     public String getTagName() {
         return tag.getText();
     }
 
+    /**
+     * Ensures that the inputted text for the new tag is not empty
+     * @return whether or not the inputted text is valid
+     */
     private boolean validateInput() {
         String l = tag.getText();
         if(l.equals("")) {
@@ -142,5 +160,4 @@ public class NewTagDialog extends AppDialog {
         }
         return true;
     }
-    
 }

@@ -14,7 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 /**
- *
+ * For future implementation, this dialog would allow the user to save th current project in a specific directory.
+ * This class is no utilized in our current application.
  * @author dumnzzz-sager
  */
 public class SaveAsProjectDialog extends AppDialog {

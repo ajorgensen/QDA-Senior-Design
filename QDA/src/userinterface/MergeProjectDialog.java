@@ -16,7 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
+ * This dialog allows the user to merge the current project with another.
  * @author dumnzzz-sager
  */
 public class MergeProjectDialog extends AppDialog{
@@ -33,10 +33,19 @@ public class MergeProjectDialog extends AppDialog{
     private JFileChooser chooser;
     private String choosertitle;
     
+    /**
+     * Creates a new MergedProject
+     * @param mf owning window
+     */
     public MergeProjectDialog(MainFrame mf) {
         super(mf, "Open Project");
         
     }
+    
+    /**
+     * Initializes the components of a MergeProjectDialog.
+     * @param args forwarded to super
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -136,6 +145,10 @@ public class MergeProjectDialog extends AppDialog{
         panel.add(Cancel, c);
     }
     
+    /**
+     * Gets the inputted directory of the project with which to merge.
+     * @return the directory of the project with which to merge
+     */
     public String getWorkingDir()
     {
         if(chooser != null)
@@ -144,8 +157,10 @@ public class MergeProjectDialog extends AppDialog{
             return "";
     }
     
-    
-    
+    /**
+     * Provides the user with a JFileChooser to chose a project with which to merge
+     * @param evt unused
+     */
     private void browseActionPerformed(ActionEvent evt){
         //Need to make it open folder browser
         chooser = new JFileChooser();
@@ -171,10 +186,18 @@ public class MergeProjectDialog extends AppDialog{
         }
     }
     
+    /**
+     * Closes the dialog.
+     * @param evt unused
+     */
     private void CancelActionPerformed(ActionEvent evt) {
         setVisible(false);
     }
     
+    /**
+     * Validates the input then closes the dialog.
+     * @param evt unused
+     */
     private void OpenActionPerformed(ActionEvent evt) {
         if (validateInput()) {
             hasResults = true;
@@ -182,6 +205,10 @@ public class MergeProjectDialog extends AppDialog{
         }
     }
 
+    /**
+     * Ensures that a valid project path was inputted.
+     * @return whether or not a valid input path was inputted
+     */
     private boolean validateInput() {
 // No longer asks for username and password when opening a project
 //        String n = pUser.getText();

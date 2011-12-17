@@ -10,7 +10,6 @@
  */
 package userinterface;
 
-import cgit.FileUtil;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
@@ -33,10 +32,19 @@ import model.*;
  */
 public class MainFrame extends JFrame {
 
+    /**
+     * The current project.
+     */
     private Project project;
+    
+    /**
+     * THe current user.
+     */
     private User session_user = new User("default");
 
-    /** Creates new from ApplicationStart */
+    /**
+     * Starts the mainframe of the application.
+     */
     public MainFrame() {
         project = null;
 
@@ -61,6 +69,9 @@ public class MainFrame extends JFrame {
         this.session_user = current_user;
     }
 
+    /**
+     * Initializes the repository.
+     */
     private void initializeRepository() {
         uncheckedRep = new BlankCheckboxTreeCellRenderer();
         uncheckedRep.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Open Folder.png")));
@@ -100,6 +111,9 @@ public class MainFrame extends JFrame {
         });
     }
 
+    /**
+     * Initializes the tag hierarchy.
+     */
     private void initializeTags() {
         uncheckedTags = new BlankCheckboxTreeCellRenderer();
         uncheckedTags.setOpenIcon(new ImageIcon(getClass().getResource("/userinterface/icons/Tags.png")));
@@ -508,6 +522,10 @@ public class MainFrame extends JFrame {
             pack();
         }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Opens the Help tab.
+     * @param evt unused
+     */
 private void helpContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContentsActionPerformed
     if (helpViewIndex == -1) {
         addView(new HelpView());
@@ -523,7 +541,7 @@ private void helpContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
      * User then enters the required information
      * That information is then used to create a new project and all the information
      * is passed onto setUp
-     * @param evt
+     * @param evt unused
      */
 private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectActionPerformed
     NewProjectDialog npd = new NewProjectDialog(this);
@@ -542,15 +560,19 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 }//GEN-LAST:event_newProjectActionPerformed
 
     /**
-     * When user presses Close it exits the application.
+     * When user presses Close it closes the project.
      * Right now there is no check to make sure the user saved
      * before the project is closed
-     * @param evt
+     * @param evt unused
      */
 private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXIT_ON_CLOSE
     closeProject();
 }//GEN-LAST:event_EXIT_ON_CLOSE
 
+ /**
+ * Shows a OpeProjectDialog.
+ * @param evt null
+ */
 private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectActionPerformed
     OpenProjectDialog opd = new OpenProjectDialog(this);
     opd.setVisible(true);
@@ -560,7 +582,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
         Project p = new Project("", working_dir, this.session_user);
         p.setCurrentUser(session_user);
-        cgit.setup.setup_qda_directory(working_dir);        
+        cgit.setup.setup_qda_directory(working_dir);
         openProject(p);
     }
 
@@ -571,9 +593,10 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 // }
 }//GEN-LAST:event_openProjectActionPerformed
 
-    /*
-     * The project should already have been loaded into memory
-     */
+    /**
+ * Opens the given project.
+ * @param p project o open
+ */
     private void openProject(Project p) {
         if (p != null) {
             this.project = p;
@@ -602,7 +625,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }
 
     /**
-     * Signs out the current user and then repaints the application
+     * Closes the current project and then repaints the application
      * This causes certain menu items to become grayed out
      */
     private void closeProject() {
@@ -635,14 +658,19 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
         this.repaint();
     }
-    /*
-     * Opens the About dialogs box describing the program
+    /**
+     * Opens the AboutDialog, describing the program.
+     * @param evt unused
      */
 private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
     AboutProjectDialog apd = new AboutProjectDialog(this);
     apd.setVisible(true);
 }//GEN-LAST:event_aboutActionPerformed
 
+    /**
+ * This method is called when the selected tab in the views area changes.
+ * @param evt unused
+ */
     private void viewsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_viewsStateChanged
         View view = (View) views.getSelectedComponent();
         if (view instanceof SearchView) {
@@ -662,6 +690,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         repaint();
     }//GEN-LAST:event_viewsStateChanged
 
+    /**
+     * This method is called when a tab is about to delete.
+     * @param evt knows the tab that is about to delete
+     */
     private void viewsPropertyChange(PropertyChangeEvent evt) {
         int indexToDelete = views.indexOfComponent((java.awt.Component) evt.getNewValue());
         if (helpViewIndex == indexToDelete) {
@@ -670,6 +702,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         views.removeTabAt(indexToDelete);
     }
 
+    /**
+     * For future implementation, allows the user to rename a file or folder.
+     * @param evt unused
+     */
     private void renameElementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameElementActionPerformed
         JTree rep = (JTree) repositoryPane.getViewport().getView();
         TreePath path = rep.getSelectionPath();
@@ -681,6 +717,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }//GEN-LAST:event_renameElementActionPerformed
 
+    /**
+     * For future implementation, allows the user to rename a tag.
+     * @param evt unused
+     */
     private void renameTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameTagActionPerformed
         TreePath path = tags.getSelectionPath();
         if (path == null) {
@@ -691,6 +731,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }//GEN-LAST:event_renameTagActionPerformed
 
+    /**
+     * Opens a sourceTextView for the given markUpText.
+     * @param mut markedUpText to open
+     */
     public void openSourceTextView(MarkedUpText mut) {
         Component[] v = views.getComponents();
         for (int i = 0; i < v.length; i++) {
@@ -706,6 +750,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         addView(new SourceTextView(this, mut, tag));
     }
 
+    /**
+     * Handles a mouse click in the repository.
+     * @param evt MouseEvent in repository
+     */
     private void repositoryMousePressed(java.awt.event.MouseEvent evt) {
         JTree rep = (JTree) repositoryPane.getViewport().getView();
         int selRow = rep.getRowForLocation(evt.getX(), evt.getY());
@@ -723,6 +771,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }
 
+    /**
+     * Displays a ImportFileDialog.
+     * @param evt unused
+     */
     private void importFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFileActionPerformed
         JTree rep = (JTree) repositoryPane.getViewport().getView();
         TreePath alpha = rep.getSelectionPath();
@@ -743,8 +795,11 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }//GEN-LAST:event_importFileActionPerformed
 
+    /**
+     * Displays a CommitProjectDialog.
+     * @param evt unused
+     */
     private void commitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitProjectActionPerformed
-        // TODO add your handling code here:
         CommitProjectDialog cpd = new CommitProjectDialog(this);
         cpd.setVisible(true);
         if (cpd.hasResults()) {
@@ -753,8 +808,11 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }//GEN-LAST:event_commitProjectActionPerformed
 
+    /**
+     * Displays a MergeProjectDialog.
+     * @param evt unused
+     */
     private void mergeProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeProjectActionPerformed
-        // TODO add your handling code here:
         MergeProjectDialog mpd = new MergeProjectDialog(this);
         mpd.setVisible(true);
         
@@ -763,21 +821,40 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             String working_dir = mpd.getWorkingDir();
             
             this.project.mergeProject(working_dir); 
+            Component[] comps = views.getComponents();
+            for (int i = 0; i < comps.length; i++) {
+                Component c = comps[i];
+                if (c instanceof SourceTextView) {
+                    ((SourceTextView)c).initializeCenter();
+                }
+            }
             this.repaint();
             
         }
     }//GEN-LAST:event_mergeProjectActionPerformed
 
+    /**
+     * Displays a NewProjectDialog.
+     * @param evt unused
+     */
     private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
         TreeCheckingModel rep = new DefaultTreeCheckingModel(repository);
         TreeCheckingModel tag = new DefaultTreeCheckingModel(tags);
         addView(new SearchView(this, "Search", rep, tag));
     }//GEN-LAST:event_newSearchActionPerformed
 
+    /**
+     * Saves the current project.
+     * @param evt unused
+     */
     private void saveProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectActionPerformed
         this.project.saveProject();
     }//GEN-LAST:event_saveProjectActionPerformed
 
+    /**
+     * Displays a CreateFolderDialog.
+     * @param evt unused
+     */
     private void createFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderActionPerformed
         // TODO add your handling code here:
         JTree rep = (JTree) repositoryPane.getViewport().getView();
@@ -799,9 +876,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             }
         }
     }//GEN-LAST:event_createFolderActionPerformed
-/**
-     * Creates a new tag with the name entered that is a child of the tag selected
-     * @param evt 
+
+    /**
+     * Displays a NewTagDialog.
+     * @param evt unused
      */
     private void newTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagActionPerformed
         JTree rep = (JTree) tagsPane.getViewport().getView();
@@ -822,6 +900,10 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     }//GEN-LAST:event_newTagActionPerformed
 
+    /**
+     * Ads the given View to the tabs.
+     * @param v View to display
+     */
     private void addView(View v) {
         views.addTab(v.getAbbrv(), null, v, v.getTitle());
         views.setSelectedIndex(views.indexOfComponent(v));
@@ -849,6 +931,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
         return newTree;
     }
+    
     private int helpViewIndex;
     private CheckboxTree repository;
     private BlankCheckboxTreeCellRenderer uncheckedRep;

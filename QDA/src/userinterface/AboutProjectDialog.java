@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 
@@ -20,13 +19,28 @@ import javax.swing.JTextArea;
  */
 public class AboutProjectDialog extends AppDialog {
     
+    /**
+     * The text area displaying information about the project.
+     */
     private JTextArea textArea;
+    
+    /**
+     * A button to close the AboutProjectDialog.
+     */
     private JButton close;
     
+    /**
+     * Creates a new AboutProjectDialog.
+     * @param mf the owner window
+     */
     public AboutProjectDialog(MainFrame mf) {
         super(mf, "About");
     }
     
+    /**
+     * Initializes the components of the AboutProjectDialog.
+     * @param args forwarded to super
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -58,6 +72,11 @@ public class AboutProjectDialog extends AppDialog {
         panel.add(close);
 
     }
+    
+    /**
+     * Closes the AboutProjectDialog.
+     * @param evt unused
+     */
     private void closeActionPerformed(ActionEvent evt) {
         setVisible(false);
     }

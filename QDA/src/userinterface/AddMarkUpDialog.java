@@ -18,20 +18,45 @@ import javax.swing.JTextArea;
 import javax.swing.JTree;
 
 /**
- *
+ * This class is virtually abstract by its protected constructor.
+ * It provides the template for the inheriting classes AddTagDialog and AddCommentDialog.
  * @author Brittany Nkounkou
  */
 public class AddMarkUpDialog extends AppDialog{
     
+    /**
+     * The area where the text being marked up is displayed.
+     */
     protected JScrollPane markUpPane;
+    
+    /**
+     * An error label that is displayed if the user tries to 'OK' on invalid input.
+     */
     protected JLabel errorLabel;
+    
+    /**
+     * The text of the error label.
+     */
     protected String errorMessage;
     
+    /**
+     * Protected constructor, providing a template to a dialog that adds a MarkUp.
+     * @param mf owning window
+     * @param title title of the frame
+     * @param instructions instructions to the user for adding markUp
+     * @param textToMarkUp text that is being marked up.
+     * @param error message that should display upon invlid input
+     * @param tags the current tag tree of the project (for AddTagDialog, null for AddCommentDialog)
+     */
     protected AddMarkUpDialog(MainFrame mf, String title, String instructions, String textToMarkUp, String error, JTree tags) {
         super(mf, title, new Object[]{instructions, textToMarkUp, tags});
         errorMessage = error;
     }
     
+    /**
+     * Initializes the components of an AddMarkUpDialog.
+     * @param args forwarded to super
+     */
     @Override
     protected void initComponents(Object[] args) {
         super.initComponents(args);
@@ -104,14 +129,24 @@ public class AddMarkUpDialog extends AppDialog{
         panel.add(buttonPanel);
     }
 
+    /**
+     * Makes the error label visible.
+     */
     private void displayErrorMessage() {
         errorLabel.setText(errorMessage);
     }
     
+    /**
+     * Closes the dialog.
+     */
     private void cancelButtonAction() {
         setVisible(false);
     }
     
+    /**
+     * Overridable method for inheriting classes.
+     * @return returns whether or not the user's input is valid.
+     */
     public boolean validInput() {
         return false;
     }

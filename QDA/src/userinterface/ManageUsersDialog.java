@@ -5,14 +5,13 @@
 package userinterface;
 
 /**
- *
+ * For future implementation, this class would provide the administrator of a project to manage its users.
+ * This class has not been utilized in our application.
  * @author Brittany Nkounkou
  */
 public class ManageUsersDialog extends AppDialog{
-    
+
     public ManageUsersDialog(MainFrame mf) {
         super(mf, "Manage Users");
     }
-    
-    //TODO
 }
