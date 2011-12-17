@@ -177,6 +177,13 @@ public class Branch {
         }
     }
 
+    /**
+     * Searches the commit history for a comment to see if it has been deleted
+     * @param working_dir location of cgit dir
+     * @param comment the comment we are looking for
+     * @param text the text the comment is associated with
+     * @return boolean indicating whether the comment exits or not
+     */
     public static boolean hadCommentInPast(String working_dir, Comment comment, SourceText text) {
         Commit currentCommit = Commit.parseHash(Branch.getCurrentCommitHash(working_dir), working_dir);
         
@@ -187,6 +194,13 @@ public class Branch {
         return checkCommitTreeForComment(currentCommit.getParent(), comment, text);
     }
 
+    /**
+     * Funciton to check the commit tree for a comment
+     * @param currentCommit the current commit we are looking int
+     * @param comment the comment we are looking for
+     * @param text the text to which the comment belongs
+     * @return whether the comment exits in the commit or not
+     */
     private static boolean checkCommitTreeForComment(Commit currentCommit, Comment comment, SourceText text) {
         if(currentCommit == null || comment == null || text == null)
             return false;
@@ -213,12 +227,26 @@ public class Branch {
         return exists;
     }
 
+    /**
+     * Searches for a tag in the past
+     * @param working_dir location of the cgit directory
+     * @param tag the tag we are looking for
+     * @param text the text where the tag exits
+     * @return whether the tag exits or not
+     */
     public static boolean hadTagInPast(String working_dir, TagInstance tag, SourceText text) {
         Commit currentCommit = Commit.parseHash(Branch.getCurrentCommitHash(working_dir), working_dir);
 
         return checkCommitTreeForTag(currentCommit.getParent(), tag, text);
     }
 
+    /**
+     * Check the current commit for a tag
+     * @param currentCommit the commit we are checking
+     * @param tag the tag we are looking for
+     * @param text the text which the tag is associated with
+     * @return whether the tag exits or not
+     */
     private static boolean checkCommitTreeForTag(Commit currentCommit, TagInstance tag, SourceText text) {
         Blob tagBlob = currentCommit.getBlobTree().getBlobWithFilename("tags");
         boolean exists = false;
@@ -306,6 +334,14 @@ public class Branch {
         return BComments;
     }
     
+    /**
+     * algorithm to merge the tags for two projects
+     * 
+     * @param projectA_dir the project the tags are coming from
+     * @param projectB_dir the project the tags are going to
+      * @param text the text that the tags are associated with
+     * @return List of hte merged tags
+     */
     public static List<TagInstance> mergeProjectTags(String projectA_dir, String projectB_dir, SourceText text) {
         String ATagsPath = projectA_dir + cgitDirectory.TAGS_PATH.getPath();
         String BTagsPath = projectB_dir + cgitDirectory.TAGS_PATH.getPath();
@@ -365,6 +401,12 @@ public class Branch {
         return BTags;
     }
     
+    /**
+     * Wrapper function to perform the merge for both comments and tags
+     * @param projectA_dir project data is coming from
+     * @param projectB_dir project data is going to
+     * @param text which the data is associated with
+     */
     public static void mergeProject(String projectA_dir, String projectB_dir, SourceText text)
     {
         Branch.mergeProjectsComments(projectA_dir, projectB_dir, text);

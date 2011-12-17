@@ -187,6 +187,12 @@ public class tags {
         return tagString;
     }
 
+    /**
+     * Parse a file and extract the tags
+     * @param content the contents of the tag file
+     * @param text the text we want to associate with
+     * @return list of tags
+     */
     static List<TagInstance> parseTagFile(String content, SourceText text) {
         
         List<TagInstance> tagHolder = new LinkedList<TagInstance>();
@@ -209,6 +215,11 @@ public class tags {
         return tagHolder;
     }
 
+    /**
+     * gets all the tags from the tags file
+     * @param working_dir location of cgit
+     * @return list of tags
+     */
     private static List<TagInstance> getAllTags(String working_dir) {
        String path = working_dir + cgitDirectory.TAGS_PATH.getPath();
         

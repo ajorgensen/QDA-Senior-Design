@@ -16,6 +16,11 @@ import model.cgitDirectory;
  */
 public class comments {
 
+    /**
+     * Saves the comments to the cgit directory
+     * @param working_dir location of the cgit directory
+     * @param commentHolder the comments to save
+     */
     public static void saveComments(String working_dir, List<Comment> commentHolder) {
         String comment_path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
         
@@ -53,6 +58,11 @@ public class comments {
         }
     }
 
+    /**
+     * Serialize the comment to save
+     * @param comment the comment we want to save
+     * @return the serialized comment
+     */
     public static String commentToString(Comment comment) {
         String comment_string = "";
         SimpleDateFormat formatter = new SimpleDateFormat(Comment.DATE_FORMAT);
@@ -68,6 +78,12 @@ public class comments {
         return comment_string;
     }
 
+    /**
+     * Deserialize comment
+     * @param comment_line the comment string
+     * @return the parsed comment
+     * @throws ParseException 
+     */
     public static Comment parseComment(String comment_line) throws ParseException {
         //comment format: owner|date added|date modified|offset|length|comment|sourcePath
 
@@ -120,6 +136,12 @@ public class comments {
         return new Comment(owner, dateAdded, dateModified, section, comment, sourceHash);
     }
 
+    /**
+     * Pull all the comments for a specific source text
+     * @param working_dir location of cgit directory
+     * @param sourceTextHash the hash we are looking for
+     * @return the comments associated with the hash
+     */
     public static List<Comment> loadCommentsForSourceText(String working_dir, String sourceTextHash) {
         List<Comment> commentHolder = new LinkedList<Comment>();
         String comment_path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
@@ -144,6 +166,12 @@ public class comments {
         return commentHolder;
     }
     
+    /**
+     * Function to parse the comment file
+     * @param fileContents string containing the contents of comments
+     * @param text the text we want to filter by
+     * @return  list of comments associated with the text
+     */
     public static List<Comment> parseCommentFile(String fileContents, SourceText text)
     {
         List<Comment> commentHolder = new LinkedList<Comment>();
@@ -165,6 +193,11 @@ public class comments {
         return commentHolder;
     }
     
+    /**
+     * Gets all of the comments in a comment file
+     * @param working_dir location of cgit
+     * @return list of comments
+     */
     public static List<Comment> getAllComments(String working_dir)
     {
         String path = working_dir + cgitDirectory.COMMENTS_PATH.getPath();
