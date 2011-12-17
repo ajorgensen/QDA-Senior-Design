@@ -179,12 +179,18 @@ public class Branch {
 
     public static boolean hadCommentInPast(String working_dir, Comment comment, SourceText text) {
         Commit currentCommit = Commit.parseHash(Branch.getCurrentCommitHash(working_dir), working_dir);
+        
+        if(currentCommit == null || !currentCommit.hasParent())
+            return false;
 
         //check the current commit
         return checkCommitTreeForComment(currentCommit.getParent(), comment, text);
     }
 
     private static boolean checkCommitTreeForComment(Commit currentCommit, Comment comment, SourceText text) {
+        if(currentCommit == null || comment == null || text == null)
+            return false;
+        
         Blob commentBlob = currentCommit.getBlobTree().getBlobWithFilename("comments");
         boolean exists = false;
 
@@ -306,6 +312,9 @@ public class Branch {
 
         List<TagInstance> ATags = tags.loadTagsForSourceText(projectA_dir, text.getContentHash());
         List<TagInstance> BTags = tags.loadTagsForSourceText(projectB_dir, text.getContentHash());
+        
+        if(ATags == null || BTags == null)
+            return new LinkedList<TagInstance>();
 
         List<TagInstance> toRemove = new LinkedList<TagInstance>();
 

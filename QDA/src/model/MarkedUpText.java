@@ -7,14 +7,6 @@ import java.util.List;
 import javax.swing.tree.*;
 import java.util.Date;
 
-/**
- * MarkedUpText is a container for a SourceText and all of the MarkUp(tags and
- * comments) applied to that source text. It extends DefaultMutableTreeNode so 
- * it can have tree functionality. A MarkedUpText will always be a leaf node 
- * with a Folder object as a parent. 
- * 
- * @author adm07012
- */
 public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nameable, Deletable {
 	private List<Comment> comments;
         private List<TagInstance> tagInstances;
@@ -39,9 +31,16 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             this.loadComments();
 	}
         
-        /**
-         * Load the tags for this text.
-         */
+        public void setComments(List<Comment> comments)
+        {
+            this.comments = comments;
+        }
+        
+        public void setTags(List<TagInstance> tags)
+        {
+            this.tagInstances = tags;
+        }
+        
         public void loadTags()
         {
             List<TagInstance> tagHolder = tags.loadTagsForSourceText(project.getLocalPath(), sourceText.getContentHash());
@@ -50,9 +49,6 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
                 tagInstances.addAll(tagHolder);
         }
         
-        /**
-         * Load the comments for this text. 
-         */
         public void loadComments()
         {
             
@@ -62,22 +58,11 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
                 comments.addAll(commentHolder);
         }
         
-        /**
-         * Get the project that this text belongs to.
-         * @return project
-         */
         public Project getProject()
         {
             return project;
         }
  
-        /**
-         * Search this text for a list of TagTypes. Returns a list of the 
-         * TagInstances that have those types of tags.
-         * 
-         * @param tagTypes
-         * @return list of TagInstances
-         */
 	@Override
 	public List<TagInstance> searchTags(List<TagType> tagTypes) {
             List<TagInstance> returnList = new LinkedList<TagInstance>();
@@ -90,12 +75,7 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
                 }
             return returnList;
         }
-        
-        /**
-         * Search the comments applied to this text by a list of users.
-         * @param users
-         * @return list of Comments
-         */
+
 	@Override
 	public List<Comment> searchComments(List<User> users) {
             List<Comment> returnList = new LinkedList<Comment>();
@@ -114,10 +94,6 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
 		return name;
 	}
         
-        /**
-         * Return the pretty version of the text's name.
-         * @return 
-         */
         public String getPrettyName(){
             return name.substring(name.lastIndexOf("/") + 1);
             //If you don't want the file extension:
@@ -171,38 +147,20 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             selection, comment, this.sourceText.getContentHash()));
         }
        
-       /**
-        * Return the list of TagInstances that belong to this text. 
-        * @return tagInstances
-        */
        public List<TagInstance> getTags(){
            return tagInstances;
        }
        
-       /**
-        * Returns the list of comments that belong to this text.
-        * 
-        * @return comments
-        */
        public List<Comment> getComments(){
            return comments;
        }
        
-       /**
-        * Saves the current state of the tags and comments on this text.
-        */
        public void saveCurrentState()
        {
            cgit.tags.saveTags(project.getLocalPath(), tagInstances);
            cgit.comments.saveComments(project.getLocalPath(), comments);
        }
        
-       /**
-        * Commit the changes made to this text. 
-        * 
-        * @param commiter
-        * @param message 
-        */
        public void commitChanges(String commiter, String message)
        {
            Branch.commit(project.getLocalPath(), commiter, message);
