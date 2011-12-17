@@ -23,6 +23,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import checkboxtree.*;
 import java.awt.Component;
+import java.io.File;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import model.*;
@@ -51,7 +52,7 @@ public class MainFrame extends JFrame {
         int h = (int) screenSize.getHeight();
         setBounds(w / 10, h / 10, w * 4 / 5, h * 3 / 4);
         projectData.requestFocusInWindow();
-        
+
         SignInDialog sid = new SignInDialog(this);
         sid.setVisible(true);
         while (!sid.hasResults()) {
@@ -79,17 +80,17 @@ public class MainFrame extends JFrame {
         repository.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         repository.clearSelection();
         repository.addTreeSelectionListener(new TreeSelectionListener() {
+
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                if (repository.getSelectionCount()==1 && ((repository.getSelectionPath().getLastPathComponent()) instanceof Folder)) {
+                if (repository.getSelectionCount() == 1 && ((repository.getSelectionPath().getLastPathComponent()) instanceof Folder)) {
                     importFile.setEnabled(true);
                     newFolder.setEnabled(true);
-                }
-                else {
+                } else {
                     importFile.setEnabled(false);
                     newFolder.setEnabled(false);
                 }
-            }        
+            }
         });
         repository.addMouseListener(new java.awt.event.MouseAdapter() {
 
@@ -118,15 +119,15 @@ public class MainFrame extends JFrame {
         tags.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tags.clearSelection();
         tags.addTreeSelectionListener(new TreeSelectionListener() {
+
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                if (tags.getSelectionCount()==1) {
+                if (tags.getSelectionCount() == 1) {
                     newTag.setEnabled(true);
-                }
-                else {
+                } else {
                     newTag.setEnabled(false);
                 }
-            }        
+            }
         });
     }
 
@@ -532,11 +533,16 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String name = npd.getProjectName();
         String path = npd.getProjectPath();
         String sourcePath = npd.getSourcePath();
+
+        String[] elems = sourcePath.split(File.separator);
         
-        Project p = new Project("", path+java.io.File.separator+name, this.session_user);
+        String newSourcePath = path + File.separator + elems[elems.length-1];
+        cgit.FileUtil.copyFile(sourcePath, newSourcePath);
+
+        Project p = new Project("", path + java.io.File.separator + name, this.session_user);
         p.setCurrentUser(this.session_user);
-        p.importSourceText(sourcePath, p.getMainFolder());
-        cgit.setup.setup_qda_directory(path+java.io.File.separator+name);
+        p.importSourceText(newSourcePath, p.getMainFolder());
+        cgit.setup.setup_qda_directory(path);
         openProject(p);
     }
 }//GEN-LAST:event_newProjectActionPerformed
@@ -560,7 +566,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
         Project p = new Project("", working_dir, this.session_user);
         p.setCurrentUser(session_user);
-        cgit.setup.setup_qda_directory(working_dir);        
+        cgit.setup.setup_qda_directory(working_dir);
         openProject(p);
     }
 
@@ -577,7 +583,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private void openProject(Project p) {
         if (p != null) {
             this.project = p;
-            
+
             newProject.setEnabled(false);
             openProject.setEnabled(false);
             closeProject.setEnabled(true);
@@ -630,7 +636,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
         tags.clearSelection();
         tags.setVisible(false);
-        
+
         project = null;
 
         this.repaint();
@@ -728,7 +734,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         TreePath alpha = rep.getSelectionPath();
         //Alpha is the selected folder from the repository pane
         // Checks to make sure that something was selected and it wasn't a text file
-        if(alpha != null && !alpha.toString().contains(".")) {
+        if (alpha != null && !alpha.toString().contains(".")) {
             //the selected folder
             Folder parent = (Folder) alpha.getLastPathComponent();
             //Open the import file dialog box
@@ -757,14 +763,13 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         // TODO add your handling code here:
         MergeProjectDialog mpd = new MergeProjectDialog(this);
         mpd.setVisible(true);
-        
-        if(mpd.hasResults())
-        {
+
+        if (mpd.hasResults()) {
             String working_dir = mpd.getWorkingDir();
-            
-            this.project.mergeProject(working_dir); 
+
+            this.project.mergeProject(working_dir);
             this.repaint();
-            
+
         }
     }//GEN-LAST:event_mergeProjectActionPerformed
 
@@ -784,8 +789,8 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         TreePath alpha = rep.getSelectionPath();
         //Alpha is the selected folder and if nothing is selected then alpha is null
         //Alpha also can not be a source text file so it checks if it has a "." for an extension
-        
-        if(alpha != null && !alpha.toString().contains(".")) {
+
+        if (alpha != null && !alpha.toString().contains(".")) {
             //the selected folder
             Folder parent = (Folder) alpha.getLastPathComponent();
             //Open dialog box asking for new folder name
@@ -799,7 +804,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             }
         }
     }//GEN-LAST:event_createFolderActionPerformed
-/**
+    /**
      * Creates a new tag with the name entered that is a child of the tag selected
      * @param evt 
      */
@@ -807,7 +812,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         JTree rep = (JTree) tagsPane.getViewport().getView();
         TreePath alpha = rep.getSelectionPath();
         //Alpha is the selected tag and make sure something is actually selected
-        if(alpha != null) {
+        if (alpha != null) {
             //selected component
             TagType parent = (TagType) alpha.getLastPathComponent();
             //Open the new tag dialog box
