@@ -10,7 +10,6 @@
  */
 package userinterface;
 
-import cgit.FileUtil;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
@@ -40,7 +39,6 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         project = null;
 
-
         helpViewIndex = -1;
         initializeRepository();
         initializeTags();
@@ -55,60 +53,11 @@ public class MainFrame extends JFrame {
         
         SignInDialog sid = new SignInDialog(this);
         sid.setVisible(true);
+        while (!sid.hasResults()) {
+            sid.setVisible(true);
+        }
         User current_user = new User(sid.getUserName());
         this.session_user = current_user;
-
-        //defaultSetUp();
-    }
-
-    /**
-     * Starts the default project up
-     */
-    private void defaultSetUp() {
-        MessageDialog md = new MessageDialog(this, "Opening Default Project.");
-        md.setVisible(true);
-        
-        SignInDialog sid = new SignInDialog(this);
-        sid.setVisible(true);
-        
-        User u = new User("default");
-        openProject(new Project("defaultProject", "defaultPath", u));
-        signInUser(u, project);
-        Folder folder1 = project.createFolder(project.getMainFolder(), "Default");
-        MarkedUpText mut = project.importSourceText("./QDA/long.txt", folder1);
-        TagType tt = project.addTagType(project.getRootTag(), "child");
-        TagType t2 = project.addTagType(project.getRootTag(), "test");
-        TagType t3 = project.addTagType(project.getRootTag(), "important");
-        mut.addTag(tt, new TextSection(100, 10));
-        mut.addTag(tt, new TextSection(1000, 100));
-        mut.addComment("hey hey hey this is my comment.", new TextSection(200, 25));
-        mut.addComment("this is my comment that overlapa a tag.", new TextSection(1050, 250));
-    }
-
-    /**
-     * setUp is used to start new project that are not the default one.
-     *
-     *
-     * @param dialog
-     * dialog is what the message box says when it first pops up
-     * @param user
-     * user is the Admin user entered for the new project
-     * @param p
-     * p is the new project created
-     * @param sourceTextPath
-     * sourceTextPath is the location of the sourcetext the user choose
-     * when creating a new project
-     */
-    private void setUp(String dialog, User user, Project p, String sourceTextPath) {
-        MessageDialog md = new MessageDialog(this, dialog);
-        md.setVisible(true);
-        openProject(p);
-        
-        Folder f1 = p.createFolder(p.getMainFolder(), p.getName());
-        p.importSourceText(sourceTextPath, f1);
-
-        this.project = p;
-        signInUser(this.session_user, p);
     }
 
     private void initializeRepository() {
@@ -582,48 +531,12 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String name = npd.getProjectName();
         String path = npd.getProjectPath();
         String sourcePath = npd.getSourcePath();
-        this.closeProject();
         
         Project p = new Project(name, path, this.session_user);
-        
-        String dialog = "Opening " + name + " Project";
-        setUp(dialog, this.session_user, p, sourcePath);
+        p.setCurrentUser(this.session_user);
+        openProject(p);
     }
 }//GEN-LAST:event_newProjectActionPerformed
-
-    /*
-     * User u should already have submitted their passwrd and been verified as a valid user
-     */
-//private void signInUser(User user) {
-    private void signInUser(User user, Project p) {
-        //if (!project.setCurrentUser(user))
-        if (!p.setCurrentUser(user)) {
-            return;
-        }
-
-        saveProject.setEnabled(true);
-        commitProject.setEnabled(true);
-        //saveAsProject.setEnabled(true); // This option removed (future implemntation?)
-        mergeProject.setEnabled(true);
-        viewVersionHistory.setEnabled(true);
-        if (false /*TODO: user is admin*/) {
-            // manageUsers.setEnabled(true); // This option removed (future ipmlemntation?)
-        }
-// Removed User Menu (Future Implementation?)
-// signInUser.setEnabled(false);
-// signOutUser.setEnabled(true);
-
-        newSearch.setEnabled(true);
-
-        //repository.setModel(new DefaultTreeModel(project.getMainFolder()));
-        repository.setModel(new DefaultTreeModel(p.getMainFolder()));
-        repository.setVisible(true);
-        //tags.setModel(new DefaultTreeModel(project.getRootTag()));
-        tags.setModel(new DefaultTreeModel(p.getRootTag()));
-        tags.setVisible(true);
-
-        this.repaint();
-    }
 
     /**
      * When user presses Close it exits the application.
@@ -632,8 +545,7 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      * @param evt
      */
 private void EXIT_ON_CLOSE(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXIT_ON_CLOSE
-// TODO add your handling code here:
-    System.exit(0); // Exit the application
+    closeProject();
 }//GEN-LAST:event_EXIT_ON_CLOSE
 
 private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectActionPerformed
@@ -643,24 +555,9 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     if (opd.hasResults()) {
         String working_dir = opd.getWorkingDir();
 
-        Project p = new Project("QDA", working_dir, this.session_user);
-        
-        String[] files = FileUtil.listFilesInDirectory(working_dir);
-
-        for (String file : files) {
-            //check the extention
-
-            if (file.indexOf('.') > 0) {
-                String extention = file.substring(file.lastIndexOf('.') + 1);
-
-                if (extention.equals("txt")) {
-                    String dialog = "Opening " + p.getName() + " Project";
-                    setUp(dialog, p.getCurrentUser(), p, working_dir + java.io.File.separator + file);
-                    break;
-                }
-            }
-
-        }
+        Project p = new Project("", working_dir, this.session_user);
+        p.setCurrentUser(session_user);
+        openProject(p);
     }
 
 // No longer asks for username and password when opening a project
@@ -676,13 +573,28 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private void openProject(Project p) {
         if (project != null) {
             this.project = p;
-        } else {
-            project = p;
+            
+            newProject.setEnabled(false);
+            openProject.setEnabled(false);
             closeProject.setEnabled(true);
             // Removed User Menu (Future Implementation?)
-// userMenu.setEnabled(true);
+            // userMenu.setEnabled(true);
+
+            saveProject.setEnabled(true);
+            commitProject.setEnabled(true);
+            //saveAsProject.setEnabled(true); // This option removed (future implemntation?)
+            mergeProject.setEnabled(true);
+            viewVersionHistory.setEnabled(true);
+
+            newSearch.setEnabled(true);
+
+            repository.setModel(new DefaultTreeModel(p.getMainFolder()));
+            repository.setVisible(true);
+            tags.setModel(new DefaultTreeModel(p.getRootTag()));
+            tags.setVisible(true);
+
+            this.repaint();
         }
-        this.repaint();
     }
 
     /**
@@ -690,7 +602,32 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      * This causes certain menu items to become grayed out
      */
     private void closeProject() {
-        //signOutUser();
+        project.setCurrentUser(null);
+
+        views.removeAll();
+
+        newProject.setEnabled(true);
+        openProject.setEnabled(true);
+        saveProject.setEnabled(false);
+        commitProject.setEnabled(false);
+        //saveAsProject.setEnabled(false); // This option removed (future ipmlementation?)
+        mergeProject.setEnabled(false);
+        viewVersionHistory.setEnabled(false);
+        //manageUsers.setEnabled(false); // This option removed (future ipmlementation?)
+        // Removed User Menu Option (Future Implementatin?)
+        // signInUser.setEnabled(true);
+        // signOutUser.setEnabled(false);
+
+        newSearch.setEnabled(false);
+
+        repository.clearSelection();
+        repository.setVisible(false);
+
+        tags.clearSelection();
+        tags.setVisible(false);
+        
+        project = null;
+
         this.repaint();
     }
     /*
@@ -870,32 +807,6 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             }
         }
     }//GEN-LAST:event_newTagActionPerformed
-
-    private void signOutUser() {
-        project.setCurrentUser(null);
-
-        views.removeAll();
-
-        saveProject.setEnabled(false);
-        commitProject.setEnabled(false);
-        //saveAsProject.setEnabled(false); // This option removed (future ipmlementation?)
-        mergeProject.setEnabled(false);
-        viewVersionHistory.setEnabled(false);
-        //manageUsers.setEnabled(false); // This option removed (future ipmlementation?)
-// Removed User Menu Option (Future Implementatin?)
-// signInUser.setEnabled(true);
-// signOutUser.setEnabled(false);
-
-        newSearch.setEnabled(false);
-
-        repository.clearSelection();
-        repository.setVisible(false);
-
-        tags.clearSelection();
-        tags.setVisible(false);
-
-        this.repaint();
-    }
 
     private void addView(View v) {
         views.addTab(v.getAbbrv(), null, v, v.getTitle());
