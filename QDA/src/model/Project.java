@@ -35,12 +35,17 @@ public class Project implements Nameable {
         /**
          * Creates a new project
          * 
-         * @param localPath - taken from file selection dialog
-         * @param currentUser - the user creating the file
          */
         public Project() {
             
         }
+        
+        /**
+         * Constructor for project.
+         * @param name
+         * @param localPath
+         * @param admin 
+         */
 	public Project(String name, String localPath, User admin){                
 		this.localPath = localPath;
                 this.name = name;
@@ -58,26 +63,50 @@ public class Project implements Nameable {
 	}
         
         
-        
+        /**
+         * Initializes cgit
+         */
         private void initialize_cgit(){
             cgit.setup.setup_qda_directory(localPath);
         }
         
+        /**
+         * Returns the local path of a project
+         * @return localpath
+         */
         public String getLocalPath()
         {
             return this.localPath;
         }
+        
+        /**
+         * Set the name of a project.
+         * @param n 
+         */
         public void setName(String n) {
             name = n;
         }
+        
+        /** 
+         * Set the local path of a project.
+         * @param l 
+         */
         public void setLocalPath(String l) {
             localPath = l;
         }
+        
+        /**
+         * Set the user of a project
+         * @param u 
+         */
         public void setUser(User u) {
             currUser = u;
         }
         
-	  
+	/**
+         * Get the project's root tag.
+         * @return rootTag
+         */  
         public RootTag getRootTag() {
             return rootTag;
         }
@@ -179,17 +208,35 @@ public class Project implements Nameable {
             return new LinkedList<Comment>(s);
 	}
 	
+        /**
+         * Returns a list of the project's users.
+         * @return users
+         */
 	public List<User> getUsers(){
 		return users;
 	}
+        
+        /**
+         * Returns a list of the folders in a project.
+         * @return folders
+         */
         public List<Folder> getFolders2() {
             return folders;
         }
         
+        /**
+         * Gets the current user of the project
+         * @return currUser
+         */
         public User getCurrentUser(){
             return currUser;
         }
         
+        /**
+         * Sets the current user of a project
+         * @param user
+         * @return true if successful
+         */
         public boolean setCurrentUser(User user) {
             for (int i = 0; i < users.size(); i++) {
                 User u = users.get(i);
@@ -202,10 +249,18 @@ public class Project implements Nameable {
             return false;
         }
 	
+        /**
+         * Add user to the project.
+         * @param u 
+         */
 	public void addUser(User u){
             users.add(u);
 	}
 	
+        /**
+         * Remove a user from the project.
+         * @param user 
+         */
 	public void removeUser(User user){
 		users.remove(user);
 	}
@@ -238,6 +293,10 @@ public class Project implements Nameable {
             return createdFolder;
         }
         
+        /**
+         * Gets a string array of the folder names in the project.
+         * @return 
+         */
         public String[] getFolders() {
             int num = folders.size();
             String[] alpha = new String[num];            
@@ -247,6 +306,10 @@ public class Project implements Nameable {
             return alpha;
         }
         
+        /**
+         * Gets a string list of the tags in a project
+         * @return 
+         */
         public String[] getTags() {
             int num = tags.size();
             String[] alpha = new String[num];
@@ -255,7 +318,12 @@ public class Project implements Nameable {
             }
             return alpha;
         }
-
+        
+        /**
+         * Find a folder with name
+         * @param name
+         * @return folder or null
+         */
         public Folder findFolder(String name) {
             String n = name;
             for(int i = 0; i < folders.size(); i++) {
@@ -268,6 +336,11 @@ public class Project implements Nameable {
             return null;
         }
         
+        /**
+         * Find a TagType with name 
+         * @param name
+         * @return TagType or null
+         */
         public TagType findTag(String name) {
             String n = name;
             for(int i = 0; i < tags.size(); i++) {
@@ -279,29 +352,52 @@ public class Project implements Nameable {
             }
             return null;
         }
+        
 	@Override
 	public String getName() {
 		return name;
 	}
 
+        /**
+         * Rename method (not implemented)
+         * @param name 
+         */
 	@Override
 	public void rename(String name) {
 		// TODO Auto-generated method stub
 		
 	}
         
+        /**
+         * Get the main folder of the project.
+         * @return mainFolder
+         */
         public Folder getMainFolder(){
             return mainFolder;
         }
         
+        /**
+         * Get the current MarkedUpText
+         * @return curText
+         */
         private MarkedUpText getCurrentText(){
             return curText;
         }
         
+        /**
+         * Set the current MarkedUpText
+         * @param newCurr 
+         */
         public void setCurrentText(MarkedUpText newCurr){
             curText = newCurr;
         }
         
+        /**
+         * Add a taginstance to the selection of the current MarkedUpText 
+         * @param tagName
+         * @param selection
+         * @return 
+         */
         public boolean addTagInstance(String tagName, TextSection selection){
             TagType tag = this.getTagType(tagName);
             if(tag != null){
@@ -311,6 +407,11 @@ public class Project implements Nameable {
             }
         }
         
+        /**
+         * Return TagType with tagName
+         * @param tagName
+         * @return TagType or null
+         */
         public TagType getTagType(String tagName){
             for(TagType t: tags) {
                if(t.getName().equals(tagName)){
@@ -329,12 +430,20 @@ public class Project implements Nameable {
             return curText.getSourceText().getText();
         }
         
+        /**
+         * Save the project
+         */
         public void saveProject()
         {
             if(this.curText != null)
                 curText.saveCurrentState();
         }
         
+        /**
+         * Commit the changes made to a project
+         * @param commiter
+         * @param message 
+         */
        public void commitChanges(String commiter, String message)
        {
            if(curText != null)

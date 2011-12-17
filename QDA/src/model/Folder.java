@@ -5,14 +5,30 @@ import java.util.List;
 import java.util.LinkedList;
 import javax.swing.tree.*;
 
+/**
+ * A folder holds a group of MarkedUpTexts. It extends DefaultMutableTreeNode so
+ * it can have tree functionality. It's children can be MarkedUpTexts or other 
+ * folders. 
+ * 
+ * @author adm07012
+ */
 public class Folder extends DefaultMutableTreeNode implements Element, Nameable, Deletable {
         private String name;
 	
+        /**
+         * Create a folder with name
+         * @param name 
+         */
 	public Folder(String name){
 		super();
                 this.name = name;
 	}
         
+        /**
+         * Search folder for a list of taginstances of tagtypes
+         * @param tags
+         * @return list of tagInstances
+         */
 	@Override
 	public List<TagInstance> searchTags(List<TagType> tags) {
             List<MarkedUpText> texts = getDescendantTexts();
@@ -40,24 +56,39 @@ public class Folder extends DefaultMutableTreeNode implements Element, Nameable,
             }
             return comments;
 	}
-
+        
+        /**
+         * Returns the name of the folder.
+         * @return name
+         */
 	@Override
 	public String getName() {
 		return name;
 	}
-
+        
+        /**
+         * (Renaming folders has not been implemented)
+         * @param name 
+         */
 	@Override
 	public void rename(String name) {
 		// TODO Auto-generated method stub
 		
 	}
-
+        
+        /**
+         * Deleting folders has not been implemented.
+         */
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
 		
 	}
         
+        /**
+         * Returns the string representation of a folder.
+         * @return name
+         */
         @Override
         public String toString(){
             return name;
