@@ -209,7 +209,7 @@ public class SourceTextView extends View {
         tools.add(viewComments);
     }
     
-    private void initializeCenter() {
+    public void initializeCenter() {
         vertScrollPos = center.getVerticalScrollBar().getValue();
         text = new JTextPane();
         

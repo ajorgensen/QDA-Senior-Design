@@ -31,6 +31,16 @@ public class MarkedUpText extends DefaultMutableTreeNode implements Element, Nam
             this.loadComments();
 	}
         
+        public void setComments(List<Comment> comments)
+        {
+            this.comments = comments;
+        }
+        
+        public void setTags(List<TagInstance> tags)
+        {
+            this.tagInstances = tags;
+        }
+        
         public void loadTags()
         {
             List<TagInstance> tagHolder = tags.loadTagsForSourceText(project.getLocalPath(), sourceText.getContentHash());

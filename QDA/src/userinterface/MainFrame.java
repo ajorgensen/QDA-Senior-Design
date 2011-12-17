@@ -532,7 +532,7 @@ private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String path = npd.getProjectPath();
         String sourcePath = npd.getSourcePath();
         
-        Project p = new Project(name, path, this.session_user);
+        Project p = new Project("", path+java.io.File.separator+name, this.session_user);
         p.setCurrentUser(this.session_user);
         openProject(p);
     }
@@ -571,7 +571,7 @@ private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      * The project should already have been loaded into memory
      */
     private void openProject(Project p) {
-        if (project != null) {
+        if (p != null) {
             this.project = p;
             
             newProject.setEnabled(false);
@@ -743,6 +743,7 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         CommitProjectDialog cpd = new CommitProjectDialog(this);
         cpd.setVisible(true);
         if (cpd.hasResults()) {
+            this.project.saveProject();
             this.project.commitChanges(project.getCurrentUser().getName(), cpd.getCommit());
         }
     }//GEN-LAST:event_commitProjectActionPerformed
@@ -751,6 +752,15 @@ private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         // TODO add your handling code here:
         MergeProjectDialog mpd = new MergeProjectDialog(this);
         mpd.setVisible(true);
+        
+        if(mpd.hasResults())
+        {
+            String working_dir = mpd.getWorkingDir();
+            
+            this.project.mergeProject(working_dir); 
+            this.repaint();
+            
+        }
     }//GEN-LAST:event_mergeProjectActionPerformed
 
     private void newSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSearchActionPerformed
